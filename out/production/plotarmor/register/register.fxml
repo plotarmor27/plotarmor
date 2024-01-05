@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="registerPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="416.0" prefWidth="383.0" style="-fx-background-color: #19214d;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="RegisterController">
+   <children>
+      <Label layoutX="85.0" layoutY="90.0" text="Email:" textFill="WHITE" />
+      <Label layoutX="84.0" layoutY="137.0" text="Username:" textFill="WHITE" />
+      <Label layoutX="85.0" layoutY="188.0" text="Password:" textFill="WHITE" />
+      <Label layoutX="85.0" layoutY="238.0" text="Repeat Password:" textFill="WHITE" />
+      <TextField fx:id="txtFEmail" layoutX="80.0" layoutY="108.0" prefHeight="27.0" prefWidth="243.0" style="-fx-border-color: #3452eb; -fx-background-color: #2A0033; -fx-border-radius: 20%; -fx-text-fill: white; -fx-background-insets: 3;" />
+      <TextField fx:id="txtFUsername" layoutX="80.0" layoutY="154.0" style="-fx-border-color: #3452eb; -fx-background-color: #2A0033; -fx-border-radius: 20%; -fx-text-fill: white; -fx-background-insets: 3;" />
+      <Button fx:id="btnRegister" layoutX="157.0" layoutY="349.0" mnemonicParsing="false" onAction="#registerOnAction" prefHeight="25.0" prefWidth="69.0" style="-fx-background-color: green;" text="SIGN UP" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <PasswordField fx:id="txtFPassword" layoutX="80.0" layoutY="208.0" style="-fx-border-color: #3452eb; -fx-background-color: #2A0033; -fx-background-insets: 3; -fx-border-radius: 20%; -fx-text-fill: white;" />
+      <PasswordField fx:id="txtFRepeatPwd" layoutX="80.0" layoutY="255.0" style="-fx-border-color: #3452eb; -fx-background-color: #2A0033; -fx-background-insets: 3; -fx-border-radius: 20%; -fx-text-fill: white;" />
+      <Button fx:id="btnClose" layoutX="333.0" layoutY="10.0" mnemonicParsing="false" onAction="#closeOnAction" prefHeight="27.0" prefWidth="39.0" style="-fx-background-color: transparent; -fx-border-radius: 20; -fx-background-insets: 3; -fx-border-color: red;" text="X" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Label fx:id="lblError" layoutX="62.0" layoutY="324.0" prefHeight="17.0" prefWidth="266.0" text="Label" textFill="RED" visible="false" />
+      <Button fx:id="btnBackToLogin" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#backtoLoginOnClick" prefHeight="27.0" prefWidth="39.0" style="-fx-background-color: transparent; -fx-border-radius: 20; -fx-background-insets: 3; -fx-border-color: green;" text="&lt;--" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Label layoutX="85.0" layoutY="45.0" text="JOIN PLOTARMOR">
+         <font>
+            <Font name="Berlin Sans FB" size="25.0" />
+         </font>
+         <textFill>
+            <LinearGradient cycleMethod="REPEAT" endX="0.33175355450236965" endY="0.5165876777251184" startX="0.5876777251184835">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.06719999760389328" green="0.443004310131073" blue="0.5600000023841858" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.007662835249042145">
+                     <color>
+                        <Color red="0.06719999760389328" green="0.443004310131073" blue="0.5600000023841858" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.019999999552965164" green="1.0" blue="0.6329112648963928" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <CheckBox fx:id="radioB16YearsOld" layoutX="80.0" layoutY="297.0" mnemonicParsing="false" onAction="#radioBClicked" text="I'm at least 16 years old" textFill="#a8a8a8" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </CheckBox>
+      <Label layoutX="240.0" layoutY="159.0" text="Available / Not Available">
+         <textFill>
+            <LinearGradient endX="0.5639810426540284" endY="0.31753554502369663" startY="0.2890995260663507">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color green="1.0" blue="0.30000001192092896" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.007662835249042145">
+                     <color>
+                        <Color green="1.0" blue="0.30000001192092896" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="1.0" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+   </children>
+</AnchorPane>
