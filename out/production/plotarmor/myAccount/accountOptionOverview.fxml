@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #282827;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AccountSettings">
+   <children>
+      <Pane layoutX="-1.0" layoutY="-1.0" prefHeight="406.0" prefWidth="161.0" style="-fx-border-color: black; -fx-background-color: gray;">
+         <children>
+            <Button fx:id="btnChangeUsername" layoutX="20.0" layoutY="125.0" mnemonicParsing="false" onAction="#openUserNameFormular" onMouseEntered="#btnOnHover" onMouseExited="#btnOnHoverExit" style="-fx-border-color: #4D1D13; -fx-background-color: transparent; -fx-background-insets: 2; -fx-border-radius: 10%;" text="Change Username" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="Cambria" size="14.0" />
+               </font></Button>
+            <Button fx:id="btnChangeEmail" layoutX="20.0" layoutY="174.0" mnemonicParsing="false" onAction="#openEmailFormular" onMouseEntered="#btnOnHover" onMouseExited="#btnOnHoverExit" style="-fx-border-color: #4D1D13; -fx-background-color: transparent; -fx-background-insets: 2; -fx-border-radius: 10%;" text="Change Email" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="Cambria" size="14.0" />
+               </font></Button>
+            <Button fx:id="btnChangePassword" layoutX="20.0" layoutY="219.0" mnemonicParsing="false" onAction="#openPasswordFormular" onMouseEntered="#btnOnHover" onMouseExited="#btnOnHoverExit" style="-fx-border-color: #4D1D13; -fx-background-color: transparent; -fx-background-insets: 2; -fx-border-radius: 10%;" text="Change Password" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="Cambria" size="14.0" />
+               </font></Button>
+            <Button fx:id="btnDelAccount" layoutX="18.0" layoutY="281.0" mnemonicParsing="false" onAction="#openDeleteAccountFormular" onMouseEntered="#btnOnHover" onMouseExited="#btnOnHoverExit" style="-fx-border-color: #4D1D13; -fx-background-color: transparent; -fx-background-insets: 2; -fx-border-radius: 10%;" text="Delete Account" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="Cambria" size="14.0" />
+               </font>
+            </Button>
+            <Label layoutX="7.0" layoutY="43.0" prefHeight="17.0" prefWidth="149.0" text="------------------------------" textFill="#00e4ff" />
+            <Label layoutX="8.0" layoutY="97.0" prefHeight="17.0" prefWidth="149.0" text="------------------------------" textFill="#00e4ff" />
+            <Label fx:id="lblHelloUser" layoutX="16.0" layoutY="26.0" text="Hello: ">
+               <font>
+                  <Font name="Book Antiqua Bold" size="14.0" />
+               </font></Label>
+            <Button fx:id="btnViewAccountInformation" layoutX="19.0" layoutY="65.0" mnemonicParsing="false" onAction="#openUserInformation" onMouseEntered="#btnOnHover" onMouseExited="#btnOnHoverExit" style="-fx-border-color: #0D1D13; -fx-background-color: transparent; -fx-background-insets: 2; -fx-border-radius: 20%;" text="Profile" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="Cambria" size="14.0" />
+               </font>
+            </Button>
+         </children></Pane>
+      <Pane layoutX="180.0" layoutY="78.0" prefHeight="259.0" prefWidth="384.0" style="-fx-background-color: #333333; -fx-border-radius: 50%;">
+         <children>
+            <TextField fx:id="txtFAccountDelEmail" layoutX="118.0" layoutY="88.0" promptText="Email" style="-fx-border-radius: 50%; -fx-background-color: transparent; -fx-border-color: white; -fx-text-fill: white;" visible="false" />
+            <Label fx:id="lblDelEmail" layoutX="73.0" layoutY="92.0" text="Email: " textFill="WHITE" visible="false">
+               <font>
+                  <Font name="Cambria" size="12.0" />
+               </font></Label>
+            <TextField fx:id="txtFChangeProperty" layoutX="128.0" layoutY="75.0" style="-fx-border-radius: 50%; -fx-background-color: transparent; -fx-border-color: white; -fx-text-fill: white;" visible="false" />
+            <Label fx:id="lblSetting" layoutX="14.0" layoutY="81.0" text="New Username" textFill="WHITE" visible="false">
+               <font>
+                  <Font name="Cambria" size="12.0" />
+               </font></Label>
+            <Button fx:id="btnVerifyNewProperty" layoutX="162.0" layoutY="178.0" mnemonicParsing="false" onAction="#verifyNewPropertyOnAction" prefHeight="25.0" prefWidth="61.0" style="-fx-background-color: transparent; -fx-border-color: #859ca5; -fx-border-radius: 10%;" text="Verify" textFill="WHITE" visible="false">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <TextField fx:id="txtRepeatNewProperty" layoutX="128.0" layoutY="107.0" style="-fx-border-radius: 50%; -fx-background-color: transparent; -fx-border-color: white; -fx-text-fill: white;" visible="false" />
+            <Label fx:id="lblRepeatSetting" layoutX="14.0" layoutY="112.0" text="Repeat Username" textFill="WHITE" visible="false">
+               <font>
+                  <Font name="Cambria" size="12.0" />
+               </font></Label>
+            <Button fx:id="btnDeleteAccount" layoutX="128.0" layoutY="142.0" mnemonicParsing="false" onAction="#verifyDelAccount" style="-fx-background-color: transparent; -fx-border-color: #859ca5; -fx-border-radius: 10%;" text="Delete Account" textFill="WHITE" visible="false" />
+            <Label fx:id="lblDelText" layoutX="74.0" layoutY="51.0" text="Please verify the deletion by entering your email." textFill="#ff0404" visible="false">
+               <font>
+                  <Font name="Cambria" size="12.0" />
+               </font></Label>
+            <Label fx:id="lblProfileEmail" layoutX="15.0" layoutY="41.0" text="E-Mail Address: " textFill="WHITE">
+               <font>
+                  <Font name="Cambria" size="14.0" />
+               </font></Label>
+            <Label fx:id="lblProfileUsername" layoutX="14.0" layoutY="65.0" text="Username: " textFill="WHITE">
+               <font>
+                  <Font name="Cambria" size="14.0" />
+               </font></Label>
+            <Label fx:id="lblProfileMovieRated" layoutX="14.0" layoutY="173.0" text="MoviesRated: " textFill="WHITE">
+               <font>
+                  <Font name="Cambria" size="14.0" />
+               </font></Label>
+            <Label fx:id="lblErrorSuccesfullMessage" layoutX="48.0" layoutY="211.0" text="Error/ Successfull" textFill="WHITE" visible="false" />
+            <Label fx:id="lblregisterDate" layoutX="14.0" layoutY="115.0" text="Registerdate:" textFill="WHITE">
+               <font>
+                  <Font name="Cambria" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblLastLogin" layoutX="14.0" layoutY="143.0" text="Last login:" textFill="WHITE">
+               <font>
+                  <Font name="Cambria" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblMeanScore" layoutX="15.0" layoutY="200.0" text="Mean Score: " textFill="WHITE">
+               <font>
+                  <Font name="Cambria" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Label fx:id="lblSettings" layoutX="240.0" layoutY="28.0" prefHeight="17.0" prefWidth="264.0" text="Settings: " textFill="WHITE" underline="true">
+         <font>
+            <Font name="Book Antiqua" size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnClose" layoutX="566.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeOnClick" style="-fx-background-color: transparent; -fx-border-color: red; -fx-border-radius: 0;" text="x" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+   </children>
+</AnchorPane>

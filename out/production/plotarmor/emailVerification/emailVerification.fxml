@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="emailBody" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="210.0" prefWidth="299.0" style="-fx-background-color: #a5addc; -fx-border-color: #a5addc;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="EmailVerificationController">
+
+   <children>
+      <Label layoutX="23.0" layoutY="98.0" text="Code: " />
+      <Button fx:id="btnVerify" layoutX="99.0" layoutY="146.0" mnemonicParsing="false" onAction="#verifyAccountCode" prefHeight="25.0" prefWidth="98.0" style="-fx-background-color: #9961c2;" text="Verify" textFill="WHITE" />
+      <Text layoutX="32.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email has been sent, please type in code" wrappingWidth="246.0703125">
+         <font>
+            <Font size="13.0" />
+         </font></Text>
+      <Text disable="true" layoutX="37.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wrong code, another email has been sent" visible="false" />
+      <Button fx:id="btnClose" layoutX="263.0" layoutY="9.0" mnemonicParsing="false" onAction="#closeOnAction" style="-fx-background-color: transparent; -fx-border-radius: 0; -fx-background-insets: 3; -fx-border-color: red;" text="X">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <TextField fx:id="txtCodeNr1" layoutX="59.0" layoutY="94.0" prefHeight="25.0" prefWidth="34.0" />
+      <TextField fx:id="txtCodeNr2" layoutX="97.0" layoutY="94.0" prefHeight="25.0" prefWidth="34.0" />
+      <TextField fx:id="txtCodeNr3" layoutX="134.0" layoutY="94.0" prefHeight="25.0" prefWidth="34.0" />
+      <TextField fx:id="txtCodeNr4" layoutX="171.0" layoutY="94.0" prefHeight="25.0" prefWidth="34.0" />
+      <TextField fx:id="txtCodeNr5" layoutX="208.0" layoutY="94.0" prefHeight="25.0" prefWidth="34.0" />
+   </children>
+
+</AnchorPane>
