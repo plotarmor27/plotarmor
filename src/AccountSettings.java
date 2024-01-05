@@ -38,7 +38,7 @@ import java.util.ResourceBundle;
  * - Implement functionality for handling user interactions (e.g., button clicks, hover events).
  */
 public class AccountSettings implements Initializable {
-blabla
+
     public Label lblSettings;
     public Button btnChangeUsername;
     public Button btnChangeEmail;

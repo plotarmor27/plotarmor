@@ -33,7 +33,7 @@ import java.sql.Connection;
  * graphical user interface (GUI) of the application.
  */
 public class Main extends Application {
-    //blabla
+
     public Button btnResetPassword;
     public PasswordField txtFPassword;
     public TextField txtEmail;
