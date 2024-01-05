@@ -1,0 +1,138 @@
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.sql.Connection;
+
+public class RegisterController {
+    String codeNumbers ="";
+    String code = "12345";
+    String email = "";
+    String username = "";
+    String password = "";
+    String repeatPassword = "";
+    Connection connection;
+    public TextField txtFUsername;
+    public TextField txtFEmail;
+    public PasswordField txtFPassword;
+    public PasswordField txtFRepeatPwd;
+    public Button btnClose;
+    public Label lblError;
+    public Button btnBackToLogin;
+    public CheckBox radioB16YearsOld;
+    public AnchorPane registerPane;
+    @FXML
+    private Button btnRegister;
+
+    DatabaseQuery dataQuery = new DatabaseQuery();
+    EmailVerificationController emailController;
+    public void backtoLoginOnClick(ActionEvent actionEvent) throws IOException {
+        GUIWindowManager windowManager = GUIWindowManager.getInstance();
+        if(!windowManager.isEmailVerificationOpen()){
+            Stage stage = (Stage) btnClose.getScene().getWindow();
+            stage.close();
+            Main m1 = new Main();
+            m1.openLoginView();
+        }
+    }
+    @FXML
+    public void closeOnAction(ActionEvent e){
+        GUIWindowManager windowManager = GUIWindowManager.getInstance();
+        if(!windowManager.isEmailVerificationOpen()){
+            Stage stage = (Stage) btnClose.getScene().getWindow();
+            stage.close();
+        }
+
+    }
+    @FXML
+    public void registerOnAction(ActionEvent e) throws IOException {
+        emailController = new EmailVerificationController();
+        GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
+        boolean emailVerificationIsActive = guiWindowManager.isEmailVerificationOpen();
+        email = txtFEmail.getText();
+        username = txtFUsername.getText();
+        password = txtFPassword.getText();
+        repeatPassword = txtFRepeatPwd.getText();
+        connection = DatabaseConnection.connect();
+        lblError.setText("");
+
+
+        if(connection == null){
+            lblError.setVisible(true);
+            lblError.setText("Error connecting to the database");
+        }
+
+
+        if(!emailVerificationIsActive && connection != null){
+            guiWindowManager.setEmailVerificationOpen(true);
+
+
+            if(credentialsAreValid(email,username,password,repeatPassword) && radioB16YearsOld.isSelected()){
+                emailController.setRegisterController(RegisterController.this);
+                emailController.openEmailVerification();
+            }
+            else
+            {
+                System.out.println(radioB16YearsOld.isSelected());
+                lblError.setVisible(true);
+                lblError.setText("Error: Please make valid inputs and try again!");
+                guiWindowManager.setEmailVerificationOpen(false);
+            }
+        }
+    }
+    public boolean credentialsAreValid(String email, String username, String password, String repeatPassword) {
+        // Check if email is not empty
+        if (email.isEmpty() || !isValidEmail(email)) {
+            return false;
+        }
+
+        // Check if username is not empty
+        if (username.isEmpty()) {
+            return false;
+        }
+
+        // Check if password is not empty
+        if (password.isEmpty()) {
+            return false;
+        }
+
+        // Check if repeatPassword is not empty and matches the original password
+        if (repeatPassword.isEmpty() || !repeatPassword.equals(password)) {
+            return false;
+        }
+
+        // Return true if all conditions are met
+        return true;
+    }
+    // Helper method to validate email address with simple checks for "@" and "."
+    private boolean isValidEmail(String email) {
+        return email.contains("@") && email.contains(".");
+    }
+    public void setCodeNumbers(String codeNumbers){
+        System.out.println(codeNumbers);
+        this.codeNumbers = codeNumbers;
+    }
+
+    public void insertUserToDB(){
+        if(code.equals(codeNumbers)){
+            dataQuery.createNewUser(connection,email,username,password);
+            System.out.println("Erfolgreich in dei Datenbank eingetragen!");
+        }
+    }
+
+    public void setBackgroundImage(Image image){
+        this.registerPane.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,BackgroundSize.DEFAULT)));
+    }
+
+    public void openRegister() throws IOException {
+        Register reg = new Register();
+        reg.openRegister();
+    }
+
+    public void radioBClicked(ActionEvent actionEvent) {
+    }
+}

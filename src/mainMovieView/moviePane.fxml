@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+    <Pane fx:id="paneId" layoutX="541.0" layoutY="41.0" prefHeight="182.0" prefWidth="120.0" style="-fx-background-color: gray;">
+        <children>
+            <ImageView fx:id="posterImage" fitHeight="132.0" fitWidth="120.0" layoutX="-1.0" pickOnBounds="true">
+            </ImageView>
+            <Label fx:id="movieLbl" layoutX="12.0" layoutY="138.0" text="Movie Name" textFill="WHITE" />
+            <Label fx:id="starlbl" layoutX="33.0" layoutY="160.0" text="(Rating)" textFill="WHITE" />
+            <SVGPath content="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218" fill="#ffda00" layoutX="14.0" layoutY="160.0" />
+        </children>
+    </Pane>
+   <Pane fx:id="movieRatedPane" layoutX="14.0" layoutY="239.0" prefHeight="40.0" prefWidth="556.0" style="-fx-background-color: transparent; -fx-border-image-insets: 3; -fx-border-radius: 20; -fx-border-color: green;">
+      <children>
+         <Label fx:id="movieRatedName" layoutX="13.0" layoutY="9.0" prefHeight="21.0" prefWidth="299.0" text="Movie Name" textFill="WHITE">
+            <font>
+               <Font size="15.0" />
+            </font></Label>
+         <SVGPath fx:id="starTwo" content="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218" fill="#ffd400" layoutX="349.0" layoutY="12.0" scaleX="1.25" scaleY="1.25" stroke="BLACK" />
+         <SVGPath fx:id="starOne" content="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218" fill="#ffd400" layoutX="322.0" layoutY="12.0" scaleX="1.25" scaleY="1.25" stroke="BLACK" />
+         <SVGPath fx:id="starThree" content="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218" fill="#ffd400" layoutX="376.0" layoutY="12.0" scaleX="1.25" scaleY="1.25" stroke="BLACK" />
+         <SVGPath fx:id="starFour" content="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218" fill="#ffd400" layoutX="403.0" layoutY="12.0" scaleX="1.25" scaleY="1.25" stroke="BLACK" />
+         <SVGPath fx:id="starFive" content="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218" fill="#ffd400" layoutX="430.0" layoutY="12.0" scaleX="1.25" scaleY="1.25" stroke="BLACK" />
+         <Button fx:id="btnDeleteRatedMovie" layoutX="488.0" layoutY="7.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-border-color: red; -fx-border-radius: 10; -fx-background-insets: 3;" text="Delete" textFill="WHITE">
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+         </Button>
+         <Label fx:id="lblRatingStoring" layoutX="278.0" layoutY="11.0" text="Rating" visible="false" />
+      </children>
+   </Pane>
+
+</AnchorPane>

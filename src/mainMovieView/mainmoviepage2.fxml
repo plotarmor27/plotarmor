@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="818.0" prefWidth="864.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainMoviePage2Controller">
+   <children>
+      <ImageView fitHeight="232.0" fitWidth="797.0" layoutX="34.0" layoutY="86.0" pickOnBounds="true">
+         <image>
+            <Image url="@acrossWP.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="180.0" fitWidth="164.0" layoutX="85.0" layoutY="138.0" pickOnBounds="true">
+         <image>
+            <Image url="@across.jpg" />
+         </image>
+      </ImageView>
+      <Label fx:id="lblMainMovie" layoutX="249.0" layoutY="248.0" onMouseClicked="#onMainMovieLbClick" text="Spider-Man: Across the Spider-Verse" textFill="WHITE">
+         <font>
+            <Font size="30.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+      <Label layoutX="41.0" layoutY="320.0" text="Now Playing" textFill="#ffed00">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+    <AnchorPane layoutX="33.0" layoutY="357.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="408.0" prefWidth="798.0">
+         <children>
+          <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="408.0" prefWidth="797.0">
+               <children>
+                  <ScrollPane fx:id="scrollMovie" hbarPolicy="NEVER" hmax="10.0" onScroll="#onScroll" prefHeight="373.0" prefWidth="797.0" stylesheets="@mainmoviepage.css" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <content>
+                      <AnchorPane prefHeight="407.0" prefWidth="780.0">
+                           <children>
+                              <GridPane fx:id="gridPane" gridLinesVisible="true" hgap="10.0" pickOnBounds="false" prefWidth="780.0" scaleShape="false" vgap="10.0">
+                                <columnConstraints>
+                                  <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" />
+                                  <ColumnConstraints hgrow="SOMETIMES" />
+                                    <ColumnConstraints hgrow="SOMETIMES" />
+                                    <ColumnConstraints hgrow="SOMETIMES" />
+                                    <ColumnConstraints hgrow="SOMETIMES" />
+                                    <ColumnConstraints hgrow="SOMETIMES" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints vgrow="SOMETIMES" />
+                                  <RowConstraints vgrow="SOMETIMES" />
+                                  <RowConstraints vgrow="SOMETIMES" />
+                                </rowConstraints>
+                              </GridPane>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+
+       <Button fx:id="btnMyMovies" layoutX="647.0" layoutY="44.0" mnemonicParsing="false" onAction="#btnMyMoviesOnClick" style="-fx-background-color: transparent; -fx-border-color: gray; -fx-border-radius: 10;" text="My Movies" textFill="WHITE">
+           <cursor>
+               <Cursor fx:constant="HAND" />
+           </cursor>
+           <font>
+               <Font size="13.0" />
+           </font></Button>
+       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="205.0" layoutY="7.0" prefHeight="30.0" prefWidth="473.0" text="PLOTARMOR - MOVIE LIST">
+           <font>
+               <Font size="20.0" />
+           </font>
+           <textFill>
+               <RadialGradient centerX="0.4779005524861879" centerY="0.5" radius="0.5">
+                   <stops>
+                       <Stop>
+                           <color>
+                               <Color green="1.0" blue="0.5245803594589233" />
+                           </color>
+                       </Stop>
+                       <Stop offset="1.0">
+                           <color>
+                               <Color red="1.0" green="0.9928057789802551" />
+                           </color>
+                       </Stop>
+                   </stops>
+               </RadialGradient>
+           </textFill>
+       </Label>
+       <TextField fx:id="searchMoviesTxtField" layoutX="142.0" layoutY="45.0" onKeyReleased="#onKeyReleased" prefHeight="27.0" prefWidth="456.0" promptText="Search for Movies" style="-fx-border-color: #3452eb; -fx-background-color: #2A0033; -fx-background-insets: 3; -fx-border-radius: 5; -fx-text-fill: white;" />
+       <Button fx:id="btnMyAccount" layoutX="744.0" layoutY="44.0" mnemonicParsing="false" onAction="#myAccountBtnOnAction" prefHeight="29.0" prefWidth="79.0" style="-fx-background-color: transparent; -fx-border-color: gray; -fx-border-radius: 10;" text="Settings" textFill="WHITE">
+           <cursor>
+               <Cursor fx:constant="HAND" />
+           </cursor>
+           <font>
+               <Font size="13.0" />
+           </font></Button>
+       <Button fx:id="btnLogOut" layoutX="33.0" layoutY="44.0" mnemonicParsing="false" onAction="#logOutOnClick" style="-fx-background-color: transparent;" text="Log Out" textFill="#d70c13" textOverrun="CLIP">
+           <cursor>
+               <Cursor fx:constant="HAND" />
+           </cursor>
+           <font>
+               <Font name="Cambria Bold" size="15.0" />
+           </font></Button>
+       <Button fx:id="btnCLOSE" layoutX="825.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeOnClick" prefHeight="27.0" prefWidth="34.0" style="-fx-background-color: transparent; -fx-border-color: red; -fx-border-radius: 10;" text="X" textFill="WHITE">
+           <cursor>
+               <Cursor fx:constant="HAND" />
+           </cursor>
+       </Button>
+      <ListView fx:id="movieListView" editable="true" layoutX="142.0" layoutY="74.0" onMouseClicked="#listViewItemClicked" prefHeight="180.0" prefWidth="456.0" style="-fx-border-color: green; -fx-background-color: black; -fx-text-fiill: white;" />
+
+   </children>
+</AnchorPane>

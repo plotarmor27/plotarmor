@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="454.0" prefWidth="670.0" style="-fx-background-color: #2b2b2a;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MyRatedMoviesController">
+   <children>
+      <Label fx:id="lbHelloUser" layoutX="43.0" layoutY="62.0" text="Hello, Username" textFill="WHITE" />
+      <Label layoutX="262.0" layoutY="25.0" text="My Movies">
+         <font>
+            <Font name="Berlin Sans FB" size="30.0" />
+         </font>
+         <textFill>
+            <LinearGradient cycleMethod="REPEAT" endX="0.33175355450236965" endY="0.5165876777251184" startX="0.5876777251184835">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.06719999760389328" green="0.443004310131073" blue="0.5600000023841858" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.007662835249042145">
+                     <color>
+                        <Color red="0.06719999760389328" green="0.443004310131073" blue="0.5600000023841858" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.019999999552965164" green="1.0" blue="0.6329112648963928" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <ListView fx:id="listVMyRatedMovies" layoutX="36.0" layoutY="82.0" prefHeight="307.0" prefWidth="596.0" style="-fx-background-color: transparent; -fx-text-fill: black;" stylesheets="@myRatedMovie.css" />
+      <Text fill="WHITE" layoutX="438.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sort by: " />
+      <Button fx:id="btnSortRating" layoutX="484.0" layoutY="56.0" mnemonicParsing="false" onAction="#sortRatinOnClick" prefHeight="17.0" prefWidth="58.0" style="-fx-background-color: transparent;" text="Rating" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button layoutX="544.0" layoutY="56.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Release date" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="btnBack" layoutX="17.0" layoutY="14.0" mnemonicParsing="false" onAction="#goBack" style="-fx-background-color: transparent; -fx-border-color: red; -fx-border-radius: 10%;" text="&lt;--" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Label fx:id="lblSureDeleting" layoutX="130.0" layoutY="406.0" prefHeight="17.0" prefWidth="395.0" text="Label" textFill="RED" visible="false" />
+   </children>
+</AnchorPane>
