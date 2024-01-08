@@ -497,7 +497,6 @@ public class DatabaseQuery {
         try {
             // Überprüfen, ob der Benutzer den Film bereits bewertet hat
             if (hasUserRatedMovie(connection, userid, movieName)) {
-                System.out.println("Du hast diesen Film bereits bewertet.");
                 return false; // Abbrechen, wenn der Benutzer den Film bereits bewertet hat
             }
 
@@ -561,4 +560,24 @@ public class DatabaseQuery {
         }
     }
 
+    public boolean updateRatingInDb(Connection connection, int userid, String movieName, int movieRated) {
+        try {
+            // update movie rating
+            String insertQuery = "UPDATE plotarmor.ratedMovies SET movieRated = ? WHERE userid = ? AND movieName = ?";
+
+            try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
+                insertStatement.setInt(1, movieRated);
+                insertStatement.setInt(2, userid);
+                insertStatement.setString(3, movieName);
+
+                insertStatement.executeUpdate();
+                System.out.println("Bewertung erfolgreich geupdated.");
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions appropriately in a real application
+        }
+        return false;
+
+    }
 }

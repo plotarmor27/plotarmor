@@ -182,17 +182,25 @@ public class MovieInformationController {
             case "starFive" -> movieRated = 5;
         }
         UserInformation userInfo = UserInformation.getInstance();
+        //Insert rating from user to db
         boolean successfullyRated = query.insertNewRatingToDb(connection,userInfo.getID(),userInfo.getUsername(),this.lblMovieName.getText(),movieRated);
+
         if(successfullyRated){
+
             lblSuccessFailedRating.setVisible(true);
             lblSuccessFailedRating.setTextFill(Color.GREEN);
             userInfo.setMoviesRated(userInfo.getMoviesRated()+1);
             lblSuccessFailedRating.setText("Successfully rated!");
         }
         else{
+            //Update rating from user in db
+            boolean successfullyUpdated = query.updateRatingInDb(connection,userInfo.getID(),this.lblMovieName.getText(),movieRated);
             lblSuccessFailedRating.setVisible(true);
-            lblSuccessFailedRating.setTextFill(Color.RED);
-            lblSuccessFailedRating.setText("Failed rating, You have already rated this movie!");
-        }
+            lblSuccessFailedRating.setTextFill(Color.YELLOWGREEN);
+            if(successfullyUpdated){
+                lblSuccessFailedRating.setText("Successfully updated movie!");
+
+            }
+         }
     }
 }
