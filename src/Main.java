@@ -115,7 +115,7 @@ public class Main extends Application {
             else{
 
                 if(dataQuery.isUserCredentialsValid(connection,email,password)){
-                      // successfull logged in
+                      // successfully logged in
                     lblLoginFailed.setTextFill(Color.GREEN);
                     lblLoginFailed.setText("You will be logged\nin a second...!");
 

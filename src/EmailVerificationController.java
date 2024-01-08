@@ -46,8 +46,8 @@ public class EmailVerificationController {
     }
     public void verifyAccountCode(ActionEvent actionEvent) {
         emailV = EmailVerification.getInstance();
-        String codeNumbers = txtCodeNr1.getText()+txtCodeNr2.getText()+txtCodeNr3.getText()+txtCodeNr4.getText()+txtCodeNr5.getText();
-        emailV.getRegisterController().setCodeNumbers(codeNumbers);
-        emailV.getRegisterController().insertUserToDB();
+        String codeInput = txtCodeNr1.getText()+txtCodeNr2.getText()+txtCodeNr3.getText()+txtCodeNr4.getText()+txtCodeNr5.getText();
+        emailV.getRegisterController().setCodeInput(codeInput);
+        //if(emailV.getRegisterController().insertUserToDB()) emailV.verificationIsSuccessful = true;{}
     }
 }

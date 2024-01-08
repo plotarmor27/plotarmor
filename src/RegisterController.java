@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.sql.Connection;
 
 public class RegisterController {
-    String codeNumbers ="";
+    String codeInput ="";
     String code = "12345";
     String email = "";
     String username = "";
@@ -68,11 +68,9 @@ public class RegisterController {
 
 
         if(!emailVerificationIsActive && connection != null){
-            guiWindowManager.setEmailVerificationOpen(true);
-
-
             if(credentialsAreValid(email,username,password,repeatPassword) && radioB16YearsOld.isSelected()){
                 emailController.setRegisterController(RegisterController.this);
+                guiWindowManager.setEmailVerificationOpen(true);
                 emailController.openEmailVerification();
             }
             else
@@ -112,15 +110,19 @@ public class RegisterController {
     private boolean isValidEmail(String email) {
         return email.contains("@") && email.contains(".");
     }
-    public void setCodeNumbers(String codeNumbers){
-        System.out.println(codeNumbers);
-        this.codeNumbers = codeNumbers;
+    public void setCodeInput(String codeInput){
+        System.out.println(codeInput);
+        this.codeInput = codeInput;
     }
 
-    public void insertUserToDB(){
-        if(code.equals(codeNumbers)){
+    public boolean insertUserToDB(){
+        if(code.equals(codeInput)){
             dataQuery.createNewUser(connection,email,username,password);
-            System.out.println("Erfolgreich in dei Datenbank eingetragen!");
+            System.out.println("Erfolgreich in die Datenbank eingetragen!");
+            return true;
+        } else {
+            System.out.println("Der eingegebene Code ist falsch! Ein neuer Code wird generiert.");
+            return false;
         }
     }
 

@@ -23,9 +23,10 @@ import java.io.IOException;
  * The class follows the Singleton design pattern to ensure only one instance exists during the application lifecycle.
  */
 public class EmailVerification {
-    private int verificationCode;
+
     // Use a static method to get the instance
     private static EmailVerification instance;
+    public boolean verificationIsSuccessful = false;
 
     public static EmailVerification getInstance() {
         if (instance == null) {
@@ -36,11 +37,11 @@ public class EmailVerification {
     Stage emailStage = new Stage();
     TitleBarController titleBarController = new TitleBarController();
     public void openEmailVerification() throws IOException {
-        Random random = new Random();
-        verificationCode = random.nextInt(99999);
+        String code = generateCode();
+        getInstance().getRegisterController().code = code;
         SendingEmail email = new SendingEmail(getInstance().getRegisterController().email);
         System.out.println(getInstance().getRegisterController().email);
-        email.sendMail();
+        email.sendMail(code);
         emailStage.setTitle("PlotArmor - Verification");
         Parent emailView = FXMLLoader.load(getClass().getResource("./emailVerification/emailVerification.fxml"));
         emailStage.getIcons().add(new Image("login/rustung.png"));
@@ -60,7 +61,7 @@ public class EmailVerification {
         });
         titleBarController.controllTitleBar(emailView,emailStage);
         emailStage.show();
-
+        //if(verificationIsSuccessful == true) emailStage.close();
     }
     RegisterController registerController;
 
@@ -70,5 +71,16 @@ public class EmailVerification {
 
     public RegisterController getRegisterController(){
         return this.registerController;
+    }
+
+    private String generateCode(){
+        int number;
+        Random random = new Random();
+        number = random.nextInt(99999);
+        String code = String.valueOf(number);
+        for (int i = 5; i > code.length(); i--){
+            code = "0" + code;
+        }
+        return code;
     }
 }

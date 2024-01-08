@@ -16,7 +16,7 @@ public class SendingEmail {
         this.userEmail = userEmail;
     }
 
-    public void sendMail() {
+    public void sendMail(String code) {
         // Enter the email address and password for the account from which verification link will be send
         String email = "atheesang@gmail.com";
         String password = "oowf tbbm vzrr ddbx";
@@ -40,7 +40,7 @@ public class SendingEmail {
             message.setFrom(new InternetAddress(email));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(userEmail));
             message.setSubject("Your Verification Code");
-            message.setText("Your Code is: ");
+            message.setText("Your Code is: " +code);
 
             Transport.send(message);
 
