@@ -42,7 +42,7 @@ public class EmailVerificationController {
     }
     public void openEmailVerification() throws IOException {
         EmailVerification email = new EmailVerification();
-        email.openEmailVarification();
+        email.openEmailVerification();
     }
     public void verifyAccountCode(ActionEvent actionEvent) {
         emailV = EmailVerification.getInstance();

@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
-
+import java.util.Random;
 import java.io.IOException;
 /**
  * The EmailVerification class manages the email verification process in the PlotArmor application.
@@ -23,7 +23,7 @@ import java.io.IOException;
  * The class follows the Singleton design pattern to ensure only one instance exists during the application lifecycle.
  */
 public class EmailVerification {
-
+    private int verificationCode;
     // Use a static method to get the instance
     private static EmailVerification instance;
 
@@ -35,8 +35,12 @@ public class EmailVerification {
     }
     Stage emailStage = new Stage();
     TitleBarController titleBarController = new TitleBarController();
-    public void openEmailVarification() throws IOException {
-
+    public void openEmailVerification() throws IOException {
+        Random random = new Random();
+        verificationCode = random.nextInt(99999);
+        SendingEmail email = new SendingEmail(getInstance().getRegisterController().email);
+        System.out.println(getInstance().getRegisterController().email);
+        email.sendMail();
         emailStage.setTitle("PlotArmor - Verification");
         Parent emailView = FXMLLoader.load(getClass().getResource("./emailVerification/emailVerification.fxml"));
         emailStage.getIcons().add(new Image("login/rustung.png"));
