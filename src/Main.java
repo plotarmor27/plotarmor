@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 
 
@@ -86,7 +87,8 @@ public class Main extends Application {
         loginView.setScene(scene);
         loginView.show();
     }
-    public void closeOnClick(ActionEvent e){
+    public void closeOnClick(ActionEvent e) throws URISyntaxException, IOException, InterruptedException {
+
         GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
         if(!guiWindowManager.isResetPasswordOpen()){
             Stage stage = (Stage) btnClose.getScene().getWindow();

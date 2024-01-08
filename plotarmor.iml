@@ -22,6 +22,7 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/src/libraries/javafx-sdk-21.0.1/javax.mail.jar!/" />
+          <root url="jar://$MODULE_DIR$/libraries/javax.mail.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>

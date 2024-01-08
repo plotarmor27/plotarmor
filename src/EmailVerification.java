@@ -46,7 +46,7 @@ public class EmailVerification {
         Parent emailView = FXMLLoader.load(getClass().getResource("./emailVerification/emailVerification.fxml"));
         emailStage.getIcons().add(new Image("login/rustung.png"));
         emailStage.initStyle(StageStyle.UNDECORATED);
-        System.out.println("Reached point 3");
+
         Scene scene = new Scene(emailView);
         emailStage.setResizable(false);
         emailStage.setScene(scene);

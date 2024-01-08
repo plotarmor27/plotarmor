@@ -181,8 +181,10 @@ public class DatabaseQuery {
 
     }
 
-    public boolean saveMoviesToDb(Connection connection, String title, String overview, Date release_deate, int duration, String genre) {
-        String createNewUserQuery = "INSERT INTO plotarmor.movies (title, overview, release_date, duration_minutes, genres) VALUES (?, ?, ?, ?, ?)";
+    public boolean saveMoviesToDb(Connection connection, String title, String overview, Date release_date, int duration, String genre, double rating, String poster, String background) {
+        String createMovieQuery = "INSERT INTO plotarmor.movies " +
+                "(title, overview, release_date, duration_minutes, genres, rating, poster_path, background_path) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (connection) {
             // Check if the connection is null
@@ -191,14 +193,16 @@ public class DatabaseQuery {
             }
 
             // Prepare a SQL query using a PreparedStatement
-            try (PreparedStatement preparedStatement = connection.prepareStatement(createNewUserQuery)) {
-
+            try (PreparedStatement preparedStatement = connection.prepareStatement(createMovieQuery)) {
                 // Set parameters in the prepared statement
                 preparedStatement.setString(1, title);
                 preparedStatement.setString(2, overview);
-                preparedStatement.setString(3, String.valueOf(release_deate));
+                preparedStatement.setString(3, String.valueOf(release_date));
                 preparedStatement.setInt(4,duration);
                 preparedStatement.setString(5,genre);
+                preparedStatement.setDouble(6,rating);
+                preparedStatement.setString(7,poster);
+                preparedStatement.setString(8,background);
 
                 // Execute the query with executeUpdate() because of no return value and sql insert statement
                 preparedStatement.executeUpdate();
@@ -220,7 +224,6 @@ public class DatabaseQuery {
              Statement statement = connection.createStatement();
 
                  ResultSet resultSet = statement.executeQuery(query) ;
-
                 while (resultSet.next()) {
                     String title = resultSet.getString("title");
                     movieList.add(title);
@@ -331,7 +334,6 @@ public class DatabaseQuery {
             if (connection == null) {
                 return false;
             }
-
             // Prepare a SQL query using a PreparedStatement
             try (PreparedStatement preparedStatement = connection.prepareStatement(updateRatingQuery)) {
 
