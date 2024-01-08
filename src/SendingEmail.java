@@ -18,8 +18,8 @@ public class SendingEmail {
 
     public void sendMail(String code) {
         // Enter the email address and password for the account from which verification link will be send
-        String email = "atheesang@gmail.com";
-        String password = "oowf tbbm vzrr ddbx";
+        String email = "plotarmordb@gmail.com";
+        String password = "pzzc ztqi ksqo aeog";
 
         Properties theProperties = new Properties();
 
