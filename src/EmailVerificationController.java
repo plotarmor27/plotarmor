@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -19,6 +20,7 @@ public class EmailVerificationController {
     public TextField txtCodeNr4;
     public TextField txtCodeNr5;
     public Button btnVerify;
+    public Text lblWrongCode;
 
     // Reference to the EmailVerification instance, a singleton class
     EmailVerification emailV = EmailVerification.getInstance();
@@ -32,10 +34,8 @@ public class EmailVerificationController {
     @FXML
     public void closeOnAction(ActionEvent e) {
         emailV = EmailVerification.getInstance();
-
         GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
         guiWindowManager.setEmailVerificationOpen(false);
-
         Stage stage = (Stage) btnClose.getScene().getWindow();
         stage.close();
 
@@ -44,10 +44,27 @@ public class EmailVerificationController {
         EmailVerification email = new EmailVerification();
         email.openEmailVerification();
     }
-    public void verifyAccountCode(ActionEvent actionEvent) {
+    public void verifyAccountCode(ActionEvent actionEvent) throws IOException {
         emailV = EmailVerification.getInstance();
         String codeInput = txtCodeNr1.getText()+txtCodeNr2.getText()+txtCodeNr3.getText()+txtCodeNr4.getText()+txtCodeNr5.getText();
         emailV.getRegisterController().setCodeInput(codeInput);
-        //if(emailV.getRegisterController().insertUserToDB()) emailV.verificationIsSuccessful = true;{}
+        if(emailV.getRegisterController().insertUserToDB()){
+            emailV.verificationIsSuccessful = true;
+            Stage stage = (Stage) btnClose.getScene().getWindow();
+            stage.close();
+            GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
+            guiWindowManager.setEmailVerificationOpen(false);
+        }
+        else{
+            //send new code again to email
+            lblWrongCode.setVisible(true);
+            lblWrongCode.setText("Wrong Code, new Code is sent!");
+            String code = emailV.generateCode();
+            emailV.getRegisterController().code = code;
+            SendingEmail email = new SendingEmail(emailV.getRegisterController().email);
+            System.out.println(emailV.getRegisterController().email);
+            email.sendMail(code);
+
+        }
     }
 }

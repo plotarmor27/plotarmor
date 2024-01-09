@@ -73,7 +73,7 @@ public class EmailVerification {
         return this.registerController;
     }
 
-    private String generateCode(){
+    public String generateCode(){
         int number;
         Random random = new Random();
         number = random.nextInt(99999);
