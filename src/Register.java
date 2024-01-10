@@ -34,9 +34,10 @@ public class Register {
         }
         return instance;
     }
+    Stage register;
     Stage registerStage = new Stage();
     public Stage getRegisterStage() {
-        return registerStage;
+        return register;
     }
 
 
@@ -56,6 +57,9 @@ public class Register {
         registerStage.setScene(scene);
         titleBarController.controllTitleBar(register,registerStage);
         registerStage.show();
+
+        Register reg = Register.getInstance();
+        reg.register = this.registerStage;
 
         ctrl.setBackgroundImage(background);
     }

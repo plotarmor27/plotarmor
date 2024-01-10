@@ -131,7 +131,7 @@ public class RegisterController {
     }
 
     public void openRegister() throws IOException {
-        Register reg = Register.getInstance();
+        Register reg = new Register();
         reg.openRegister();
     }
 
