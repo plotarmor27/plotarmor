@@ -131,10 +131,15 @@ public class RegisterController {
     }
 
     public void openRegister() throws IOException {
-        Register reg = new Register();
+        Register reg = Register.getInstance();
         reg.openRegister();
     }
 
     public void radioBClicked(ActionEvent actionEvent) {
+    }
+
+    public void close() {
+        Register reg = Register.getInstance();
+        reg.getRegisterStage().close();
     }
 }

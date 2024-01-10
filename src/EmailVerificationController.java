@@ -21,6 +21,12 @@ public class EmailVerificationController {
     public TextField txtCodeNr5;
     public Button btnVerify;
     public Text lblWrongCode;
+    public Stage registerStage;
+    public void setRegisterStage(Stage registerStage) {
+        this.registerStage = registerStage;
+    }
+
+
 
     // Reference to the EmailVerification instance, a singleton class
     EmailVerification emailV = EmailVerification.getInstance();
@@ -54,6 +60,13 @@ public class EmailVerificationController {
             stage.close();
             GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
             guiWindowManager.setEmailVerificationOpen(false);
+
+            //after successfully created account
+            //close register view and email verification view and
+            //open login view
+            emailV.getRegisterController().close();
+            Main main = new Main();
+            main.openLoginView();
         }
         else{
             //send new code again to email

@@ -27,7 +27,19 @@ import java.sql.Connection;
  * The class interacts with the database to insert user information upon successful registration.
  */
 public class Register {
+    private static Register instance;
+    public static Register getInstance() {
+        if (instance == null) {
+            instance = new Register();
+        }
+        return instance;
+    }
     Stage registerStage = new Stage();
+    public Stage getRegisterStage() {
+        return registerStage;
+    }
+
+
     TitleBarController titleBarController = new TitleBarController();
     public void openRegister() throws IOException {
 
@@ -44,6 +56,7 @@ public class Register {
         registerStage.setScene(scene);
         titleBarController.controllTitleBar(register,registerStage);
         registerStage.show();
+
         ctrl.setBackgroundImage(background);
     }
 
