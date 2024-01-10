@@ -64,6 +64,7 @@ public class ResetPassword {
     }
 
     public void sendRequestOnClick(ActionEvent actionEvent) {
-
+        //Function to get the user pw from the db
+        //Function to send the pw which returned from the db to the entered email address
     }
 }
