@@ -22,6 +22,7 @@ import java.util.HashMap;
  */
 
 public class DatabaseQuery {
+
     public boolean isUserCredentialsValid(Connection connection, String email, String password) {
         // SQL query to check if there's a user with the given email and password
         String query = "SELECT * FROM plotarmor.user WHERE email = ? AND password = ?";
@@ -580,4 +581,62 @@ public class DatabaseQuery {
         return false;
 
     }
-}
+
+    public boolean emailIsInDb(String email) throws SQLException {
+
+        try (Connection connect = DatabaseConnection.connect()) {
+            // Check if the connection is null
+            if (connect == null) {
+                return false;
+            }
+            // Prepare a SQL query using a PreparedStatement
+            String sqlQueryEmailcheck = "SELECT COUNT(*) FROM plotarmor.user WHERE email = ?";
+            // Prepare a SQL query using a PreparedStatement
+            try (PreparedStatement preparedStatement = connect.prepareStatement(sqlQueryEmailcheck)) {
+                // Set the email parameter for the prepared statement
+                preparedStatement.setString(1, email);
+
+                // Execute the query with executeUpdate() because of no return value and sql insert statement
+                ResultSet resultSet = preparedStatement.executeQuery();
+                // Check if the email exists in the database
+                if (resultSet.next() && resultSet.getInt(1) > 0) {
+                    return true; // Email exists in the database
+                } else {
+                    return false; // Email does not exist in the database
+                }
+            }
+        } catch (SQLException ex) {
+            // Handle SQLException
+            ex.printStackTrace();
+            System.err.println("Fehler beim Ausführen der Abfrage: " + ex.getMessage());
+            return false; // Fehler beim Ausführen der Abfrage
+        }
+    }
+
+    public boolean updateNewPassword(String newPassword, String email) throws SQLException {
+        String updateQuery = "UPDATE plotarmor.user SET password = ? WHERE email = ?";
+
+        try (Connection connection = DatabaseConnection.connect()) {
+            // Check if the connection is null
+            if (connection == null) {
+                return false;
+            }
+            try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                {
+                    preparedStatement.setString(1, newPassword);
+                    preparedStatement.setString(2, email);
+                    int rowsUpdated = preparedStatement.executeUpdate();
+                    if (rowsUpdated > 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                System.err.println("Fehler beim Aktualisieren des Passworts: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+    }

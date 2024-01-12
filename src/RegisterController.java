@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public class RegisterController {
     String codeInput ="";
@@ -49,7 +50,7 @@ public class RegisterController {
 
     }
     @FXML
-    public void registerOnAction(ActionEvent e) throws IOException {
+    public void registerOnAction(ActionEvent e) throws IOException, SQLException {
         emailController = new EmailVerificationController();
         GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
         boolean emailVerificationIsActive = guiWindowManager.isEmailVerificationOpen();
@@ -68,18 +69,27 @@ public class RegisterController {
 
 
         if(!emailVerificationIsActive && connection != null){
-            if(credentialsAreValid(email,username,password,repeatPassword) && radioB16YearsOld.isSelected()){
-                emailController.setRegisterController(RegisterController.this);
-                guiWindowManager.setEmailVerificationOpen(true);
-                emailController.openEmailVerification();
-            }
-            else
-            {
-                System.out.println(radioB16YearsOld.isSelected());
+            //check if email is already registered
+            boolean emailIsAlreadyRegistered = dataQuery.emailIsInDb(email);
+            if(emailIsAlreadyRegistered){
                 lblError.setVisible(true);
-                lblError.setText("Error: Please make valid inputs and try again!");
-                guiWindowManager.setEmailVerificationOpen(false);
+                lblError.setText("Email is already registered!");
             }
+            else{
+                if(credentialsAreValid(email,username,password,repeatPassword) && radioB16YearsOld.isSelected()){
+                    emailController.setRegisterController(RegisterController.this);
+                    guiWindowManager.setEmailVerificationOpen(true);
+                    emailController.openEmailVerification();
+                }
+                else
+                {
+                    System.out.println(radioB16YearsOld.isSelected());
+                    lblError.setVisible(true);
+                    lblError.setText("Error: Please make valid inputs and try again!");
+                    guiWindowManager.setEmailVerificationOpen(false);
+                }
+            }
+
         }
     }
     public boolean credentialsAreValid(String email, String username, String password, String repeatPassword) {

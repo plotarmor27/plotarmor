@@ -52,4 +52,40 @@ public class SendingEmail {
 
     }
 
+    public void sendMailForPwReset(String randomPw) {
+        // Enter the email address and password for the account from which password will be send
+        String email = "plotarmordb@gmail.com";
+        String password = "pzzc ztqi ksqo aeog";
+
+        Properties theProperties = new Properties();
+
+        theProperties.put("mail.smtp.auth", "true");
+        theProperties.put("mail.smtp.starttls.enable", "true");
+        theProperties.put("mail.smtp.host", "smtp.gmail.com");
+        theProperties.put("mail.smtp.port", "587");
+
+        Session session = Session.getDefaultInstance(theProperties, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(email, password);
+            }
+        });
+
+        try {
+
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(email));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(userEmail));
+            message.setSubject("Your new Password");
+            message.setText("Your new password is: " +randomPw);
+
+            Transport.send(message);
+
+            System.out.println("Successfully sent Password");
+
+        } catch (Exception e) {
+            System.out.println("Error at SendingEmail.java: " + e);
+        }
+
+    }
+
 }

@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -29,11 +30,10 @@ import java.io.IOException;
  */
 public class ResetPassword {
 
-    public TextField txtFEmail;
-    public Button btnSendRequest;
-    public Button btnClose;
+
     Stage resetPasswordView = new Stage();
     TitleBarController titleBarController = new TitleBarController();
+
 
     public void openResetPasswordView() throws IOException {
 
@@ -56,15 +56,5 @@ public class ResetPassword {
         resetPasswordView.show();
     }
 
-    public void CloseOnClick(ActionEvent actionEvent) {
-        Stage stage = (Stage) btnClose.getScene().getWindow();
-        GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
-        guiWindowManager.setResetPasswordOpen(false);
-        stage.close();
-    }
 
-    public void sendRequestOnClick(ActionEvent actionEvent) {
-        //Function to get the user pw from the db
-        //Function to send the pw which returned from the db to the entered email address
-    }
 }

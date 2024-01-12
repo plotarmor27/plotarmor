@@ -47,7 +47,7 @@ public class Main extends Application {
     private Button btnRegister;
     RegisterController registerGUI;
     MainMoviePage mainMoviePageView = new MainMoviePage();
-    ResetPassword resetPassword;
+    ResetPasswordController resetPassword;
 
     Stage loginView = new Stage();
     DatabaseQuery dataQuery = new DatabaseQuery();
@@ -165,7 +165,7 @@ public class Main extends Application {
         boolean resetPasswordGuiIsOpen = guiManager.isResetPasswordOpen();
 
         if(!resetPasswordGuiIsOpen){
-            resetPassword = new ResetPassword();
+            resetPassword = new ResetPasswordController();
             guiManager.setResetPasswordOpen(true);
             resetPassword.openResetPasswordView();
         }
