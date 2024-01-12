@@ -79,4 +79,8 @@ public class UserInformation {
     public int getMoviesRated(){
         return moviesRated;
     }
+
+    public String getPassword() {
+        return this.password;
+    }
 }

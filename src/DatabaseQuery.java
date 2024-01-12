@@ -639,4 +639,28 @@ public class DatabaseQuery {
         }
         return false;
     }
+
+    public boolean changePassword(Connection dbConnection, int id, String newPassword) throws SQLException {
+        String changeQuery = "UPDATE plotarmor.user SET password = ? WHERE id = ?";
+
+
+            try (PreparedStatement preparedStatement = dbConnection.prepareStatement(changeQuery)) {
+                {
+                    preparedStatement.setString(1, newPassword);
+                    preparedStatement.setInt(2, id);
+
+                    int rowsUpdated = preparedStatement.executeUpdate();
+                    if (rowsUpdated > 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                System.err.println("Fehler beim Aktualisieren des Passworts: " + ex.getMessage());
+            }
+
+        return false;
     }
+}

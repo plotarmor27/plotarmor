@@ -172,6 +172,8 @@ public class AccountSettings implements Initializable {
             changeEmail();
         } else if ("Username: ".equals(lblSetting.getText())) {
             changeUsername();
+        } else if ("Password: ".equals(lblSetting.getText())) {
+            changePassword();
         } else{
             lblErrorSuccesfullMessage.setVisible(true);
             lblErrorSuccesfullMessage.setText("Error");
@@ -180,6 +182,52 @@ public class AccountSettings implements Initializable {
 
 
     }
+
+    private void changePassword() throws SQLException {
+
+        //Create a connection to the mysql database
+        dbConnection = DatabaseConnection.connect();
+        UserInformation userInfo = UserInformation.getInstance();
+        lblErrorSuccesfullMessage.setVisible(true);
+        // Check if the database connection is successful
+        if(dbConnection == null){
+            lblErrorSuccesfullMessage.setText("Error connecting to the database!");
+        }
+        else
+        {
+            // Validate the new password
+            if(!passwordIsValid(txtFChangeProperty.getText(),txtRepeatNewProperty.getText())){
+                lblErrorSuccesfullMessage.setText("Please type in valid password with 10 chars");
+            }
+            else
+            {
+                // Perform the password change in the database
+                DatabaseQuery dbQuery = new DatabaseQuery();
+                boolean changedPassword = dbQuery.changePassword(dbConnection, userInfo.getID(), txtFChangeProperty.getText());
+
+                if (changedPassword) {
+                    // Update the user information and display success message
+                    lblErrorSuccesfullMessage.setText("Successfully changed password: " + userInfo.getPassword() + " to: " + txtFChangeProperty.getText());
+                    userInfo.setPassword(txtFChangeProperty.getText());
+                } else {
+                    // Display an error message if the password change was not successful
+                    lblErrorSuccesfullMessage.setText("Error, something went wrong!");
+                }
+            }
+        }
+
+    }
+
+    private boolean passwordIsValid(String password, String repeatPassword) {
+        // Check if email is not empty
+        if (password.isEmpty() || repeatPassword.isEmpty()  || !password.equals(repeatPassword) || password.length() < 10) {
+            return false;
+        }
+
+        // Return true if all conditions are met
+        return true;
+    }
+
     public void changeEmail() throws SQLException {
 
             //Create a connection to the mysql database
