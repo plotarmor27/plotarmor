@@ -169,7 +169,7 @@ public class MovieInformationController {
         }
         connection.close();
     }
-    public void starsClicked(MouseEvent mouseEvent) {
+    public void starsClicked(MouseEvent mouseEvent) throws SQLException {
         DatabaseQuery query = new DatabaseQuery();
         SVGPath s = (SVGPath)mouseEvent.getSource();
         Connection connection = DatabaseConnection.connect();
@@ -194,6 +194,7 @@ public class MovieInformationController {
         }
         else{
             //Update rating from user in db
+
             boolean successfullyUpdated = query.updateRatingInDb(connection,userInfo.getID(),this.lblMovieName.getText(),movieRated);
             lblSuccessFailedRating.setVisible(true);
             lblSuccessFailedRating.setTextFill(Color.YELLOWGREEN);

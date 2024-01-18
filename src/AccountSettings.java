@@ -17,6 +17,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import java.util.HashMap;
 import java.util.ResourceBundle;
 /**
  * The AccountSettings class represents a controller for managing user account settings.
@@ -313,17 +314,30 @@ public class AccountSettings implements Initializable {
     }
 
     // Method to open the form for user information
-    public void openUserInformation(ActionEvent actionEvent) {
+    public void openUserInformation(ActionEvent actionEvent) throws SQLException {
         // Retrieve the user information singleton instance
+        DatabaseQuery query = new DatabaseQuery();
+        Connection connection = DatabaseConnection.connect();
         UserInformation userInfo = UserInformation.getInstance();
+        //get users movie ratings
+        HashMap<String, Integer> movieRatings = query.getMovieRatingsForUser(connection,userInfo.getID());
 
-        // Display user information in the form
+        //get the movie rating sum
+        int sum = 0;
+        for(int ratedSum : movieRatings.values()){
+            sum+= ratedSum;
+        }
+        //save the movie rating sum to user information
+        userInfo.setRatedSum(sum);
+            // Display user information in the form
 
         lblProfileEmail.setText("Email adress: " + userInfo.getEmail());
         lblProfileUsername.setText("Username: " + userInfo.getUsername());
         lblProfileMovieRated.setText("Amount of Movies rated: " +userInfo.getMoviesRated());
         lblregisterDate.setText("Registerdate: " + userInfo.getRegisterDate());
         lblLastLogin.setText("Lastlogin: " + userInfo.getLastLogin());
+
+        lblMeanScore.setText("Meanscore movie Rated: " + userInfo.getMeanScore());
         lblSettings.setText("Profile");
 
         // Hide unnecessary labels and text fields, and show user information labels

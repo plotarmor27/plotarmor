@@ -1,4 +1,5 @@
 import javafx.collections.ObservableList;
+import javafx.scene.control.Label;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -663,4 +664,5 @@ public class DatabaseQuery {
 
         return false;
     }
+
 }

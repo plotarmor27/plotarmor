@@ -25,6 +25,17 @@ public class UserInformation {
 
     private String registerDate = "";
 
+    private  int ratedSum = 0;
+
+
+    public void setRatedSum(int ratedSum) {
+        this.ratedSum = ratedSum;
+    }
+
+    private double meanScore = 0;
+
+
+
     public String getLastLogin() {
         return lastLogin;
     }
@@ -41,15 +52,10 @@ public class UserInformation {
         this.registerDate = registerDate;
     }
 
-    public String getMeanScore() {
+    public double getMeanScore() {
+        meanScore = (double) ratedSum / moviesRated;
         return meanScore;
     }
-
-    public void setMeanScore(String meanScore) {
-        this.meanScore = meanScore;
-    }
-
-    private String meanScore = "";
 
     public void setMoviesRated(int moviesRated) {
         this.moviesRated = moviesRated;
@@ -82,5 +88,9 @@ public class UserInformation {
 
     public String getPassword() {
         return this.password;
+    }
+
+    public int getRatedSum() {
+        return this.ratedSum;
     }
 }

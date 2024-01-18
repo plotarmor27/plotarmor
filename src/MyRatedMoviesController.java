@@ -36,7 +36,8 @@ public class MyRatedMoviesController {
         HashMap<String, Integer> movieRatings = query.getMovieRatingsForUser(connection, userInfo.getID());
         userInfo.setMoviesRated(movieRatings.keySet().size());
         int movieRated = 0;
-            for (String movieName : movieRatings.keySet()) {
+
+        for (String movieName : movieRatings.keySet()) {
                 movieRated = movieRatings.get(movieName);
                 addRatedMoviesToList(movieName,movieRated);
             }
