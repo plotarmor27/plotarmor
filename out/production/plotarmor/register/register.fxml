@@ -61,28 +61,5 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </CheckBox>
-      <Label layoutX="240.0" layoutY="159.0" text="Available / Not Available">
-         <textFill>
-            <LinearGradient endX="0.5639810426540284" endY="0.31753554502369663" startY="0.2890995260663507">
-               <stops>
-                  <Stop>
-                     <color>
-                        <Color green="1.0" blue="0.30000001192092896" />
-                     </color>
-                  </Stop>
-                  <Stop offset="0.007662835249042145">
-                     <color>
-                        <Color green="1.0" blue="0.30000001192092896" />
-                     </color>
-                  </Stop>
-                  <Stop offset="1.0">
-                     <color>
-                        <Color red="1.0" />
-                     </color>
-                  </Stop>
-               </stops>
-            </LinearGradient>
-         </textFill>
-      </Label>
    </children>
 </AnchorPane>

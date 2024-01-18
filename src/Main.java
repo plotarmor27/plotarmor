@@ -46,7 +46,7 @@ public class Main extends Application {
     @FXML
     private Button btnRegister;
     RegisterController registerGUI;
-    MainMoviePage mainMoviePageView = new MainMoviePage();
+
     ResetPasswordController resetPassword;
 
     Stage loginView = new Stage();
