@@ -41,10 +41,6 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button layoutX="544.0" layoutY="56.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Release date" textFill="WHITE">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></Button>
       <Button fx:id="btnBack" layoutX="17.0" layoutY="14.0" mnemonicParsing="false" onAction="#goBack" style="-fx-background-color: transparent; -fx-border-color: red; -fx-border-radius: 10%;" text="&lt;--" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />

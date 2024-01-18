@@ -337,7 +337,7 @@ public class AccountSettings implements Initializable {
         lblregisterDate.setText("Registerdate: " + userInfo.getRegisterDate());
         lblLastLogin.setText("Lastlogin: " + userInfo.getLastLogin());
 
-        lblMeanScore.setText("Meanscore movie Rated: " + userInfo.getMeanScore());
+        lblMeanScore.setText("Meanscore movie Rated: " + String.format("%.2f", userInfo.getMeanScore()));
         lblSettings.setText("Profile");
 
         // Hide unnecessary labels and text fields, and show user information labels
