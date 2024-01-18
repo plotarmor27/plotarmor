@@ -101,8 +101,10 @@ public class Main extends Application {
         // Retrieve user input
         String email = txtEmail.getText();
         String password = txtFPassword.getText();
+
         //Create a connection to the mysql database
         connection = DatabaseConnection.connect();
+
         GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
         if(guiWindowManager.isResetPasswordOpen()){
             // login failed

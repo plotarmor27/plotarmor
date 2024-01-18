@@ -48,9 +48,11 @@ public class mainMoviePage2Controller {
 
     public void initialize() throws IOException, SQLException {
         movieListView.setVisible(false);
+
         connection = DatabaseConnection.connect();
 
         query.getMovieName(connection,movieNameList);
+        //copy movieNameList to other List
         movieFilteredNameList.addAll(movieNameList);
 
         //get the movierated size to store it in the userinformation class
