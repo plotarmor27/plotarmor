@@ -91,7 +91,7 @@
                <font>
                   <Font name="Cambria" size="14.0" />
                </font></Label>
-            <Label fx:id="lblErrorSuccesfullMessage" layoutX="48.0" layoutY="211.0" text="Error/ Successfull" textFill="WHITE" visible="false" />
+            <Label fx:id="lblErrorSuccesfullMessage" layoutX="34.0" layoutY="211.0" text="Error/ Successfull" textFill="WHITE" visible="false" />
             <Label fx:id="lblregisterDate" layoutX="14.0" layoutY="115.0" text="Registerdate:" textFill="WHITE">
                <font>
                   <Font name="Cambria" size="14.0" />
