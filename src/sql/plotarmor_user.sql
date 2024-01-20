@@ -29,6 +29,8 @@ CREATE TABLE `user` (
   `email` varchar(255) NOT NULL,
   `registerdate` datetime DEFAULT CURRENT_TIMESTAMP,
   `lastlogin` date DEFAULT NULL,
+  `login_attempts` int(11) DEFAULT '0',
+  `locked` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -39,7 +41,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'abcdef','admin12345','winchester1998@web.de','2024-01-12 22:46:57','2024-01-18'),(2,'plotarmor','123456','enis.solac@stud.fra-uas.de','2024-01-18 23:21:03','2024-01-18');
+INSERT INTO `user` VALUES (1,'winchester','admin123456','winchester1998@web.de','2024-01-12 22:46:57','2024-01-20',0,0),(2,'plotarmor','admin12345','enis.solac@stud.fra-uas.de','2024-01-18 23:21:03','2024-01-20',0,0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-19  0:44:36
+-- Dump completed on 2024-01-20 23:59:34

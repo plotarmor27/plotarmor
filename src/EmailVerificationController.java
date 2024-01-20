@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class EmailVerificationController {
     public Button btnClose;
@@ -37,6 +38,9 @@ public class EmailVerificationController {
     }
 
     // Update the boolean variable in the register class
+    public void setResetPasswordController(ResetPasswordController resetPassword){
+        emailV.setResetPasswordController(resetPassword);
+    }
     @FXML
     public void closeOnAction(ActionEvent e) {
         emailV = EmailVerification.getInstance();
@@ -50,9 +54,24 @@ public class EmailVerificationController {
         EmailVerification email = new EmailVerification();
         email.openEmailVerification();
     }
-    public void verifyAccountCode(ActionEvent actionEvent) throws IOException {
+    public void openEmailVerificationResetPassword() throws IOException {
+        EmailVerification email = new EmailVerification();
+        email.openEmailVerificationResetPassword();
+    }
+    public void verifyAccountCode(ActionEvent actionEvent) throws IOException, SQLException {
         emailV = EmailVerification.getInstance();
+
         String codeInput = txtCodeNr1.getText()+txtCodeNr2.getText()+txtCodeNr3.getText()+txtCodeNr4.getText()+txtCodeNr5.getText();
+
+        if(emailV.getRegisterController() == null){
+            verifyResetPasswordCode(codeInput);
+        }
+        else{
+            verifyAccountRegisterCode(codeInput);
+        }
+
+    }
+    public void verifyAccountRegisterCode(String codeInput) throws IOException {
         emailV.getRegisterController().setCodeInput(codeInput);
         if(emailV.getRegisterController().insertUserToDB()){
             emailV.verificationIsSuccessful = true;
@@ -78,6 +97,26 @@ public class EmailVerificationController {
             System.out.println(emailV.getRegisterController().email);
             email.sendMail(code);
 
+        }
+    }
+    public void verifyResetPasswordCode(String codeInput) throws SQLException {
+        emailV.getResetPasswordController().setCodeInput(codeInput);
+        boolean successfullySendPassword = emailV.getResetPasswordController().sendPasswordTokenToUser();
+        if(successfullySendPassword){
+            Stage stage = (Stage) btnClose.getScene().getWindow();
+            stage.close();
+            GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
+            guiWindowManager.setEmailVerificationOpen(false);
+        }
+        else{
+            //send new code again to email
+            lblWrongCode.setVisible(true);
+            lblWrongCode.setText("Wrong Code, new Code is sent!");
+            String code = emailV.generateCode();
+            emailV.getResetPasswordController().code = code;
+            SendingEmail email = new SendingEmail(emailV.getResetPasswordController().email);
+            System.out.println(emailV.getResetPasswordController().email);
+            email.sendMail(code);
         }
     }
 }

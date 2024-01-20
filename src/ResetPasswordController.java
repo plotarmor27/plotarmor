@@ -16,7 +16,12 @@ public class ResetPasswordController {
     public Button btnClose;
     public Label lblResetPasswordERROR;
 
+    String code = "";
+    String email = "";
+
     DatabaseQuery query = new DatabaseQuery();
+    String codeInput ="";
+
     public void CloseOnClick(ActionEvent actionEvent) {
         Stage stage = (Stage) btnClose.getScene().getWindow();
         GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
@@ -29,34 +34,56 @@ public class ResetPasswordController {
         resetP.openResetPasswordView();
     }
 
-    public void sendRequestOnClick(ActionEvent actionEvent) throws SQLException {
-        String email = txtFEmail.getText();
+    public void sendRequestOnClick(ActionEvent actionEvent) throws SQLException, IOException {
+        email = txtFEmail.getText();
+        GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
         //check if the entered email is in the db | if not catch this and send an error to the user on gui
         Connection connection = DatabaseConnection.connect();
         lblResetPasswordERROR.setVisible(true);
         if(connection == null){
-
             lblResetPasswordERROR.setText("Error connecting to the database!");
         }
         else{
             boolean enteredEmailIsinDb = query.emailIsInDb(email);
+
                 if(enteredEmailIsinDb){
-                    SendingEmail sendingE = new SendingEmail(email);
-                    String password = generateRandomPassword();
-                    query.updateNewPassword(password,email);
-                    sendingE.sendMailForPwReset(password);
+                    EmailVerificationController emailController = new EmailVerificationController();
+                    emailController.setResetPasswordController(ResetPasswordController.this);
+                    guiWindowManager.setEmailVerificationOpen(true);
+                    emailController.openEmailVerificationResetPassword();
                     lblResetPasswordERROR.setTextFill(Color.GREEN);
-                    lblResetPasswordERROR.setText("Sucessfully sent new Password");
+                    lblResetPasswordERROR.setText("Successfully sent Verification Link");
+
+
                 }
                 else{
-                    lblResetPasswordERROR.setText("Entered Email is not in the database");
+                    lblResetPasswordERROR.setText("Entered Email is not registered");
                 }
         }
 
 
 
     }
+    public boolean sendPasswordTokenToUser() throws SQLException {
+        Connection connection = DatabaseConnection.connect();
+        if(code.equals(codeInput)){
+            SendingEmail sendingE = new SendingEmail(email);
+            String password = generateRandomPassword();
+            query.updateNewPassword(password,email);
+            sendingE.sendMailForPwReset(password);
+            setUnlockedStatus(connection,email);
+            lblResetPasswordERROR.setTextFill(Color.GREEN);
+            lblResetPasswordERROR.setText("Sucessfully sent new Password");
+            return true;
+        } else {
+            System.out.println("Der eingegebene Code ist falsch! Ein neuer Code wird generiert.");
+            return false;
+        }
 
+    }
+    public void setUnlockedStatus(Connection connection, String email){
+        query.setLockedStatusToZero(connection,email);
+    }
     public String generateRandomPassword(){
         SecureRandom random = new SecureRandom();
         StringBuilder password = new StringBuilder();
@@ -70,5 +97,10 @@ public class ResetPasswordController {
             password.append(randomChar);
         }
         return password.toString();
+    }
+
+    public void setCodeInput(String codeInput){
+        System.out.println(codeInput);
+        this.codeInput = codeInput;
     }
 }

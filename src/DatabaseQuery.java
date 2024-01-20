@@ -24,165 +24,6 @@ import java.util.HashMap;
 
 public class DatabaseQuery {
 
-    public boolean isUserCredentialsValid(Connection connection, String email, String password) {
-        // SQL query to check if there's a user with the given email and password
-        String query = "SELECT * FROM plotarmor.user WHERE email = ? AND password = ?";
-        try (connection) {
-            // Check if the connection is null
-            if (connection == null) {
-                return false;
-            }
-
-            // Prepare a SQL query using a PreparedStatement
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                // Explanation:
-                // - This line creates a PreparedStatement object, which is a special type of statement used for executing parameterized SQL queries.
-                // - It is created from the database connection (connection) and the SQL query (query) provided.
-
-
-                // Set parameters in the prepared statement
-                preparedStatement.setString(1, email);
-                preparedStatement.setString(2, password);
-                // Explanation:
-                // - In the SQL query represented by query, there are placeholders denoted by ? (question marks).
-                // - These placeholders are used to dynamically insert values into the query.
-                // - The lines above set actual values for these placeholders in the prepared statement:
-                //   - preparedStatement.setString(1, email): Sets the value of the first placeholder (?) to the value of the email variable.
-                //   - preparedStatement.setString(2, password): Sets the value of the second placeholder (?) to the value of the password variable.
-                // - The numbers 1 and 2 correspond to the positions of the placeholders in the SQL query.
-                //   - The first placeholder is at position 1, and the second is at position 2.
-                // By using a PreparedStatement, SQL injection is prevented:
-                // - Automatic escape handling is provided by PreparedStatement for special characters in the input, enhancing security.
-
-                // Execute the query
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    if (resultSet.next()) {
-                        // User found, extract additional information (optional)
-                        int id = resultSet.getInt("id");
-                        String pw = resultSet.getString("password");
-                        String email2 = resultSet.getString("email");
-                        // Output additional information (optional)
-                        System.out.println("ID: " + id + ", pw: " + pw + ", Email: " + email2);
-                        saveUserInformation(resultSet);
-                        UserInformation userInfo = UserInformation.getInstance();
-                        setLastLoginToDb(connection,userInfo.getID());
-                        return true;
-                    } else {
-                        // No user found with the given credentials
-                        return false;
-                    }
-                }
-            }
-        } catch (SQLException ex) {
-            // Handle SQLException
-            ex.printStackTrace();
-            System.err.println("Fehler beim Ausführen der Abfrage: " + ex.getMessage());
-            return false;
-        }
-    }
-
-    // Method to save user information from a result
-    public void saveUserInformation(ResultSet rSet) throws SQLException {
-        UserInformation userInfo = UserInformation.getInstance();
-        userInfo.setUsername(rSet.getString("username"));
-        userInfo.setEmail(rSet.getString("email"));
-        userInfo.setID(rSet.getInt("id"));
-        userInfo.setPassword(rSet.getString("password"));
-        userInfo.setRegisterDate(rSet.getString("registerdate"));
-        userInfo.setLastLogin(rSet.getString("lastlogin"));
-
-    }
-
-    public void setLastLoginToDb(Connection connection, int userId ){
-        String sql = "UPDATE plotarmor.user SET lastlogin = ? WHERE id = ?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
-            Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
-            preparedStatement.setTimestamp(1, currentTimestamp);
-            preparedStatement.setInt(2, userId);
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Method to create a new user
-    public boolean createNewUser(Connection connection,String email, String username, String password) {
-        String createNewUserQuery = "INSERT INTO plotarmor.user (email, username, password) VALUES (?, ?, ?)";
-
-
-        try (connection) {
-            // Check if the connection is null
-            if (connection == null) {
-                return false;
-            }
-
-            // Prepare a SQL query using a PreparedStatement
-            try (PreparedStatement preparedStatement = connection.prepareStatement(createNewUserQuery)) {
-
-                // Set parameters in the prepared statement
-                preparedStatement.setString(1, email);
-                preparedStatement.setString(2, username);
-                preparedStatement.setString(3, password);
-
-                // Execute the query with executeUpdate() because of no return value and sql insert statement
-                preparedStatement.executeUpdate();
-                return true;
-            }
-        } catch (SQLException ex) {
-            // Handle SQLException
-            ex.printStackTrace();
-            System.err.println("Fehler beim Ausführen der Abfrage: " + ex.getMessage());
-            return false; // Fehler beim Ausführen der Abfrage
-        }
-
-    }
-
-    public boolean changeEmail(Connection connection, int id, String newEmail) throws SQLException {
-        // SQL query to update the email address
-        String changeEmailQuery = "UPDATE plotarmor.user SET email = ? WHERE id = ?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(changeEmailQuery)) {
-            // Set parameters in the prepared statement
-            preparedStatement.setString(1, newEmail);
-            preparedStatement.setInt(2, id);
-
-            // Execute the update query
-            int rowsAffected = preparedStatement.executeUpdate();
-
-            // Check if the update was successful
-            if (rowsAffected > 0) {
-                return true;
-            } else {
-                return false;
-            }
-
-        }
-    }
-
-    public boolean changeUsername(Connection connection, int id, String username) throws SQLException {
-        // SQL query to update the username
-        String changeUsernameQuery = "UPDATE plotarmor.user SET username = ? WHERE id = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(changeUsernameQuery)) {
-            // Set parameters in the prepared statement
-            preparedStatement.setString(1, username);
-            preparedStatement.setInt(2, id);
-
-            // Execute the update query
-            int rowsAffected = preparedStatement.executeUpdate();
-
-            // Check if the update was successful
-            if (rowsAffected > 0) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-    }
-
     public boolean saveMoviesToDb(Connection connection, String title, String overview, Date release_date, int duration, String genre, double rating, String poster, String background) {
         String createMovieQuery = "INSERT INTO plotarmor.movies " +
                 "(title, overview, release_date, duration_minutes, genres, rating, poster_path, background_path) " +
@@ -664,5 +505,302 @@ public class DatabaseQuery {
 
         return false;
     }
+
+    public boolean increaseLogin_attempt(Connection connection, String email) {
+        String increasLogin_attempQuery = "UPDATE plotarmor.user SET login_attempts = login_attempts + 1 WHERE email = ?";
+
+            // Check if the connection is null
+            if (connection == null) {
+                return false;
+            }
+            try (PreparedStatement preparedStatement = connection.prepareStatement(increasLogin_attempQuery)) {
+                {
+                    preparedStatement.setString(1, email);
+                    int rowsUpdated = preparedStatement.executeUpdate();
+                    if (rowsUpdated > 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                System.err.println("Fehler beim Aktualisieren des LoginAttempts: " + ex.getMessage());
+            }
+
+        return false;
+    }
+
+    public int getLoginAttempt(Connection connection, String email) throws SQLException {
+        int login_attempt = 0;
+        String getLoginAtemptQuery = "SELECT login_attempts FROM plotarmor.user WHERE email = ?;";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(getLoginAtemptQuery);
+        preparedStatement.setString(1, email);
+
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            if (resultSet.next()) {
+                login_attempt = resultSet.getInt("login_attempts");
+                return login_attempt;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception according to your needs
+        }
+        return login_attempt;
+    }
+
+    public boolean updateLogin_attempt(Connection connection, String email) {
+        String updateLogin_attempQuery = "UPDATE plotarmor.user SET login_attempts = 0 WHERE email = ?";
+
+        // Check if the connection is null
+        if (connection == null) {
+            return false;
+        }
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateLogin_attempQuery)) {
+            {
+                preparedStatement.setString(1, email);
+                int rowsUpdated = preparedStatement.executeUpdate();
+                if (rowsUpdated > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.err.println("Fehler beim Aktualisieren des LoginAttempts: " + ex.getMessage());
+        }
+
+        return false;
+    }
+
+    public boolean lockUser(Connection connection, String email) {
+        String lockUser = "UPDATE plotarmor.user SET locked = 1 WHERE email = ?";
+
+        // Check if the connection is null
+        if (connection == null) {
+            return false;
+        }
+        try (PreparedStatement preparedStatement = connection.prepareStatement(lockUser)) {
+            {
+                preparedStatement.setString(1, email);
+                int rowsUpdated = preparedStatement.executeUpdate();
+                if (rowsUpdated > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.err.println("Fehler beim Aktualisieren des lockUser Arguments: " + ex.getMessage());
+        }
+
+        return false;
+    }
+
+    public boolean getLockedStatus(Connection connection, String email) throws SQLException {
+
+        boolean userLocked = false;
+        String getLoginAtemptQuery = "SELECT locked FROM plotarmor.user WHERE email = ?;";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(getLoginAtemptQuery);
+        preparedStatement.setString(1, email);
+
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            if (resultSet.next()) {
+                userLocked = resultSet.getBoolean("locked");
+                return userLocked;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception according to your needs
+        }
+        return userLocked;
+    }
+
+    public boolean setLockedStatusToZero(Connection connection, String email) {
+        String lockUser = "UPDATE plotarmor.user SET locked = 0 WHERE email = ?";
+
+        // Check if the connection is null
+        if (connection == null) {
+            return false;
+        }
+        try (PreparedStatement preparedStatement = connection.prepareStatement(lockUser)) {
+            {
+                preparedStatement.setString(1, email);
+                int rowsUpdated = preparedStatement.executeUpdate();
+                if (rowsUpdated > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.err.println("Fehler beim Aktualisieren des lockUser Arguments: " + ex.getMessage());
+        }
+
+        return false;
+    }
+}
+
+class DatabaseQueryUser extends DatabaseQuery{
+    public boolean isUserCredentialsValid(Connection connection, String email, String password) {
+        // SQL query to check if there's a user with the given email and password
+        String query = "SELECT * FROM plotarmor.user WHERE email = ? AND password = ?";
+        try (connection) {
+            // Check if the connection is null
+            if (connection == null) {
+                return false;
+            }
+
+            // Prepare a SQL query using a PreparedStatement
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                // Explanation:
+                // - This line creates a PreparedStatement object, which is a special type of statement used for executing parameterized SQL queries.
+                // - It is created from the database connection (connection) and the SQL query (query) provided.
+
+
+                // Set parameters in the prepared statement
+                preparedStatement.setString(1, email);
+                preparedStatement.setString(2, password);
+                // Explanation:
+                // - In the SQL query represented by query, there are placeholders denoted by ? (question marks).
+                // - These placeholders are used to dynamically insert values into the query.
+                // - The lines above set actual values for these placeholders in the prepared statement:
+                //   - preparedStatement.setString(1, email): Sets the value of the first placeholder (?) to the value of the email variable.
+                //   - preparedStatement.setString(2, password): Sets the value of the second placeholder (?) to the value of the password variable.
+                // - The numbers 1 and 2 correspond to the positions of the placeholders in the SQL query.
+                //   - The first placeholder is at position 1, and the second is at position 2.
+                // By using a PreparedStatement, SQL injection is prevented:
+                // - Automatic escape handling is provided by PreparedStatement for special characters in the input, enhancing security.
+
+                // Execute the query
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        // User found, extract additional information (optional)
+                        int id = resultSet.getInt("id");
+                        String pw = resultSet.getString("password");
+                        String email2 = resultSet.getString("email");
+                        // Output additional information (optional)
+                        System.out.println("ID: " + id + ", pw: " + pw + ", Email: " + email2);
+                        saveUserInformation(resultSet);
+                        UserInformation userInfo = UserInformation.getInstance();
+                        setLastLoginToDb(connection,userInfo.getID());
+                        return true;
+                    } else {
+                        // No user found with the given credentials
+                        return false;
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            // Handle SQLException
+            ex.printStackTrace();
+            System.err.println("Fehler beim Ausführen der Abfrage: " + ex.getMessage());
+            return false;
+        }
+    }
+    // Method to save user information from a result
+    public void saveUserInformation(ResultSet rSet) throws SQLException {
+        UserInformation userInfo = UserInformation.getInstance();
+        userInfo.setUsername(rSet.getString("username"));
+        userInfo.setEmail(rSet.getString("email"));
+        userInfo.setID(rSet.getInt("id"));
+        userInfo.setPassword(rSet.getString("password"));
+        userInfo.setRegisterDate(rSet.getString("registerdate"));
+        userInfo.setLastLogin(rSet.getString("lastlogin"));
+
+    }
+
+    public void setLastLoginToDb(Connection connection, int userId ){
+        String sql = "UPDATE plotarmor.user SET lastlogin = ? WHERE id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+            preparedStatement.setTimestamp(1, currentTimestamp);
+            preparedStatement.setInt(2, userId);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Method to create a new user
+    public boolean createNewUser(Connection connection,String email, String username, String password) {
+        String createNewUserQuery = "INSERT INTO plotarmor.user (email, username, password) VALUES (?, ?, ?)";
+
+
+        try (connection) {
+            // Check if the connection is null
+            if (connection == null) {
+                return false;
+            }
+
+            // Prepare a SQL query using a PreparedStatement
+            try (PreparedStatement preparedStatement = connection.prepareStatement(createNewUserQuery)) {
+
+                // Set parameters in the prepared statement
+                preparedStatement.setString(1, email);
+                preparedStatement.setString(2, username);
+                preparedStatement.setString(3, password);
+
+                // Execute the query with executeUpdate() because of no return value and sql insert statement
+                preparedStatement.executeUpdate();
+                return true;
+            }
+        } catch (SQLException ex) {
+            // Handle SQLException
+            ex.printStackTrace();
+            System.err.println("Fehler beim Ausführen der Abfrage: " + ex.getMessage());
+            return false; // Fehler beim Ausführen der Abfrage
+        }
+
+    }
+
+    public boolean changeEmail(Connection connection, int id, String newEmail) throws SQLException {
+        // SQL query to update the email address
+        String changeEmailQuery = "UPDATE plotarmor.user SET email = ? WHERE id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(changeEmailQuery)) {
+            // Set parameters in the prepared statement
+            preparedStatement.setString(1, newEmail);
+            preparedStatement.setInt(2, id);
+
+            // Execute the update query
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            // Check if the update was successful
+            if (rowsAffected > 0) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+    }
+
+    public boolean changeUsername(Connection connection, int id, String username) throws SQLException {
+        // SQL query to update the username
+        String changeUsernameQuery = "UPDATE plotarmor.user SET username = ? WHERE id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(changeUsernameQuery)) {
+            // Set parameters in the prepared statement
+            preparedStatement.setString(1, username);
+            preparedStatement.setInt(2, id);
+
+            // Execute the update query
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            // Check if the update was successful
+            if (rowsAffected > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+    }
+
 
 }

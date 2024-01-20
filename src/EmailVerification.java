@@ -64,16 +64,51 @@ public class EmailVerification {
         titleBarController.controllTitleBar(emailView,emailStage);
         emailStage.show();
 
-        //if(verificationIsSuccessful == true) emailStage.close();
+
     }
+
     RegisterController registerController;
+    ResetPasswordController resetPasswordController;
+
+    public void openEmailVerificationResetPassword() throws IOException {
+        String code = generateCode();
+        getInstance().getResetPasswordController().code = code;
+        SendingEmail email = new SendingEmail(getInstance().getResetPasswordController().email);
+        System.out.println(getInstance().getResetPasswordController().email);
+        email.sendMail(code);
+
+        Parent emailView = FXMLLoader.load(getClass().getResource("./emailVerification/emailVerification.fxml"));
+        emailStage.getIcons().add(new Image("login/rustung.png"));
+        emailStage.initStyle(StageStyle.UNDECORATED);
+
+        Scene scene = new Scene(emailView);
+        emailStage.setResizable(false);
+        emailStage.setScene(scene);
+
+        emailStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
+                guiWindowManager.setEmailVerificationOpen(false);
+                System.out.println("Window was closed without pressing x button, for example closing the process in process manager");
+            }
+        });
+        titleBarController.controllTitleBar(emailView,emailStage);
+        emailStage.show();
+    }
 
     public void setRegisterController(RegisterController r){
         this.registerController = r;
     }
-
+    public void setResetPasswordController(ResetPasswordController r){
+        this.resetPasswordController = r;
+    }
     public RegisterController getRegisterController(){
         return this.registerController;
+    }
+
+    public ResetPasswordController getResetPasswordController(){
+        return this.resetPasswordController;
     }
 
     public String generateCode(){

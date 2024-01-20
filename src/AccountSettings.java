@@ -67,6 +67,7 @@ public class AccountSettings implements Initializable {
     Stage accountSettingOverview = new Stage();
     TitleBarController titleBarController = new TitleBarController();
     Connection dbConnection;
+    DatabaseQueryUser dbQuery = new DatabaseQueryUser();
 
 
     public void openAccountSettingOverview() throws IOException {
@@ -248,7 +249,6 @@ public class AccountSettings implements Initializable {
                 else
                 {
                     // Perform the email change in the database
-                    DatabaseQuery dbQuery = new DatabaseQuery();
                     boolean changedEmail = dbQuery.changeEmail(dbConnection, userInfo.getID(), txtFChangeProperty.getText());
 
                     if (changedEmail) {
@@ -283,7 +283,6 @@ public class AccountSettings implements Initializable {
             else
             {
                 // Perform the username change in the database
-                DatabaseQuery dbQuery = new DatabaseQuery();
                 boolean changedUsername = dbQuery.changeUsername(dbConnection, userInfo.getID(), txtFChangeProperty.getText());
 
                 if (changedUsername) {

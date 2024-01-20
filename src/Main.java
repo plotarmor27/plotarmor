@@ -19,6 +19,7 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 
 /**
@@ -50,7 +51,7 @@ public class Main extends Application {
     ResetPasswordController resetPassword;
 
     Stage loginView = new Stage();
-    DatabaseQuery dataQuery = new DatabaseQuery();
+    DatabaseQueryUser dataQuery = new DatabaseQueryUser();
     Connection connection;
     TitleBarController titleBarController = new TitleBarController();
 
@@ -97,55 +98,87 @@ public class Main extends Application {
     }
 
     @FXML
-    public void LoginOnAction(ActionEvent e) throws IOException {
+    public void LoginOnAction(ActionEvent e) throws IOException, SQLException {
         // Retrieve user input
         String email = txtEmail.getText();
         String password = txtFPassword.getText();
-
+        boolean accountIsLocked = false;
+        lblLoginFailed.visibleProperty().set(true);
         //Create a connection to the mysql database
         connection = DatabaseConnection.connect();
 
         GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
+
         if(guiWindowManager.isResetPasswordOpen()){
             // login failed
-            lblLoginFailed.visibleProperty().set(true);
             lblLoginFailed.setText("Login failed,\nplease close Reset password\n Window!");
         }
         else{
-            lblLoginFailed.visibleProperty().set(true);
             if(connection == null){
                 lblLoginFailed.setText("Error connecting to the database!");
             }
             else{
-
-                if(dataQuery.isUserCredentialsValid(connection,email,password)){
-                      // successfully logged in
-                    lblLoginFailed.setTextFill(Color.GREEN);
-                    lblLoginFailed.setText("You will be logged\nin a second...!");
-
-                    //Platform working on the application thread. We set it later so that user
-                    // can see a text of lblloginfailed
-                    Platform.runLater(() -> {
-                        Stage stage = (Stage) btnRegister.getScene().getWindow();
-                        //mainMoviePageView.openMainMovieView();
-                        mainMoviePage2Controller m2 = new mainMoviePage2Controller();
-                        try {
-                            m2.openMainMovieView();
-                        } catch (IOException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                        System.out.println("Erfolgreich eingeloggt!");
-                        stage.close();
-                            });
-
-                }else {
-                    // login failed
-                    lblLoginFailed.setText("Login failed,\nemail or password is wrong!");
+                accountIsLocked = checkIfUserIsLocked(connection,email);
+                if(accountIsLocked){
+                    lblLoginFailed.setText("Account is currently locked,\nplease request a new password!");
                 }
+                else{
+                    if(dataQuery.isUserCredentialsValid(connection,email,password)){
+                        // successfully logged in
+                        lblLoginFailed.setTextFill(Color.GREEN);
+                        lblLoginFailed.setText("You will be logged\nin a second...!");
+
+                        //Platform working on the application thread. We set it later so that user
+                        // can see a text of lblloginfailed
+                        Platform.runLater(() -> {
+                            Stage stage = (Stage) btnRegister.getScene().getWindow();
+
+                            mainMoviePage2Controller m2 = new mainMoviePage2Controller();
+                            try {
+                                m2.openMainMovieView();
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            System.out.println("Erfolgreich eingeloggt!");
+                            stage.close();
+                        });
+
+                    }
+                    else {
+                        // login failed
+                        //after three failed login attemps, lock user and tell him to request a new password.
+                        if(increaseLoginAttempt(email) == 3){
+                            lockAccount(email);
+                            lblLoginFailed.setText("Account is now locked,\nplease request a new password!");
+                        }
+                        else {
+                            lblLoginFailed.setText("Login failed,\nemail or password is wrong!");
+                        }
+                    }
+                }
+
             }
         }
 
 
+    }
+
+    private void lockAccount(String email) {
+        dataQuery.updateLogin_attempt(connection,email);
+        dataQuery.lockUser(connection,email);
+    }
+
+    private boolean checkIfUserIsLocked(Connection connection, String email) throws SQLException {
+        return dataQuery.getLockedStatus(connection,email);
+    }
+
+    public int increaseLoginAttempt(String email) throws SQLException {
+        int login_attemps = 0;
+        connection = DatabaseConnection.connect();
+        dataQuery.increaseLogin_attempt(connection,email);
+        login_attemps = dataQuery.getLoginAttempt(connection,email);
+        System.out.println(login_attemps);
+        return login_attemps;
     }
      public void registerOnAction(ActionEvent e) throws IOException {
          GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();

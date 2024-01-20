@@ -29,7 +29,7 @@ public class RegisterController {
     @FXML
     private Button btnRegister;
 
-    DatabaseQuery dataQuery = new DatabaseQuery();
+    DatabaseQueryUser dataQuery = new DatabaseQueryUser();
     EmailVerificationController emailController;
     public void backtoLoginOnClick(ActionEvent actionEvent) throws IOException {
         GUIWindowManager windowManager = GUIWindowManager.getInstance();
