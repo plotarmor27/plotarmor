@@ -424,224 +424,6 @@ public class DatabaseQuery {
 
     }
 
-    public boolean emailIsInDb(String email) throws SQLException {
-
-        try (Connection connect = DatabaseConnection.connect()) {
-            // Check if the connection is null
-            if (connect == null) {
-                return false;
-            }
-            // Prepare a SQL query using a PreparedStatement
-            String sqlQueryEmailcheck = "SELECT COUNT(*) FROM plotarmor.user WHERE email = ?";
-            // Prepare a SQL query using a PreparedStatement
-            try (PreparedStatement preparedStatement = connect.prepareStatement(sqlQueryEmailcheck)) {
-                // Set the email parameter for the prepared statement
-                preparedStatement.setString(1, email);
-
-                // Execute the query with executeUpdate() because of no return value and sql insert statement
-                ResultSet resultSet = preparedStatement.executeQuery();
-                // Check if the email exists in the database
-                if (resultSet.next() && resultSet.getInt(1) > 0) {
-                    return true; // Email exists in the database
-                } else {
-                    return false; // Email does not exist in the database
-                }
-            }
-        } catch (SQLException ex) {
-            // Handle SQLException
-            ex.printStackTrace();
-            System.err.println("Fehler beim Ausführen der Abfrage: " + ex.getMessage());
-            return false; // Fehler beim Ausführen der Abfrage
-        }
-    }
-
-    public boolean updateNewPassword(String newPassword, String email) throws SQLException {
-        String updateQuery = "UPDATE plotarmor.user SET password = ? WHERE email = ?";
-
-        try (Connection connection = DatabaseConnection.connect()) {
-            // Check if the connection is null
-            if (connection == null) {
-                return false;
-            }
-            try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
-                {
-                    preparedStatement.setString(1, newPassword);
-                    preparedStatement.setString(2, email);
-                    int rowsUpdated = preparedStatement.executeUpdate();
-                    if (rowsUpdated > 0) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-                System.err.println("Fehler beim Aktualisieren des Passworts: " + ex.getMessage());
-            }
-        }
-        return false;
-    }
-
-    public boolean changePassword(Connection dbConnection, int id, String newPassword) throws SQLException {
-        String changeQuery = "UPDATE plotarmor.user SET password = ? WHERE id = ?";
-
-
-            try (PreparedStatement preparedStatement = dbConnection.prepareStatement(changeQuery)) {
-                {
-                    preparedStatement.setString(1, newPassword);
-                    preparedStatement.setInt(2, id);
-
-                    int rowsUpdated = preparedStatement.executeUpdate();
-                    if (rowsUpdated > 0) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-                System.err.println("Fehler beim Aktualisieren des Passworts: " + ex.getMessage());
-            }
-
-        return false;
-    }
-
-    public boolean increaseLogin_attempt(Connection connection, String email) {
-        String increasLogin_attempQuery = "UPDATE plotarmor.user SET login_attempts = login_attempts + 1 WHERE email = ?";
-
-            // Check if the connection is null
-            if (connection == null) {
-                return false;
-            }
-            try (PreparedStatement preparedStatement = connection.prepareStatement(increasLogin_attempQuery)) {
-                {
-                    preparedStatement.setString(1, email);
-                    int rowsUpdated = preparedStatement.executeUpdate();
-                    if (rowsUpdated > 0) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-                System.err.println("Fehler beim Aktualisieren des LoginAttempts: " + ex.getMessage());
-            }
-
-        return false;
-    }
-
-    public int getLoginAttempt(Connection connection, String email) throws SQLException {
-        int login_attempt = 0;
-        String getLoginAtemptQuery = "SELECT login_attempts FROM plotarmor.user WHERE email = ?;";
-
-        PreparedStatement preparedStatement = connection.prepareStatement(getLoginAtemptQuery);
-        preparedStatement.setString(1, email);
-
-        try (ResultSet resultSet = preparedStatement.executeQuery()) {
-            if (resultSet.next()) {
-                login_attempt = resultSet.getInt("login_attempts");
-                return login_attempt;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace(); // Handle the exception according to your needs
-        }
-        return login_attempt;
-    }
-
-    public boolean updateLogin_attempt(Connection connection, String email) {
-        String updateLogin_attempQuery = "UPDATE plotarmor.user SET login_attempts = 0 WHERE email = ?";
-
-        // Check if the connection is null
-        if (connection == null) {
-            return false;
-        }
-        try (PreparedStatement preparedStatement = connection.prepareStatement(updateLogin_attempQuery)) {
-            {
-                preparedStatement.setString(1, email);
-                int rowsUpdated = preparedStatement.executeUpdate();
-                if (rowsUpdated > 0) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            System.err.println("Fehler beim Aktualisieren des LoginAttempts: " + ex.getMessage());
-        }
-
-        return false;
-    }
-
-    public boolean lockUser(Connection connection, String email) {
-        String lockUser = "UPDATE plotarmor.user SET locked = 1 WHERE email = ?";
-
-        // Check if the connection is null
-        if (connection == null) {
-            return false;
-        }
-        try (PreparedStatement preparedStatement = connection.prepareStatement(lockUser)) {
-            {
-                preparedStatement.setString(1, email);
-                int rowsUpdated = preparedStatement.executeUpdate();
-                if (rowsUpdated > 0) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            System.err.println("Fehler beim Aktualisieren des lockUser Arguments: " + ex.getMessage());
-        }
-
-        return false;
-    }
-
-    public boolean getLockedStatus(Connection connection, String email) throws SQLException {
-
-        boolean userLocked = false;
-        String getLoginAtemptQuery = "SELECT locked FROM plotarmor.user WHERE email = ?;";
-
-        PreparedStatement preparedStatement = connection.prepareStatement(getLoginAtemptQuery);
-        preparedStatement.setString(1, email);
-
-        try (ResultSet resultSet = preparedStatement.executeQuery()) {
-            if (resultSet.next()) {
-                userLocked = resultSet.getBoolean("locked");
-                return userLocked;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace(); // Handle the exception according to your needs
-        }
-        return userLocked;
-    }
-
-    public boolean setLockedStatusToZero(Connection connection, String email) {
-        String lockUser = "UPDATE plotarmor.user SET locked = 0 WHERE email = ?";
-
-        // Check if the connection is null
-        if (connection == null) {
-            return false;
-        }
-        try (PreparedStatement preparedStatement = connection.prepareStatement(lockUser)) {
-            {
-                preparedStatement.setString(1, email);
-                int rowsUpdated = preparedStatement.executeUpdate();
-                if (rowsUpdated > 0) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            System.err.println("Fehler beim Aktualisieren des lockUser Arguments: " + ex.getMessage());
-        }
-
-        return false;
-    }
 }
 
 class DatabaseQueryUser extends DatabaseQuery{
@@ -802,5 +584,242 @@ class DatabaseQueryUser extends DatabaseQuery{
 
     }
 
+    public boolean changePassword(Connection dbConnection, int id, String newPassword) throws SQLException {
+        String changeQuery = "UPDATE plotarmor.user SET password = ? WHERE id = ?";
+
+
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(changeQuery)) {
+            {
+                preparedStatement.setString(1, newPassword);
+                preparedStatement.setInt(2, id);
+
+                int rowsUpdated = preparedStatement.executeUpdate();
+                if (rowsUpdated > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.err.println("Fehler beim Aktualisieren des Passworts: " + ex.getMessage());
+        }
+
+        return false;
+    }
+
+    public boolean updateNewPassword(String newPassword, String email) throws SQLException {
+        String updateQuery = "UPDATE plotarmor.user SET password = ? WHERE email = ?";
+
+        try (Connection connection = DatabaseConnection.connect()) {
+            // Check if the connection is null
+            if (connection == null) {
+                return false;
+            }
+            try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                {
+                    preparedStatement.setString(1, newPassword);
+                    preparedStatement.setString(2, email);
+                    int rowsUpdated = preparedStatement.executeUpdate();
+                    if (rowsUpdated > 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                System.err.println("Fehler beim Aktualisieren des Passworts: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+
+    public boolean userNameIsInUse(Connection connection,String username) throws SQLException {
+        String query = "SELECT username FROM plotarmor.user WHERE username = ?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, username);
+
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            if (resultSet.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception according to your needs
+        }
+
+        return false;
+
+    }
+
+    public boolean emailIsInDb(String email) throws SQLException {
+
+        try (Connection connect = DatabaseConnection.connect()) {
+            // Check if the connection is null
+            if (connect == null) {
+                return false;
+            }
+            // Prepare a SQL query using a PreparedStatement
+            String sqlQueryEmailcheck = "SELECT COUNT(*) FROM plotarmor.user WHERE email = ?";
+            // Prepare a SQL query using a PreparedStatement
+            try (PreparedStatement preparedStatement = connect.prepareStatement(sqlQueryEmailcheck)) {
+                // Set the email parameter for the prepared statement
+                preparedStatement.setString(1, email);
+
+                // Execute the query with executeUpdate() because of no return value and sql insert statement
+                ResultSet resultSet = preparedStatement.executeQuery();
+                // Check if the email exists in the database
+                if (resultSet.next() && resultSet.getInt(1) > 0) {
+                    return true; // Email exists in the database
+                } else {
+                    return false; // Email does not exist in the database
+                }
+            }
+        } catch (SQLException ex) {
+            // Handle SQLException
+            ex.printStackTrace();
+            System.err.println("Fehler beim Ausführen der Abfrage: " + ex.getMessage());
+            return false; // Fehler beim Ausführen der Abfrage
+        }
+    }
+
+
+    public boolean increaseLogin_attempt(Connection connection, String email) {
+        String increasLogin_attempQuery = "UPDATE plotarmor.user SET login_attempts = login_attempts + 1 WHERE email = ?";
+
+        // Check if the connection is null
+        if (connection == null) {
+            return false;
+        }
+        try (PreparedStatement preparedStatement = connection.prepareStatement(increasLogin_attempQuery)) {
+            {
+                preparedStatement.setString(1, email);
+                int rowsUpdated = preparedStatement.executeUpdate();
+                if (rowsUpdated > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.err.println("Fehler beim Aktualisieren des LoginAttempts: " + ex.getMessage());
+        }
+
+        return false;
+    }
+
+    public int getLoginAttempt(Connection connection, String email) throws SQLException {
+        int login_attempt = 0;
+        String getLoginAtemptQuery = "SELECT login_attempts FROM plotarmor.user WHERE email = ?;";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(getLoginAtemptQuery);
+        preparedStatement.setString(1, email);
+
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            if (resultSet.next()) {
+                login_attempt = resultSet.getInt("login_attempts");
+                return login_attempt;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception according to your needs
+        }
+        return login_attempt;
+    }
+
+    public boolean updateLogin_attempt(Connection connection, String email) {
+        String updateLogin_attempQuery = "UPDATE plotarmor.user SET login_attempts = 0 WHERE email = ?";
+
+        // Check if the connection is null
+        if (connection == null) {
+            return false;
+        }
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateLogin_attempQuery)) {
+            {
+                preparedStatement.setString(1, email);
+                int rowsUpdated = preparedStatement.executeUpdate();
+                if (rowsUpdated > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.err.println("Fehler beim Aktualisieren des LoginAttempts: " + ex.getMessage());
+        }
+
+        return false;
+    }
+
+    public boolean lockUser(Connection connection, String email) {
+        String lockUser = "UPDATE plotarmor.user SET locked = 1 WHERE email = ?";
+
+        // Check if the connection is null
+        if (connection == null) {
+            return false;
+        }
+        try (PreparedStatement preparedStatement = connection.prepareStatement(lockUser)) {
+            {
+                preparedStatement.setString(1, email);
+                int rowsUpdated = preparedStatement.executeUpdate();
+                if (rowsUpdated > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.err.println("Fehler beim Aktualisieren des lockUser Arguments: " + ex.getMessage());
+        }
+
+        return false;
+    }
+
+    public boolean getLockedStatus(Connection connection, String email) throws SQLException {
+
+        boolean userLocked = false;
+        String getLoginAtemptQuery = "SELECT locked FROM plotarmor.user WHERE email = ?;";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(getLoginAtemptQuery);
+        preparedStatement.setString(1, email);
+
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            if (resultSet.next()) {
+                userLocked = resultSet.getBoolean("locked");
+                return userLocked;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception according to your needs
+        }
+        return userLocked;
+    }
+
+    public boolean setLockedStatusToZero(Connection connection, String email) {
+        String lockUser = "UPDATE plotarmor.user SET locked = 0 WHERE email = ?";
+
+        // Check if the connection is null
+        if (connection == null) {
+            return false;
+        }
+        try (PreparedStatement preparedStatement = connection.prepareStatement(lockUser)) {
+            {
+                preparedStatement.setString(1, email);
+                int rowsUpdated = preparedStatement.executeUpdate();
+                if (rowsUpdated > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.err.println("Fehler beim Aktualisieren des lockUser Arguments: " + ex.getMessage());
+        }
+
+        return false;
+    }
 
 }

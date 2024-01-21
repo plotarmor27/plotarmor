@@ -35,9 +35,11 @@ public class EmailVerification {
         return instance;
     }
 
-
+    RegisterController registerController;
+    ResetPasswordController resetPasswordController;
     Stage emailStage = new Stage();
     TitleBarController titleBarController = new TitleBarController();
+
     public void openEmailVerification() throws IOException {
         String code = generateCode();
         getInstance().getRegisterController().code = code;
@@ -66,9 +68,6 @@ public class EmailVerification {
 
 
     }
-
-    RegisterController registerController;
-    ResetPasswordController resetPasswordController;
 
     public void openEmailVerificationResetPassword() throws IOException {
         String code = generateCode();

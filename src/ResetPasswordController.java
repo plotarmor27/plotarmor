@@ -15,16 +15,15 @@ public class ResetPasswordController {
     public Button btnSendRequest;
     public Button btnClose;
     public Label lblResetPasswordERROR;
-
+    GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
     String code = "";
     String email = "";
 
-    DatabaseQuery query = new DatabaseQuery();
+    DatabaseQueryUser query = new DatabaseQueryUser();
     String codeInput ="";
 
     public void CloseOnClick(ActionEvent actionEvent) {
         Stage stage = (Stage) btnClose.getScene().getWindow();
-        GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
         guiWindowManager.setResetPasswordOpen(false);
         stage.close();
     }
@@ -36,7 +35,6 @@ public class ResetPasswordController {
 
     public void sendRequestOnClick(ActionEvent actionEvent) throws SQLException, IOException {
         email = txtFEmail.getText();
-        GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
         //check if the entered email is in the db | if not catch this and send an error to the user on gui
         Connection connection = DatabaseConnection.connect();
         lblResetPasswordERROR.setVisible(true);
@@ -45,18 +43,17 @@ public class ResetPasswordController {
         }
         else{
             boolean enteredEmailIsinDb = query.emailIsInDb(email);
-
-                if(enteredEmailIsinDb){
+                if(enteredEmailIsinDb)
+                {
                     EmailVerificationController emailController = new EmailVerificationController();
                     emailController.setResetPasswordController(ResetPasswordController.this);
                     guiWindowManager.setEmailVerificationOpen(true);
                     emailController.openEmailVerificationResetPassword();
                     lblResetPasswordERROR.setTextFill(Color.GREEN);
                     lblResetPasswordERROR.setText("Successfully sent Verification Link");
-
-
                 }
-                else{
+                else
+                {
                     lblResetPasswordERROR.setText("Entered Email is not registered");
                 }
         }
@@ -98,7 +95,6 @@ public class ResetPasswordController {
         }
         return password.toString();
     }
-
     public void setCodeInput(String codeInput){
         System.out.println(codeInput);
         this.codeInput = codeInput;

@@ -3,6 +3,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -10,27 +11,50 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class RegisterController {
+    public Label lblAvailableNotAvailable, lblError;
     String codeInput ="";
     String code = "12345";
-    String email = "";
-    String username = "";
-    String password = "";
-    String repeatPassword = "";
-    Connection connection;
-    public TextField txtFUsername;
-    public TextField txtFEmail;
-    public PasswordField txtFPassword;
-    public PasswordField txtFRepeatPwd;
-    public Button btnClose;
-    public Label lblError;
-    public Button btnBackToLogin;
+    String email,username,password,repeatPassword = "";
+    Connection connection = DatabaseConnection.connect();
+    public TextField txtFUsername,txtFEmail;
+    public PasswordField txtFPassword,txtFRepeatPwd;
+
+    public Button btnClose, btnBackToLogin;
+
     public CheckBox radioB16YearsOld;
     public AnchorPane registerPane;
-    @FXML
-    private Button btnRegister;
+    boolean userIsInUse = false;
 
     DatabaseQueryUser dataQuery = new DatabaseQueryUser();
     EmailVerificationController emailController;
+
+    public void initialize() {
+        txtFUsername.focusedProperty().addListener((ov, oldV, newV) -> {
+            if (!newV) { // focus lost, check if username is in use by checking it in the database
+
+                if(txtFUsername.getText().isEmpty()){
+                    return;
+                }
+                try {
+                    if(dataQuery.userNameIsInUse(connection,txtFUsername.getText())){
+                        lblAvailableNotAvailable.setVisible(true);
+                        lblAvailableNotAvailable.setTextFill(Color.RED);
+                        lblAvailableNotAvailable.setText("Not Available");
+                        userIsInUse = true;
+                    }
+                    else{
+                        lblAvailableNotAvailable.setVisible(true);
+                        lblAvailableNotAvailable.setTextFill(Color.LIGHTGREEN);
+                        userIsInUse = false;
+                        lblAvailableNotAvailable.setText("Available");
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
     public void backtoLoginOnClick(ActionEvent actionEvent) throws IOException {
         GUIWindowManager windowManager = GUIWindowManager.getInstance();
         if(!windowManager.isEmailVerificationOpen()){
@@ -49,6 +73,8 @@ public class RegisterController {
         }
 
     }
+
+
     @FXML
     public void registerOnAction(ActionEvent e) throws IOException, SQLException {
         emailController = new EmailVerificationController();
@@ -60,31 +86,26 @@ public class RegisterController {
         repeatPassword = txtFRepeatPwd.getText();
         connection = DatabaseConnection.connect();
         lblError.setText("");
-
+        lblError.setVisible(true);
 
         if(connection == null){
-            lblError.setVisible(true);
             lblError.setText("Error connecting to the database");
         }
-
 
         if(!emailVerificationIsActive && connection != null){
             //check if email is already registered
             boolean emailIsAlreadyRegistered = dataQuery.emailIsInDb(email);
             if(emailIsAlreadyRegistered){
-                lblError.setVisible(true);
                 lblError.setText("Email is already registered!");
             }
             else{
-                if(credentialsAreValid(email,username,password,repeatPassword) && radioB16YearsOld.isSelected()){
+                if(credentialsAreValid(email,username,password,repeatPassword) && radioB16YearsOld.isSelected() && !userIsInUse){
                     emailController.setRegisterController(RegisterController.this);
                     guiWindowManager.setEmailVerificationOpen(true);
                     emailController.openEmailVerification();
                 }
                 else
                 {
-                    System.out.println(radioB16YearsOld.isSelected());
-                    lblError.setVisible(true);
                     lblError.setText("Error: Please make valid inputs and try again!");
                     guiWindowManager.setEmailVerificationOpen(false);
                 }

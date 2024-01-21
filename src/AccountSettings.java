@@ -204,7 +204,6 @@ public class AccountSettings implements Initializable {
             else
             {
                 // Perform the password change in the database
-                DatabaseQuery dbQuery = new DatabaseQuery();
                 boolean changedPassword = dbQuery.changePassword(dbConnection, userInfo.getID(), txtFChangeProperty.getText());
 
                 if (changedPassword) {
