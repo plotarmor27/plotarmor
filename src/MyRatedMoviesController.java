@@ -20,23 +20,21 @@ import java.util.ResourceBundle;
 
 public class MyRatedMoviesController {
 
-    public Button btnBack;
-    public Label lbHelloUser;
     public ListView listVMyRatedMovies;
-    public Button btnSortRating;
-    public Label lblSureDeleting;
+    public Button btnSortRating,btnBack;
+    public Label lblSureDeleting,lbHelloUser;
     UserInformation userInfo = UserInformation.getInstance();
     ObservableList<Pane> ratedMovies = FXCollections.observableArrayList();
+    DatabaseQuery query = new DatabaseQuery();
+    Connection connection = DatabaseConnection.connect();
+    GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
 
     public void initialize() throws IOException, SQLException {
         lbHelloUser.setText("Hello : " + userInfo.getUsername());
-        DatabaseQuery query = new DatabaseQuery();
-        Connection connection = DatabaseConnection.connect();
 
         HashMap<String, Integer> movieRatings = query.getMovieRatingsForUser(connection, userInfo.getID());
-        userInfo.setMoviesRated(movieRatings.keySet().size());
-        int movieRated = 0;
 
+        int movieRated = 0;
         for (String movieName : movieRatings.keySet()) {
                 movieRated = movieRatings.get(movieName);
                 addRatedMoviesToList(movieName,movieRated);
@@ -48,7 +46,7 @@ public class MyRatedMoviesController {
 
         Pane pane = (Pane)load.getNamespace().get("movieRatedPane");
         Label lbl = (Label)load.getNamespace().get("movieRatedName");
-        SVGPath starOne = (SVGPath) load.getNamespace().get("starOne");
+
         SVGPath starTwo = (SVGPath) load.getNamespace().get("starTwo");
         SVGPath starThree = (SVGPath) load.getNamespace().get("starThree");
         SVGPath starFour = (SVGPath) load.getNamespace().get("starFour");
@@ -99,12 +97,9 @@ public class MyRatedMoviesController {
         listVMyRatedMovies.getItems().add(pane);
     }
     public void goBack(ActionEvent actionEvent) {
-        GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
         guiWindowManager.setMyRatedMoviesOpen(false);
         Stage stage = (Stage) btnBack.getScene().getWindow();
         stage.close();
-
-
     }
     public void openRatedLists() throws IOException {
         MyRatedMovies myRatedMovies = new MyRatedMovies();

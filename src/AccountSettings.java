@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -39,36 +40,19 @@ import java.util.ResourceBundle;
  * - Implement functionality for handling user interactions (e.g., button clicks, hover events).
  */
 public class AccountSettings implements Initializable {
-
-    public Label lblSettings;
-    public Button btnChangeUsername;
-    public Button btnChangeEmail;
-    public Button btnChangePassword;
-    public Button btnDelAccount;
-    public TextField txtFChangeProperty;
-    public Label lblSetting;
-    public Button btnVerifyNewProperty;
-    public TextField txtRepeatNewProperty;
-    public Label lblRepeatSetting;
-    public Button btnDeleteAccount;
-    public Label lblDelText;
-    public TextField txtFAccountDelEmail;
-    public Label lblDelEmail;
-    public Label lblProfileEmail;
-    public Label lblProfileUsername;
-    public Label lblProfileMovieRated;
-    public Button btnViewAccountInformation;
-    public Label lblHelloUser;
-    public Button btnClose;
-    public Label lblErrorSuccesfullMessage;
-    public Label lblregisterDate;
-    public Label lblLastLogin;
-    public Label lblMeanScore;
+    UserInformation userInfo = UserInformation.getInstance();
+    public Label lblMeanScore,lblLastLogin,lblregisterDate,
+            lblErrorSuccesfullMessage,lblHelloUser,lblSettings,lblSetting,
+            lblRepeatSetting,lblDelText,lblDelEmail,lblProfileEmail,
+            lblProfileUsername,lblProfileMovieRated;
+    public Button btnClose,btnChangeUsername,btnChangeEmail,
+            btnChangePassword,btnDelAccount,btnVerifyNewProperty,
+            btnDeleteAccount,btnViewAccountInformation;
+    public TextField txtFChangeProperty,txtRepeatNewProperty,txtFAccountDelEmail;
     Stage accountSettingOverview = new Stage();
     TitleBarController titleBarController = new TitleBarController();
     Connection dbConnection;
-    DatabaseQueryUser dbQuery = new DatabaseQueryUser();
-
+    DatabaseQueryUser queryUser = new DatabaseQueryUser();
 
     public void openAccountSettingOverview() throws IOException {
         accountSettingOverview.setTitle("PlotArmor - MainPage");
@@ -101,8 +85,25 @@ public class AccountSettings implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setLabelsVisible(false,lblProfileEmail,lblProfileUsername,lblProfileMovieRated,lblLastLogin,lblMeanScore,lblregisterDate);
-        UserInformation userInformation = UserInformation.getInstance();
-        lblHelloUser.setText("Hello: " + userInformation.getUsername());
+        lblHelloUser.setText("Hello: " + userInfo.getUsername());
+
+        Connection connection = DatabaseConnection.connect();
+        //get users movie ratings
+        HashMap<String, Integer> movieRatings = null;
+        try {
+            movieRatings = queryUser.getMovieRatingsForUser(connection,userInfo.getID());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        //save the amount of movies rated in userinformation clas
+        userInfo.setMoviesRated(movieRatings.keySet().size());
+        //get the movie rating sum
+        int sum = 0;
+        for(int ratedSum : movieRatings.values()){
+            sum+= ratedSum;
+        }
+        //save the movie rating sum to user information
+        userInfo.setRatedSum(sum);
 
     }
     // Helper method to set the visibility of labels
@@ -189,7 +190,7 @@ public class AccountSettings implements Initializable {
 
         //Create a connection to the mysql database
         dbConnection = DatabaseConnection.connect();
-        UserInformation userInfo = UserInformation.getInstance();
+
         lblErrorSuccesfullMessage.setVisible(true);
         // Check if the database connection is successful
         if(dbConnection == null){
@@ -204,7 +205,7 @@ public class AccountSettings implements Initializable {
             else
             {
                 // Perform the password change in the database
-                boolean changedPassword = dbQuery.changePassword(dbConnection, userInfo.getID(), txtFChangeProperty.getText());
+                boolean changedPassword = queryUser.changePassword(dbConnection, userInfo.getID(), txtFChangeProperty.getText());
 
                 if (changedPassword) {
                     // Update the user information and display success message
@@ -233,7 +234,7 @@ public class AccountSettings implements Initializable {
 
             //Create a connection to the mysql database
             dbConnection = DatabaseConnection.connect();
-            UserInformation userInfo = UserInformation.getInstance();
+        lblErrorSuccesfullMessage.setTextFill(Color.RED);
             lblErrorSuccesfullMessage.setVisible(true);
             // Check if the database connection is successful
             if(dbConnection == null){
@@ -241,6 +242,12 @@ public class AccountSettings implements Initializable {
             }
             else
             {
+                //check if email is already registered
+                boolean emailIsAlreadyRegistered = queryUser.emailIsInDb(txtFChangeProperty.getText());
+                if(emailIsAlreadyRegistered){
+                    lblErrorSuccesfullMessage.setText("This email address is already registered!");
+                    return;
+                }
                 // Validate the new email address
                 if(!emailIsValid(txtFChangeProperty.getText(),txtRepeatNewProperty.getText())){
                     lblErrorSuccesfullMessage.setText("Please type in valid Email address");
@@ -248,10 +255,11 @@ public class AccountSettings implements Initializable {
                 else
                 {
                     // Perform the email change in the database
-                    boolean changedEmail = dbQuery.changeEmail(dbConnection, userInfo.getID(), txtFChangeProperty.getText());
+                    boolean changedEmail = queryUser.changeEmail(dbConnection, userInfo.getID(), txtFChangeProperty.getText());
 
                     if (changedEmail) {
                         // Update the user information and display success message
+                        lblErrorSuccesfullMessage.setTextFill(Color.GREEN);
                         lblErrorSuccesfullMessage.setText("Successfully changed Email: " + userInfo.getEmail() + " to: " + txtFChangeProperty.getText());
                         userInfo.setEmail(txtFChangeProperty.getText());
                     } else {
@@ -267,7 +275,7 @@ public class AccountSettings implements Initializable {
     public void changeUsername() throws SQLException {
         //Create a connection to the mysql database
         dbConnection = DatabaseConnection.connect();
-        UserInformation userInfo = UserInformation.getInstance();
+
         lblErrorSuccesfullMessage.setVisible(true);
         // Check if the database connection is successful
         if(dbConnection == null){
@@ -281,16 +289,24 @@ public class AccountSettings implements Initializable {
             }
             else
             {
+                boolean userNameRegistered = queryUser.userNameIsInUse(dbConnection,txtFChangeProperty.getText());
+                if(userNameRegistered){
+                    // Display an error message if the username is already in use
+                    lblErrorSuccesfullMessage.setTextFill(Color.RED);
+                    lblErrorSuccesfullMessage.setText("This username is already registered!");
+                    return;
+                }
                 // Perform the username change in the database
-                boolean changedUsername = dbQuery.changeUsername(dbConnection, userInfo.getID(), txtFChangeProperty.getText());
+                boolean changedUsername = queryUser.changeUsername(dbConnection, userInfo.getID(), txtFChangeProperty.getText());
 
                 if (changedUsername) {
                     // Update the user information and display success message
-                    lblErrorSuccesfullMessage.setText("Successfully changed Username: " + userInfo.getUsername() + " to: " + txtFChangeProperty.getText());
+                    lblErrorSuccesfullMessage.setText("Successfully changed \nUsername: " + userInfo.getUsername() + " to: " + txtFChangeProperty.getText());
                     userInfo.setUsername(txtFChangeProperty.getText());
                     lblHelloUser.setText("Hello: " + userInfo.getUsername());
                 } else {
-                    // Display an error message if the email change was not successful
+                    // Display an error message if the username change was not successful
+                    lblErrorSuccesfullMessage.setTextFill(Color.RED);
                     lblErrorSuccesfullMessage.setText("Error, something went wrong!");
                 }
             }
@@ -313,29 +329,13 @@ public class AccountSettings implements Initializable {
 
     // Method to open the form for user information
     public void openUserInformation(ActionEvent actionEvent) throws SQLException {
-        // Retrieve the user information singleton instance
-        DatabaseQuery query = new DatabaseQuery();
-        Connection connection = DatabaseConnection.connect();
-        UserInformation userInfo = UserInformation.getInstance();
-        //get users movie ratings
-        HashMap<String, Integer> movieRatings = query.getMovieRatingsForUser(connection,userInfo.getID());
-
-        //get the movie rating sum
-        int sum = 0;
-        for(int ratedSum : movieRatings.values()){
-            sum+= ratedSum;
-        }
-        //save the movie rating sum to user information
-        userInfo.setRatedSum(sum);
             // Display user information in the form
-
         lblProfileEmail.setText("Email adress: " + userInfo.getEmail());
         lblProfileUsername.setText("Username: " + userInfo.getUsername());
-        lblProfileMovieRated.setText("Amount of Movies rated: " +userInfo.getMoviesRated());
+        lblProfileMovieRated.setText("Amount of movies rated: " +userInfo.getMoviesRated());
         lblregisterDate.setText("Registerdate: " + userInfo.getRegisterDate());
         lblLastLogin.setText("Lastlogin: " + userInfo.getLastLogin());
-
-        lblMeanScore.setText("Meanscore movie Rated: " + String.format("%.2f", userInfo.getMeanScore()));
+        lblMeanScore.setText("Meanscore of movies rated: " + String.format("%.2f", userInfo.getMeanScore()));
         lblSettings.setText("Profile");
 
         // Hide unnecessary labels and text fields, and show user information labels

@@ -30,7 +30,7 @@ public class RegisterController {
 
     public void initialize() {
         txtFUsername.focusedProperty().addListener((ov, oldV, newV) -> {
-            if (!newV) { // focus lost, check if username is in use by checking it in the database
+            if (!newV) { // focus lost, check if username is in use by checking if the username has an entry in the database
 
                 if(txtFUsername.getText().isEmpty()){
                     return;
@@ -73,8 +73,6 @@ public class RegisterController {
         }
 
     }
-
-
     @FXML
     public void registerOnAction(ActionEvent e) throws IOException, SQLException {
         emailController = new EmailVerificationController();
@@ -142,7 +140,6 @@ public class RegisterController {
         return email.contains("@") && email.contains(".");
     }
     public void setCodeInput(String codeInput){
-        System.out.println(codeInput);
         this.codeInput = codeInput;
     }
 

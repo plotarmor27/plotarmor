@@ -23,8 +23,6 @@ import java.sql.SQLException;
  * and updates the UI components accordingly.
  */
 public class MovieInformation {
-
-
     Stage movieInformation = new Stage();;
     TitleBarController titleBarController = new TitleBarController();
 

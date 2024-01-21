@@ -60,21 +60,7 @@ public class DatabaseQuery {
 
     }
 
-
-    public boolean loadMoviesToList(Connection connection, ObservableList<String> movieList) throws SQLException {
-
-            String query = "SELECT title FROM plotarmor.movies";
-             Statement statement = connection.createStatement();
-
-                 ResultSet resultSet = statement.executeQuery(query) ;
-                while (resultSet.next()) {
-                    String title = resultSet.getString("title");
-                    movieList.add(title);
-                }
-                return true;
-        }
-
-        public String getMovieDescribtion(Connection connection, String movieName) throws SQLException {
+    public String getMovieDescribtion(Connection connection, String movieName) throws SQLException {
             String query = "SELECT overview FROM plotarmor.movies WHERE title = ?";
             String movieDescription = null;
 
@@ -169,33 +155,6 @@ public class DatabaseQuery {
         return false;
     }
 
-    public boolean setRatingWhereTitle(Connection connection,String movieName, String rating){
-        String updateRatingQuery = "UPDATE plotarmor.movies SET rating = ? WHERE title = ?";
-
-        try (connection) {
-            // Check if the connection is null
-            if (connection == null) {
-                return false;
-            }
-            // Prepare a SQL query using a PreparedStatement
-            try (PreparedStatement preparedStatement = connection.prepareStatement(updateRatingQuery)) {
-
-                // Set the parameters for the update query
-                preparedStatement.setString(1, rating);
-                preparedStatement.setString(2, movieName);
-
-                // Execute the query with executeUpdate() because of no return value and sql insert statement
-                preparedStatement.executeUpdate();
-                return true;
-            }
-        } catch (SQLException ex) {
-            // Handle SQLException
-            ex.printStackTrace();
-            System.err.println("Fehler beim Ausführen der Abfrage: " + ex.getMessage());
-            return false; // Fehler beim Ausführen der Abfrage
-        }
-    }
-
     public boolean getRatings(Connection connection, ObservableList<String> movieRatingList) throws SQLException {
         String query = "SELECT rating FROM plotarmor.movies";
 
@@ -211,36 +170,6 @@ public class DatabaseQuery {
             e.printStackTrace(); // Handle the exception according to your needs
         }
         return false;
-    }
-
-    public boolean setPosterAndBackgroundPath(Connection connection, String backgroundPath, String posterPath, String originalTitle) {
-        String updateQuery = "UPDATE plotarmor.movies SET poster_path = ?, background_path = ? WHERE title = ?";
-
-        try (connection) {
-            // Check if the connection is null
-            if (connection == null) {
-                return false;
-            }
-
-            // Prepare a SQL query using a PreparedStatement
-            try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
-
-                // Set the parameters for the update query
-                preparedStatement.setString(1, posterPath);
-                preparedStatement.setString(2, backgroundPath);
-                preparedStatement.setString(3, originalTitle);
-
-                // Execute the query with executeUpdate() because of no return value and sql insert statement
-                preparedStatement.executeUpdate();
-                return true;
-            }
-        } catch (SQLException ex) {
-            // Handle SQLException
-            ex.printStackTrace();
-            System.err.println("Fehler beim Ausführen der Abfrage: " + ex.getMessage());
-            return false; // Fehler beim Ausführen der Abfrage
-        }
-
     }
 
     public boolean getPosterPath(Connection connection, ObservableList<String> moviePosterPath) throws SQLException {

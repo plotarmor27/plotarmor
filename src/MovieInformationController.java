@@ -28,26 +28,15 @@ import java.sql.SQLException;
  * Proper exception handling is implemented for potential SQLExceptions during database operations.
  */
 public class MovieInformationController {
-    public ImageView imageMoviePoster;
-    public Text txtGenre;
-
-    public SVGPath starOne;
-    public SVGPath starTwo;
-    public SVGPath starThree;
-    public SVGPath starFour;
-    public SVGPath starFive;
-
+    public ImageView imageMoviePoster,imageBackground;
+    public Text txtGenre,txtPublicationDate,txtDuration;
+    public SVGPath starOne,starTwo,starThree,starFour,starFive;
     public Button btnClose;
-    public Text txtPublicationDate;
-    public Text txtDuration;
     @FXML
-    public Label lblMovieName;
-
-    public Label txtMovieSummary;
-    public ImageView imageBackground;
-    public Label lblaverageVoting;
-    public Label lblSuccessFailedRating;
-
+    public Label lblMovieName,txtMovieSummary,lblaverageVoting,lblSuccessFailedRating;
+    Connection connection = DatabaseConnection.connect();
+    UserInformation userInfo = UserInformation.getInstance();
+    DatabaseQuery query = new DatabaseQuery();
 
     public void closeOnClick(ActionEvent actionEvent) {
         GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
@@ -90,8 +79,8 @@ public class MovieInformationController {
         this.lblMovieName.setText(movieName);
     }
     public void setTxtMovieDescription(String movieName) throws SQLException {
-        Connection connection = DatabaseConnection.connect();
-        DatabaseQuery query = new DatabaseQuery();
+
+
         if(connection != null){
             String overview = "Summary: \n";
              overview += query.getMovieDescribtion(connection,movieName);
@@ -99,80 +88,62 @@ public class MovieInformationController {
             this.txtMovieSummary.setWrapText(true);
             this.txtMovieSummary.setText(overview);
         }
-        connection.close();
     }
     public void setDuration(String movieName) throws SQLException {
-        Connection connection = DatabaseConnection.connect();
-        DatabaseQuery query = new DatabaseQuery();
+
         if(connection != null){
-
             String duration = query.getMovieDuration(connection,movieName);
-
             this.txtDuration.setText("Duration: " +duration + " minutes");
         }
-        connection.close();
+
     }
     public void setReleasedate(String movieName) throws SQLException {
-        Connection connection = DatabaseConnection.connect();
-        DatabaseQuery query = new DatabaseQuery();
+
+
         if(connection != null){
 
             String releasedate = query.getReleasedate(connection,movieName);
 
             this.txtPublicationDate.setText("Release Date: " +releasedate);
         }
-        connection.close();
+
     }
     public void setGenre(String movieName) throws SQLException {
-        Connection connection = DatabaseConnection.connect();
-        DatabaseQuery query = new DatabaseQuery();
+
+
         if(connection != null){
 
             String genre = query.getGenre(connection,movieName);
 
             this.txtGenre.setText("Genre: " +genre);
         }
-        connection.close();
-    }
 
+    }
     public void setPoster(String movieName) throws SQLException {
-        Connection connection = DatabaseConnection.connect();
-        DatabaseQuery query = new DatabaseQuery();
+
         if(connection != null){
 
             String posterPath = query.getPoster(connection,movieName);
             Image poster = new Image(posterPath);
             this.imageMoviePoster.setImage(poster);
         }
-        connection.close();
     }
     public void setBackgroundPoster(String movieName) throws SQLException {
-        Connection connection = DatabaseConnection.connect();
-        DatabaseQuery query = new DatabaseQuery();
         if(connection != null){
-
             String background_path = query.getBackgroundPath(connection,movieName);
             Image backgroundImage = new Image(background_path);
             this.imageBackground.setImage(backgroundImage);
         }
-        connection.close();
     }
 
     public void setAverageVoting(String movieName) throws SQLException {
-        Connection connection = DatabaseConnection.connect();
-        DatabaseQuery query = new DatabaseQuery();
         if(connection != null){
-
             String averageVoting = query.getAverageVoting(connection,movieName);
-
             this.lblaverageVoting.setText("Average Voting: " + averageVoting);
         }
-        connection.close();
     }
     public void starsClicked(MouseEvent mouseEvent) throws SQLException {
-        DatabaseQuery query = new DatabaseQuery();
         SVGPath s = (SVGPath)mouseEvent.getSource();
-        Connection connection = DatabaseConnection.connect();
         int movieRated = 0;
         switch (s.getId()) {
             case "starOne" -> movieRated = 1;
@@ -181,20 +152,16 @@ public class MovieInformationController {
             case "starFour" -> movieRated = 4;
             case "starFive" -> movieRated = 5;
         }
-        UserInformation userInfo = UserInformation.getInstance();
         //Insert rating from user to db
         boolean successfullyRated = query.insertNewRatingToDb(connection,userInfo.getID(),userInfo.getUsername(),this.lblMovieName.getText(),movieRated);
-
         if(successfullyRated){
-
             lblSuccessFailedRating.setVisible(true);
             lblSuccessFailedRating.setTextFill(Color.GREEN);
-            userInfo.setMoviesRated(userInfo.getMoviesRated()+1);
             lblSuccessFailedRating.setText("Successfully rated!");
         }
-        else{
+        else
+        {
             //Update rating from user in db
-
             boolean successfullyUpdated = query.updateRatingInDb(connection,userInfo.getID(),this.lblMovieName.getText(),movieRated);
             lblSuccessFailedRating.setVisible(true);
             lblSuccessFailedRating.setTextFill(Color.YELLOWGREEN);

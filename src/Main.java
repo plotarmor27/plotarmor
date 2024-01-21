@@ -127,7 +127,9 @@ public class Main extends Application {
                         // successfully logged in
                         lblLoginFailed.setTextFill(Color.GREEN);
                         lblLoginFailed.setText("You will be logged\nin a second...!");
-
+                        //Create a connection to the mysql database
+                        connection = DatabaseConnection.connect();
+                        dataQuery.updateLogin_attempt(connection,email);
                         //Platform working on the application thread. We set it later so that user
                         // can see a text of lblloginfailed
                         Platform.runLater(() -> {

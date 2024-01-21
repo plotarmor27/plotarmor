@@ -24,11 +24,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 public class mainMoviePage2Controller {
-    public Button btnLogOut;
-    public Button btnCLOSE;
+    public Button btnLogOut,btnCLOSE,btnMyMovies,btnMyAccount;
     public TextField searchMoviesTxtField;
-    public Button btnMyMovies;
-    public Button btnMyAccount;
     public Label lblMainMovie;
     public ListView movieListView;
     public ScrollPane scrollMovie;
@@ -36,28 +33,20 @@ public class mainMoviePage2Controller {
     private GridPane gridPane;
     DatabaseQuery query = new DatabaseQuery();
     Connection connection;
-    GUIWindowManager guiWindowManager;
+    GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
     AccountSettings accountSettings;
     private final ObservableList<String> movieNameList = FXCollections.observableArrayList();
-    private ObservableList<String> movieFilteredNameList = FXCollections.observableArrayList();
+    private final ObservableList<String> movieFilteredNameList = FXCollections.observableArrayList();
     private final ObservableList<String> movieRatingList = FXCollections.observableArrayList();
-
     private final ObservableList<String> moviePosterPath = FXCollections.observableArrayList();
-
-    UserInformation userInfo = UserInformation.getInstance();
 
     public void initialize() throws IOException, SQLException {
         movieListView.setVisible(false);
-
         connection = DatabaseConnection.connect();
 
         query.getMovieName(connection,movieNameList);
-        //copy movieNameList to other List
+        //copy movieNameList to other List for the filter function
         movieFilteredNameList.addAll(movieNameList);
-
-        //get the movierated size to store it in the userinformation class
-        HashMap<String, Integer> movieRatings = query.getMovieRatingsForUser(connection, userInfo.getID());
-        userInfo.setMoviesRated(movieRatings.keySet().size());
 
         query.getRatings(connection,movieRatingList);
         query.getPosterPath(connection,moviePosterPath);
@@ -105,7 +94,7 @@ public class mainMoviePage2Controller {
         lbl.setOnMouseClicked(mouseEvent ->{
              MovieInformationController movieInfo = new MovieInformationController();
             try {
-                guiWindowManager = GUIWindowManager.getInstance();
+
                 if(!guiWindowManager.isMovieInformationControllerOpen()){
                     guiWindowManager.setMovieInformationControllerOpen(true);
                     movieInfo.openMovieInformation(lbl.getText());
@@ -127,7 +116,7 @@ public class mainMoviePage2Controller {
         m2.openMainMovieView();
     }
     public void btnMyMoviesOnClick(ActionEvent e) throws IOException {
-        guiWindowManager = GUIWindowManager.getInstance();
+
         if(!guiWindowManager.isMyRatedMoviesOpen()){
             guiWindowManager.setMyRatedMoviesOpen(true);
             MyRatedMoviesController myRatedMoviesController = new MyRatedMoviesController();
@@ -137,7 +126,6 @@ public class mainMoviePage2Controller {
 
     }
     public void logOutOnClick(ActionEvent e) throws IOException, URISyntaxException, InterruptedException {
-        guiWindowManager = GUIWindowManager.getInstance();
         if(!guiWindowManager.isMovieInformationControllerOpen() && !guiWindowManager.isAccountSettingOpen() && !guiWindowManager.isMyRatedMoviesOpen()) {
             Stage stage = (Stage) btnLogOut.getScene().getWindow();
             stage.close();
@@ -146,11 +134,8 @@ public class mainMoviePage2Controller {
         }
 
     }
-
-
-
     public void myAccountBtnOnAction(ActionEvent actionEvent) throws IOException {
-        guiWindowManager = GUIWindowManager.getInstance();
+
         if(!guiWindowManager.isAccountSettingOpen()){
             guiWindowManager.setAccountSettingOpen(true);
             accountSettings = new AccountSettings();
@@ -160,7 +145,7 @@ public class mainMoviePage2Controller {
     }
     public void listViewItemClicked(MouseEvent mouseEvent) throws IOException, SQLException {
         if(mouseEvent.getClickCount() == 2){
-            guiWindowManager = GUIWindowManager.getInstance();
+
             if(!guiWindowManager.isMovieInformationControllerOpen()) {
                 MovieInformationController movieController = new MovieInformationController();
                 String selectedItem = (String) movieListView.getSelectionModel().getSelectedItem();
@@ -182,7 +167,7 @@ public class mainMoviePage2Controller {
     }
 
     public void closeOnClick(ActionEvent actionEvent) {
-        guiWindowManager = GUIWindowManager.getInstance();
+
         if(!guiWindowManager.isAccountSettingOpen() && !guiWindowManager.isMovieInformationControllerOpen() && !guiWindowManager.isMyRatedMoviesOpen()){
             Stage stage = (Stage) btnCLOSE.getScene().getWindow();
             stage.close();
@@ -196,8 +181,9 @@ public class mainMoviePage2Controller {
     }
 
     public void onScroll(ScrollEvent scrollEvent) throws SQLException, IOException {
-        int row = gridPane.getRowCount(); //10
-        gridPane.getRowConstraints().add(new RowConstraints()); //10+1
+        int row = gridPane.getRowCount();
+        gridPane.getRowConstraints().add(new RowConstraints());
+        gridPane.getRowConstraints().add(new RowConstraints());
         if(scrollMovie.getVvalue() > 0.99) {
             for (int r = row; r < gridPane.getRowCount(); r++) {
                 for (int col = 0; col < 6; col++) {
@@ -205,7 +191,7 @@ public class mainMoviePage2Controller {
                     gridPane.add(cellPane, col, r);
                 }
             }
-            scrollMovie.setVvalue(0.90);
+            scrollMovie.setVvalue(0.80);
         }
     }
 }

@@ -7,34 +7,19 @@ public class UserInformation {
 
     // Use a static method to get the instance
     private static UserInformation instance;
-
     public static UserInformation getInstance() {
         if (instance == null) {
             instance = new UserInformation();
         }
         return instance;
     }
-    private String username = "";
-    private String email = "";
-    private String password = "";
-    private  int id = 0;
-
-    private int moviesRated = 0;
-
-    private String lastLogin = "";
-
-    private String registerDate = "";
-
-    private  int ratedSum = 0;
-
-
+    private String username,email,password,lastLogin,registerDate = "";
+    private int moviesRated,id,ratedSum = 0;
+    private double meanScore = 0;
     public void setRatedSum(int ratedSum) {
+
         this.ratedSum = ratedSum;
     }
-
-    private double meanScore = 0;
-
-
 
     public String getLastLogin() {
         return lastLogin;
@@ -53,6 +38,10 @@ public class UserInformation {
     }
 
     public double getMeanScore() {
+        if(moviesRated == 0){
+            meanScore = 0;
+            return meanScore;
+        }
         meanScore = (double) ratedSum / moviesRated;
         return meanScore;
     }
@@ -85,11 +74,9 @@ public class UserInformation {
     public int getMoviesRated(){
         return moviesRated;
     }
-
     public String getPassword() {
         return this.password;
     }
-
     public int getRatedSum() {
         return this.ratedSum;
     }
