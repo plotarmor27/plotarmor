@@ -56,7 +56,7 @@ public class AccountSettings implements Initializable {
 
     public void openAccountSettingOverview() throws IOException {
         accountSettingOverview.setTitle("PlotArmor - MainPage");
-        Parent accountSetting = FXMLLoader.load(getClass().getResource("./myAccount/accountOptionOverview.fxml"));
+        Parent accountSetting = FXMLLoader.load(getClass().getResource("/myAccount/accountOptionOverview.fxml"));
         accountSettingOverview.getIcons().add(new Image("login/rustung.png"));
         Scene scene = new Scene(accountSetting);
         accountSettingOverview.initStyle(StageStyle.UNDECORATED);

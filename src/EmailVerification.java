@@ -47,7 +47,7 @@ public class EmailVerification {
         System.out.println(getInstance().getRegisterController().email);
         email.sendMail(code);
 
-        Parent emailView = FXMLLoader.load(getClass().getResource("./emailVerification/emailVerification.fxml"));
+        Parent emailView = FXMLLoader.load(getClass().getResource("/emailVerification/emailVerification.fxml"));
         emailStage.getIcons().add(new Image("login/rustung.png"));
         emailStage.initStyle(StageStyle.UNDECORATED);
 
@@ -76,7 +76,7 @@ public class EmailVerification {
         System.out.println(getInstance().getResetPasswordController().email);
         email.sendMail(code);
 
-        Parent emailView = FXMLLoader.load(getClass().getResource("./emailVerification/emailVerification.fxml"));
+        Parent emailView = FXMLLoader.load(getClass().getResource("/emailVerification/emailVerification.fxml"));
         emailStage.getIcons().add(new Image("login/rustung.png"));
         emailStage.initStyle(StageStyle.UNDECORATED);
 

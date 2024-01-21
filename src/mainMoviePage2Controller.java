@@ -27,7 +27,7 @@ public class mainMoviePage2Controller {
     public Button btnLogOut,btnCLOSE,btnMyMovies,btnMyAccount;
     public TextField searchMoviesTxtField;
     public Label lblMainMovie;
-    public ListView movieListView;
+    public ListView<String> movieListView;
     public ScrollPane scrollMovie;
     @FXML
     private GridPane gridPane;
@@ -65,7 +65,7 @@ public class mainMoviePage2Controller {
     }
 
     private Pane createCellPane() throws IOException, SQLException {
-        FXMLLoader load = new FXMLLoader(getClass().getResource("./mainMovieView/moviePane.fxml"));
+        FXMLLoader load = new FXMLLoader(getClass().getResource("/mainMovieView/moviePane.fxml"));
         load.load();
 
         Pane pane = (Pane)load.getNamespace().get("paneId");
@@ -77,7 +77,7 @@ public class mainMoviePage2Controller {
         moviePosterPath.remove(0);
 
 
-        lbl.setText(movieNameList.get(0).toString());
+        lbl.setText(movieNameList.get(0));
         movieNameList.remove(0);
 
         Label star = (Label) load.getNamespace().get("starlbl");

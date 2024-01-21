@@ -45,10 +45,10 @@ public class Register {
     public void openRegister() throws IOException {
 
 
-        FXMLLoader loader =  new FXMLLoader((getClass().getResource("./register/register.fxml")));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/register/register.fxml"));
         Parent register =  loader.load();
         registerStage.getIcons().add(new Image("login/rustung.png"));
-        Image background = new Image("./register/register-background.png");
+        Image background = new Image(getClass().getResourceAsStream("/register/register-background.png"));
         RegisterController ctrl = loader.getController();
          Scene scene = new Scene(register);
         registerStage.initStyle(StageStyle.UNDECORATED);

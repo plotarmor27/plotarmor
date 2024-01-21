@@ -35,7 +35,7 @@ public class mainmoviepage2 {
     public void openMainMovieView() throws IOException {
 
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("./mainMovieView/mainmoviepage2.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainMovieView/mainmoviepage2.fxml"));
         Parent mainMoviePage = loader.load();
         Scene scene = new Scene(mainMoviePage);
         mainMovieStage.setResizable(false);

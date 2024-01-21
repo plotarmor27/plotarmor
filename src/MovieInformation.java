@@ -28,7 +28,7 @@ public class MovieInformation {
 
     public void openMovieInformation(String movieName) throws IOException, SQLException {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("./ViewMovieInformation/viewMovieInformation.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/viewMovieInfo/viewMovieInformation.fxml"));
         Parent movieInfo = loader.load();
         Scene scene = new Scene(movieInfo);
         movieInformation.getIcons().add(new Image("login/rustung.png"));

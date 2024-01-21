@@ -38,7 +38,7 @@ public class ResetPassword {
     public void openResetPasswordView() throws IOException {
 
         resetPasswordView.setTitle("PlotArmor - Registration");
-        Parent resetPassword = FXMLLoader.load(getClass().getResource("./resetPasswordView/resetPasswordView.fxml"));
+        Parent resetPassword = FXMLLoader.load(getClass().getResource("/resetPasswordView/resetPasswordView.fxml"));
         resetPasswordView.getIcons().add(new Image("login/rustung.png"));
         Scene scene = new Scene(resetPassword);
         resetPasswordView.initStyle(StageStyle.UNDECORATED);

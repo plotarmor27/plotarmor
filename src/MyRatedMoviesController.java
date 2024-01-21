@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 
 public class MyRatedMoviesController {
 
-    public ListView listVMyRatedMovies;
+    public ListView<Pane> listVMyRatedMovies;
     public Button btnSortRating,btnBack;
     public Label lblSureDeleting,lbHelloUser;
     UserInformation userInfo = UserInformation.getInstance();
@@ -41,7 +41,7 @@ public class MyRatedMoviesController {
             }
     }
     public void addRatedMoviesToList(String movieName, int movieRated) throws IOException {
-        FXMLLoader load = new FXMLLoader(getClass().getResource("./mainMovieView/moviePane.fxml"));
+        FXMLLoader load = new FXMLLoader(getClass().getResource("/mainMovieView/moviePane.fxml"));
         load.load();
 
         Pane pane = (Pane)load.getNamespace().get("movieRatedPane");
