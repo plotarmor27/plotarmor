@@ -18,7 +18,7 @@ public class ResetPasswordController {
     GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
     String code = "";
     String email = "";
-
+    Connection connection = DatabaseConnection.connect();
     DatabaseQueryUser query = new DatabaseQueryUser();
     String codeInput ="";
 
@@ -36,7 +36,7 @@ public class ResetPasswordController {
     public void sendRequestOnClick(ActionEvent actionEvent) throws SQLException, IOException {
         email = txtFEmail.getText();
         //check if the entered email is in the db | if not catch this and send an error to the user on gui
-        Connection connection = DatabaseConnection.connect();
+
         lblResetPasswordERROR.setVisible(true);
         if(connection == null){
             lblResetPasswordERROR.setText("Error connecting to the database!");
@@ -66,7 +66,8 @@ public class ResetPasswordController {
         if(code.equals(codeInput)){
             SendingEmail sendingE = new SendingEmail(email);
             String password = generateRandomPassword();
-            query.updateNewPassword(password,email);
+            String hashValue = generateHashValue(password);
+            query.updateNewPassword(hashValue,email);
             sendingE.sendMailForPwReset(password);
             setUnlockedStatus(connection,email);
             lblResetPasswordERROR.setTextFill(Color.GREEN);
@@ -94,6 +95,10 @@ public class ResetPasswordController {
             password.append(randomChar);
         }
         return password.toString();
+    }
+
+    public String generateHashValue(String pw){
+        return PasswordHashing.hashPassword(pw);
     }
     public void setCodeInput(String codeInput){
         System.out.println(codeInput);
