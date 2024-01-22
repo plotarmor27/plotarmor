@@ -1,4 +1,5 @@
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -70,11 +71,9 @@ public class EmailVerification {
     }
 
     public void openEmailVerificationResetPassword() throws IOException {
-        String code = generateCode();
-        getInstance().getResetPasswordController().code = code;
-        SendingEmail email = new SendingEmail(getInstance().getResetPasswordController().email);
-        System.out.println(getInstance().getResetPasswordController().email);
-        email.sendMail(code);
+
+
+
         Parent emailView = FXMLLoader.load(getClass().getResource("/emailVerification/emailVerification.fxml"));
         emailStage.getIcons().add(new Image("login/rustung.png"));
         emailStage.initStyle(StageStyle.UNDECORATED);
@@ -93,6 +92,14 @@ public class EmailVerification {
         });
         titleBarController.controllTitleBar(emailView,emailStage);
         emailStage.show();
+
+        Platform.runLater(() -> {
+            String code = generateCode();
+            getInstance().getResetPasswordController().code = code;
+            SendingEmail email = new SendingEmail(getInstance().getResetPasswordController().email);
+            System.out.println(getInstance().getResetPasswordController().email);
+            email.sendMail(code);
+        });
     }
 
     public void setRegisterController(RegisterController r){
