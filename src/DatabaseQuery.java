@@ -2,6 +2,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 
 import java.sql.*;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -358,7 +359,7 @@ public class DatabaseQuery {
 class DatabaseQueryUser extends DatabaseQuery{
     public boolean isUserCredentialsValid(Connection connection, String email, String password) {
         // SQL query to check if there's a user with the given email and password
-        String query = "SELECT * FROM plotarmor.user WHERE email = ? AND password = ?";
+        String query = "SELECT * FROM plotarmor.user WHERE email = ?"; // AND password = ?
         try (connection) {
             // Check if the connection is null
             if (connection == null) {
@@ -374,7 +375,7 @@ class DatabaseQueryUser extends DatabaseQuery{
 
                 // Set parameters in the prepared statement
                 preparedStatement.setString(1, email);
-                preparedStatement.setString(2, password);
+                //preparedStatement.setString(2, "$2a$10$wkrZ9JD7WjsFtHL5XV/CFON2guERVeZ/OHVWW/J.xRMIQRrKgRapi");
                 // Explanation:
                 // - In the SQL query represented by query, there are placeholders denoted by ? (question marks).
                 // - These placeholders are used to dynamically insert values into the query.
@@ -388,17 +389,18 @@ class DatabaseQueryUser extends DatabaseQuery{
 
                 // Execute the query
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    if (resultSet.next()) {
-                        // User found, extract additional information (optional)
-                        int id = resultSet.getInt("id");
-                        String pw = resultSet.getString("password");
-                        String email2 = resultSet.getString("email");
-                        // Output additional information (optional)
-                        System.out.println("ID: " + id + ", pw: " + pw + ", Email: " + email2);
-                        saveUserInformation(resultSet);
-                        UserInformation userInfo = UserInformation.getInstance();
-                        setLastLoginToDb(connection,userInfo.getID());
-                        return true;
+                    if (resultSet.next() && PasswordHashing.verifyPassword(password, resultSet.getString("password"))){
+                        //System.out.println(PasswordHashing.verifyPassword(password, resultSet.getString("password")));
+                            // User found, extract additional information (optional)
+                            int id = resultSet.getInt("id");
+                            String pw = resultSet.getString("password");
+                            String email2 = resultSet.getString("email");
+                            // Output additional information (optional)
+                            System.out.println("ID: " + id + ", pw: " + pw + ", Email: " + email2);
+                            saveUserInformation(resultSet);
+                            UserInformation userInfo = UserInformation.getInstance();
+                            setLastLoginToDb(connection, userInfo.getID());
+                            return true;
                     } else {
                         // No user found with the given credentials
                         return false;

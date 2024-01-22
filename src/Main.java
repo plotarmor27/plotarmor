@@ -73,6 +73,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+        System.out.println(PasswordHashing.verifyPassword("admin", "$2a$10$wkrZ9JD7WjsFtHL5XV/CFON2guERVeZ/OHVWW/J.xRMIQRrKgRapi"));
         launch(args);
     }
     public void openLoginView() throws IOException {

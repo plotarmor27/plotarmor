@@ -145,7 +145,7 @@ public class RegisterController {
 
     public boolean insertUserToDB(){
         if(code.equals(codeInput)){
-            dataQuery.createNewUser(connection,email,username,password);
+            dataQuery.createNewUser(connection,email,username,PasswordHashing.hashPassword(password));
             System.out.println("Erfolgreich in die Datenbank eingetragen!");
             return true;
         } else {
