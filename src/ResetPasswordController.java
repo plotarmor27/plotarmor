@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,6 +32,7 @@ public class ResetPasswordController {
     public void openResetPasswordView() throws IOException {
         ResetPassword resetP = new ResetPassword();
         resetP.openResetPasswordView();
+
     }
 
     public void sendRequestOnClick(ActionEvent actionEvent) throws SQLException, IOException {
@@ -41,16 +43,31 @@ public class ResetPasswordController {
         if(connection == null){
             lblResetPasswordERROR.setText("Error connecting to the database!");
         }
+
         else{
+
+
+
             boolean enteredEmailIsinDb = query.emailIsInDb(email);
+
                 if(enteredEmailIsinDb)
                 {
-                    EmailVerificationController emailController = new EmailVerificationController();
-                    emailController.setResetPasswordController(ResetPasswordController.this);
-                    guiWindowManager.setEmailVerificationOpen(true);
-                    emailController.openEmailVerificationResetPassword();
                     lblResetPasswordERROR.setTextFill(Color.GREEN);
                     lblResetPasswordERROR.setText("Successfully sent Verification Link");
+
+                    Platform.runLater(() -> {
+                        EmailVerificationController emailController = new EmailVerificationController();
+                        emailController.setResetPasswordController(ResetPasswordController.this);
+                        guiWindowManager.setEmailVerificationOpen(true);
+                        try {
+                            emailController.openEmailVerificationResetPassword();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+
+
+
                 }
                 else
                 {

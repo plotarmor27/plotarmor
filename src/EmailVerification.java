@@ -75,7 +75,6 @@ public class EmailVerification {
         SendingEmail email = new SendingEmail(getInstance().getResetPasswordController().email);
         System.out.println(getInstance().getResetPasswordController().email);
         email.sendMail(code);
-
         Parent emailView = FXMLLoader.load(getClass().getResource("/emailVerification/emailVerification.fxml"));
         emailStage.getIcons().add(new Image("login/rustung.png"));
         emailStage.initStyle(StageStyle.UNDECORATED);
