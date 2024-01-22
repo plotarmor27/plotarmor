@@ -204,12 +204,13 @@ public class AccountSettings implements Initializable {
             }
             else
             {
+                String hashPassword = PasswordHashing.hashPassword(txtFChangeProperty.getText());
                 // Perform the password change in the database
-                boolean changedPassword = queryUser.changePassword(dbConnection, userInfo.getID(), txtFChangeProperty.getText());
+                boolean changedPassword = queryUser.changePassword(dbConnection, userInfo.getID(), hashPassword);
 
                 if (changedPassword) {
                     // Update the user information and display success message
-                    lblErrorSuccesfullMessage.setText("Successfully changed password: " + userInfo.getPassword() + " to: " + txtFChangeProperty.getText());
+                    lblErrorSuccesfullMessage.setText("Successfully changed password: \n" + userInfo.getPassword() + " \nto: " + txtFChangeProperty.getText());
                     userInfo.setPassword(txtFChangeProperty.getText());
                 } else {
                     // Display an error message if the password change was not successful
