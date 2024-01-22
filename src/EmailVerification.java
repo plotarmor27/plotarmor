@@ -1,5 +1,6 @@
 
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -62,13 +63,21 @@ public class EmailVerification {
         });
         titleBarController.controllTitleBar(emailView,emailStage);
         emailStage.show();
-        Platform.runLater(() -> {
-            String code = generateCode();
-            getInstance().getRegisterController().code = code;
-            SendingEmail email = new SendingEmail(getInstance().getRegisterController().email);
-            System.out.println(getInstance().getRegisterController().email);
-            email.sendMail(code);
-        });
+        Task<String> emailTask = new Task<>() {
+            @Override
+            protected String call() {
+                String code = generateCode();
+                getInstance().getRegisterController().code = code;
+                SendingEmail email = new SendingEmail(getInstance().getRegisterController().email);
+                System.out.println(getInstance().getRegisterController().email);
+                email.sendMail(code);
+                return code;
+            }
+        };
+
+        Thread emailThread = new Thread(emailTask);
+        emailThread.setDaemon(true);
+        emailThread.start();
 
     }
 
@@ -95,13 +104,21 @@ public class EmailVerification {
         titleBarController.controllTitleBar(emailView,emailStage);
         emailStage.show();
 
-        Platform.runLater(() -> {
-            String code = generateCode();
-            getInstance().getResetPasswordController().code = code;
-            SendingEmail email = new SendingEmail(getInstance().getResetPasswordController().email);
-            System.out.println(getInstance().getResetPasswordController().email);
-            email.sendMail(code);
-        });
+        Task<String> emailTask = new Task<>() {
+            @Override
+            protected String call() {
+                String code = generateCode();
+                getInstance().getResetPasswordController().code = code;
+                SendingEmail email = new SendingEmail(getInstance().getResetPasswordController().email);
+                System.out.println(getInstance().getResetPasswordController().email);
+                email.sendMail(code);
+                return code;
+            }
+        };
+
+        Thread emailThread = new Thread(emailTask);
+        emailThread.setDaemon(true);
+        emailThread.start();
     }
 
     public void setRegisterController(RegisterController r){
