@@ -42,11 +42,7 @@ public class EmailVerification {
     TitleBarController titleBarController = new TitleBarController();
 
     public void openEmailVerification() throws IOException {
-        String code = generateCode();
-        getInstance().getRegisterController().code = code;
-        SendingEmail email = new SendingEmail(getInstance().getRegisterController().email);
-        System.out.println(getInstance().getRegisterController().email);
-        email.sendMail(code);
+
 
         Parent emailView = FXMLLoader.load(getClass().getResource("/emailVerification/emailVerification.fxml"));
         emailStage.getIcons().add(new Image("login/rustung.png"));
@@ -66,7 +62,13 @@ public class EmailVerification {
         });
         titleBarController.controllTitleBar(emailView,emailStage);
         emailStage.show();
-
+        Platform.runLater(() -> {
+            String code = generateCode();
+            getInstance().getRegisterController().code = code;
+            SendingEmail email = new SendingEmail(getInstance().getRegisterController().email);
+            System.out.println(getInstance().getRegisterController().email);
+            email.sendMail(code);
+        });
 
     }
 
