@@ -26,11 +26,11 @@
             <font>
                 <Font size="15.0" />
             </font></Text>
-        <SVGPath fx:id="starOne" content="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218" fill="WHITE" layoutX="231.0" layoutY="383.0" onMouseClicked="#starsClicked" onMouseEntered="#starsWhenMouseEntered" onMouseExited="#starsWhenMouseExit" scaleX="1.5" scaleY="1.5" stroke="BLACK" />
-        <SVGPath fx:id="starTwo" content="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218" fill="WHITE" layoutX="261.0" layoutY="383.0" onMouseClicked="#starsClicked" onMouseEntered="#starsWhenMouseEntered" onMouseExited="#starsWhenMouseExit" scaleX="1.5" scaleY="1.5" stroke="BLACK" />
-        <SVGPath fx:id="starThree" content="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218" fill="WHITE" layoutX="291.0" layoutY="383.0" onMouseClicked="#starsClicked" onMouseEntered="#starsWhenMouseEntered" onMouseExited="#starsWhenMouseExit" scaleX="1.5" scaleY="1.5" stroke="BLACK" />
-        <SVGPath fx:id="starFour" content="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218" fill="WHITE" layoutX="321.0" layoutY="383.0" onMouseClicked="#starsClicked" onMouseEntered="#starsWhenMouseEntered" onMouseExited="#starsWhenMouseExit" scaleX="1.5" scaleY="1.5" stroke="BLACK" />
-        <SVGPath fx:id="starFive" content="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218" fill="WHITE" layoutX="351.0" layoutY="383.0" onMouseClicked="#starsClicked" onMouseEntered="#starsWhenMouseEntered" onMouseExited="#starsWhenMouseExit" scaleX="1.5" scaleY="1.5" stroke="BLACK" />
+        <SVGPath fx:id="starOne" content="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218" fill="WHITE" layoutX="231.0" layoutY="393.0" onMouseClicked="#starsClicked" onMouseEntered="#starsWhenMouseEntered" onMouseExited="#starsWhenMouseExit" scaleX="1.5" scaleY="1.5" stroke="BLACK" />
+        <SVGPath fx:id="starTwo" content="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218" fill="WHITE" layoutX="261.0" layoutY="393.0" onMouseClicked="#starsClicked" onMouseEntered="#starsWhenMouseEntered" onMouseExited="#starsWhenMouseExit" scaleX="1.5" scaleY="1.5" stroke="BLACK" />
+        <SVGPath fx:id="starThree" content="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218" fill="WHITE" layoutX="291.0" layoutY="393.0" onMouseClicked="#starsClicked" onMouseEntered="#starsWhenMouseEntered" onMouseExited="#starsWhenMouseExit" scaleX="1.5" scaleY="1.5" stroke="BLACK" />
+        <SVGPath fx:id="starFour" content="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218" fill="WHITE" layoutX="321.0" layoutY="393.0" onMouseClicked="#starsClicked" onMouseEntered="#starsWhenMouseEntered" onMouseExited="#starsWhenMouseExit" scaleX="1.5" scaleY="1.5" stroke="BLACK" />
+        <SVGPath fx:id="starFive" content="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218" fill="WHITE" layoutX="351.0" layoutY="393.0" onMouseClicked="#starsClicked" onMouseEntered="#starsWhenMouseEntered" onMouseExited="#starsWhenMouseExit" scaleX="1.5" scaleY="1.5" stroke="BLACK" />
         <Button fx:id="btnClose" layoutX="563.0" layoutY="10.0" mnemonicParsing="false" onAction="#closeOnClick" style="-fx-background-color: transparent; -fx-border-color: red;" text="X" textFill="WHITE">
             <cursor>
                 <Cursor fx:constant="HAND" />
@@ -40,7 +40,7 @@
             <font>
                 <Font size="15.0" />
             </font></Text>
-        <Label layoutX="190.0" layoutY="384.0" text="Rate:" textFill="WHITE" underline="true" />
+        <Label layoutX="190.0" layoutY="394.0" text="Rate:" textFill="WHITE" underline="true" />
         <Label fx:id="lblMovieName" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="182.0" layoutY="125.0" prefHeight="30.0" prefWidth="413.0" text="Avatar" textFill="WHITE">
             <font>
                 <Font name="Bell MT" size="18.0" />
@@ -61,7 +61,7 @@
             </font>
         </Label>
         <Label fx:id="lblSuccessFailedRating" layoutX="139.0" layoutY="427.0" prefHeight="17.0" prefWidth="378.0" text="Label" textFill="#26ff00" visible="false" />
-      <CheckBox fx:id="rBtnaddNote" layoutX="411.0" layoutY="385.0" mnemonicParsing="false" onAction="#addNoteOnChecked" text="add Note" textFill="WHITE" />
+      <CheckBox fx:id="rBtnaddNote" layoutX="411.0" layoutY="395.0" mnemonicParsing="false" onAction="#addNoteOnChecked" text="add Note" textFill="WHITE" />
       <TextArea fx:id="txtFieldNotes" layoutX="101.0" layoutY="433.0" prefHeight="88.0" prefWidth="406.0" promptText="Add your Notes here" />
     </children>
 </AnchorPane>
