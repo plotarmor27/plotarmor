@@ -124,7 +124,7 @@ public class Main extends Application {
                     lblLoginFailed.setText("Account is currently locked,\nplease request a new password!");
                 }
                 else{
-                    if(dataQuery.isUserCredentialsValid(connection,email,password)){
+                    if(password.length() < 73 && dataQuery.isUserCredentialsValid(connection,email,password)){
                         // successfully logged in
                         lblLoginFailed.setTextFill(Color.GREEN);
                         lblLoginFailed.setText("You will be logged\nin a second...!");
