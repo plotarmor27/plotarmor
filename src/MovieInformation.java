@@ -31,6 +31,7 @@ public class MovieInformation {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/viewMovieInfo/viewMovieInformation.fxml"));
         Parent movieInfo = loader.load();
         Scene scene = new Scene(movieInfo);
+        scene.getStylesheets().add("/viewMovieInfo/notes.css");
         movieInformation.getIcons().add(new Image("login/rustung.png"));
         movieInformation.initStyle(StageStyle.UNDECORATED);
         movieInformation.setResizable(false);
