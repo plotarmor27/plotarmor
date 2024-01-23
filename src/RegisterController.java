@@ -11,7 +11,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class RegisterController {
-    public Label lblAvailableNotAvailable, lblError;
+    public Label lblAvailableNotAvailable, lblError, lblPasswordMinChars;
     String codeInput ="";
     String code = "12345";
     String email,username,password,repeatPassword = "";
@@ -24,6 +24,7 @@ public class RegisterController {
     public CheckBox radioB16YearsOld;
     public AnchorPane registerPane;
     boolean userIsInUse = false;
+    boolean isPwLengthCorrect = false;
 
     DatabaseQueryUser dataQuery = new DatabaseQueryUser();
     EmailVerificationController emailController;
@@ -50,6 +51,26 @@ public class RegisterController {
                     }
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
+                }
+            }
+        });
+        txtFPassword.focusedProperty().addListener((ov, oldV, newV) -> {
+            if(!newV){
+                if(txtFPassword.getText().isEmpty()){
+                    return;
+                }
+                if(txtFPassword.getText().length() < 10){
+                    lblPasswordMinChars.setVisible(true);
+                    lblPasswordMinChars.setTextFill(Color.RED);
+                    isPwLengthCorrect = false;
+                } else if(txtFPassword.getText().length() > 72){
+                    lblPasswordMinChars.setVisible(true);
+                    lblPasswordMinChars.setTextFill(Color.RED);
+                    lblPasswordMinChars.setText("Max. 72 Characters!");
+                    isPwLengthCorrect = false;
+                } else {
+                    lblPasswordMinChars.setVisible(false);
+                    isPwLengthCorrect = true;
                 }
             }
         });
@@ -97,7 +118,7 @@ public class RegisterController {
                 lblError.setText("Email is already registered!");
             }
             else{
-                if(credentialsAreValid(email,username,password,repeatPassword) && radioB16YearsOld.isSelected() && !userIsInUse){
+                if(credentialsAreValid(email,username,password,repeatPassword) && radioB16YearsOld.isSelected() && !userIsInUse && isPwLengthCorrect){
                     emailController.setRegisterController(RegisterController.this);
                     guiWindowManager.setEmailVerificationOpen(true);
                     emailController.openEmailVerification();
@@ -123,12 +144,7 @@ public class RegisterController {
         }
 
         // Check if password is not empty
-        if (password.isEmpty()) {
-            return false;
-        }
-
-        // Check if repeatPassword is not empty and matches the original password
-        if (repeatPassword.isEmpty() || !repeatPassword.equals(password)) {
+        if (!AccountSettings.passwordIsValid(password, repeatPassword)){
             return false;
         }
 

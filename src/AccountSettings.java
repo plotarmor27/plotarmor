@@ -200,7 +200,7 @@ public class AccountSettings implements Initializable {
         {
             // Validate the new password
             if(!passwordIsValid(txtFChangeProperty.getText(),txtRepeatNewProperty.getText())){
-                lblErrorSuccesfullMessage.setText("Please type in valid password with 10 chars");
+                lblErrorSuccesfullMessage.setText("Please type in matching passwords between 9 and 73 chars");
             }
             else
             {
@@ -221,9 +221,9 @@ public class AccountSettings implements Initializable {
 
     }
 
-    private boolean passwordIsValid(String password, String repeatPassword) {
+    public static boolean passwordIsValid(String password, String repeatPassword) {
         // Check if email is not empty
-        if (password.isEmpty() || repeatPassword.isEmpty()  || !password.equals(repeatPassword) || password.length() < 10) {
+        if (password.isEmpty() || repeatPassword.isEmpty()  || !password.equals(repeatPassword) || password.length() < 10 || password.length() > 72) {
             return false;
         }
 
