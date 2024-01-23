@@ -101,7 +101,7 @@
                <font>
                   <Font name="Cambria" size="14.0" />
                </font></Label>
-            <Label fx:id="lblErrorSuccesfullMessage" layoutX="14.0" layoutY="210.0" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="350.0" text="Error/ Successfull" textFill="WHITE" visible="false" />
+            <Label fx:id="lblErrorSuccesfullMessage" layoutX="14.0" layoutY="210.0" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="350.0" text="Error&#10;/ &#10;Successfull" textFill="WHITE" visible="false" />
             <Label fx:id="lblregisterDate" layoutX="14.0" layoutY="115.0" text="Registerdate:" textFill="WHITE">
                <font>
                   <Font name="Cambria" size="14.0" />
