@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="477.0" prefWidth="600.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MovieInformationController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="547.0" prefWidth="600.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MovieInformationController">
     <children>
         <ImageView fx:id="imageBackground" fitHeight="258.0" fitWidth="600.0" layoutX="-1.0" opacity="0.59" pickOnBounds="true">
             <image>
@@ -61,5 +61,7 @@
             </font>
         </Label>
         <Label fx:id="lblSuccessFailedRating" layoutX="139.0" layoutY="427.0" prefHeight="17.0" prefWidth="378.0" text="Label" textFill="#26ff00" visible="false" />
+      <CheckBox fx:id="rBtnaddNote" layoutX="411.0" layoutY="383.0" mnemonicParsing="false" onAction="#addNoteOnChecked" text="add Note" textFill="WHITE" />
+      <TextArea fx:id="txtFieldNotes" layoutX="101.0" layoutY="430.0" prefHeight="88.0" prefWidth="406.0" promptText="Add your Notes here" />
     </children>
 </AnchorPane>

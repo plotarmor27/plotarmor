@@ -1,6 +1,7 @@
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
@@ -34,6 +35,8 @@ public class MovieInformationController {
     public Button btnClose;
     @FXML
     public Label lblMovieName,txtMovieSummary,lblaverageVoting,lblSuccessFailedRating;
+    public CheckBox rBtnaddNote;
+    public TextArea txtFieldNotes;
     Connection connection = DatabaseConnection.connect();
     UserInformation userInfo = UserInformation.getInstance();
     DatabaseQuery query = new DatabaseQuery();
@@ -170,5 +173,8 @@ public class MovieInformationController {
 
             }
          }
+    }
+
+    public void addNoteOnChecked(ActionEvent actionEvent) {
     }
 }
