@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="818.0" prefWidth="864.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainMoviePage2Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="818.0" prefWidth="864.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainMoviePage2Controller">
    <children>
       <ImageView fitHeight="232.0" fitWidth="797.0" layoutX="34.0" layoutY="86.0" pickOnBounds="true">
          <image>
@@ -92,7 +103,7 @@
                </RadialGradient>
            </textFill>
        </Label>
-       <TextField fx:id="searchMoviesTxtField" layoutX="142.0" layoutY="45.0" onKeyReleased="#onKeyReleased" prefHeight="27.0" prefWidth="456.0" promptText="Search for Movies" style="-fx-border-color: #3452eb; -fx-background-color: #2A0033; -fx-background-insets: 3; -fx-border-radius: 5; -fx-text-fill: white;" />
+       <TextField fx:id="searchMoviesTxtField" layoutX="212.0" layoutY="45.0" onKeyReleased="#onKeyReleased" prefHeight="27.0" prefWidth="411.0" promptText="Search for Movies" style="-fx-border-color: #3452eb; -fx-background-color: #2A0033; -fx-background-insets: 3; -fx-border-radius: 5; -fx-text-fill: white;" />
        <Button fx:id="btnMyAccount" layoutX="744.0" layoutY="44.0" mnemonicParsing="false" onAction="#myAccountBtnOnAction" prefHeight="29.0" prefWidth="79.0" style="-fx-background-color: transparent; -fx-border-color: gray; -fx-border-radius: 10;" text="Settings" textFill="WHITE">
            <cursor>
                <Cursor fx:constant="HAND" />
@@ -112,7 +123,8 @@
                <Cursor fx:constant="HAND" />
            </cursor>
        </Button>
-      <ListView fx:id="movieListView" editable="true" layoutX="142.0" layoutY="74.0" onMouseClicked="#listViewItemClicked" prefHeight="180.0" prefWidth="456.0" style="-fx-border-color: green; -fx-background-color: black; -fx-text-fiill: white;" />
+      <ListView fx:id="movieListView" editable="true" layoutX="212.0" layoutY="74.0" onMouseClicked="#listViewItemClicked" prefHeight="180.0" prefWidth="411.0" style="-fx-border-color: green; -fx-background-color: black; -fx-text-fiill: white;" />
+      <ComboBox fx:id="cBoxSelection" layoutX="118.0" layoutY="46.0" onAction="#cBoxSelectionOnItemSwitch" prefHeight="25.0" prefWidth="92.0" style="-fx-border-color: #3452eb; -fx-background-color: #2A0033; -fx-text-fill: white; -fx-border-radius: 5;" />
 
    </children>
 </AnchorPane>

@@ -38,6 +38,7 @@ public class mainmoviepage2 {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainMovieView/mainmoviepage2.fxml"));
         Parent mainMoviePage = loader.load();
         Scene scene = new Scene(mainMoviePage);
+        scene.getStylesheets().add("/mainMovieView/mainmoviepage.css");
         mainMovieStage.setResizable(false);
         mainMovieStage.getIcons().add(new Image("login/rustung.png"));
 

@@ -73,6 +73,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+
         System.out.println(PasswordHashing.verifyPassword("admin", "$2a$10$wkrZ9JD7WjsFtHL5XV/CFON2guERVeZ/OHVWW/J.xRMIQRrKgRapi"));
         launch(args);
     }
@@ -101,8 +102,8 @@ public class Main extends Application {
     @FXML
     public void LoginOnAction(ActionEvent e) throws IOException, SQLException {
         // Retrieve user input
-        String email = txtEmail.getText();
-        String password = txtFPassword.getText();
+        String email = "winchester1999@web.de";
+        String password = "admin12345";
         boolean accountIsLocked = false;
         lblLoginFailed.visibleProperty().set(true);
         //Create a connection to the mysql database

@@ -391,6 +391,7 @@ public class DatabaseQuery {
 
     }
 
+
 }
 
 class DatabaseQueryUser extends DatabaseQuery{
@@ -790,4 +791,33 @@ class DatabaseQueryUser extends DatabaseQuery{
         return false;
     }
 
+    public boolean getUserName(Connection connection, ObservableList<String> userNameList) throws SQLException {
+        String query = "SELECT username FROM plotarmor.user";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                String movieName = resultSet.getString("username");
+                userNameList.add(movieName);
+            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception according to your needs
+        }
+        return false;
+
+    }
+
+    public int getUserID(Connection connection, String userName) throws SQLException {
+        String query = "SELECT id FROM plotarmor.user";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                return id;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception according to your needs
+        }
+        return -1;
+    }
 }

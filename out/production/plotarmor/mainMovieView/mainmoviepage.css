@@ -7,3 +7,26 @@
 .scroll-pane .scroll-bar {
     -fx-background-color: transparent;
 }
+
+/* outer combo-box text */
+#cBoxSelection .list-cell {
+  -fx-text-fill: white;
+}
+
+/* combo-box list view text, not hovered or focused */
+#cBoxSelection .list-view .list-cell {
+    -fx-background-color: black;
+  -fx-text-fill: white;
+}
+
+/* combo-box selected text */
+#cBoxSelection .list-view .list-cell:focused {
+  -fx-background-color : #4169E1;
+  -fx-text-fill: white;
+}
+
+/* combo-box hover text */
+#cBoxSelection .list-view .list-cell:hover {
+  -fx-background-color : #4169E1;
+  -fx-text-fill: white;
+}

@@ -1,7 +1,7 @@
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -14,12 +14,10 @@ import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.ResourceBundle;
 
 public class MyRatedMoviesController {
 
@@ -29,19 +27,15 @@ public class MyRatedMoviesController {
     UserInformation userInfo = UserInformation.getInstance();
     ObservableList<Pane> ratedMovies = FXCollections.observableArrayList();
     DatabaseQuery query = new DatabaseQuery();
+    DatabaseQueryUser queryUser = new DatabaseQueryUser();
     Connection connection = DatabaseConnection.connect();
     GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
 
     public void initialize() throws IOException, SQLException {
-        lbHelloUser.setText("Hello : " + userInfo.getUsername());
+        Platform.runLater(()->{
 
-        HashMap<String, Integer> movieRatings = query.getMovieRatingsForUser(connection, userInfo.getID());
+        });
 
-        int movieRated = 0;
-        for (String movieName : movieRatings.keySet()) {
-                movieRated = movieRatings.get(movieName);
-                addRatedMoviesToList(movieName,movieRated);
-            }
     }
     public void addRatedMoviesToList(String movieName, int movieRated) throws IOException, SQLException {
         FXMLLoader load = new FXMLLoader(getClass().getResource("/mainMovieView/moviePane.fxml"));
@@ -121,6 +115,57 @@ public class MyRatedMoviesController {
         ratedMovies.add(pane);
         listVMyRatedMovies.getItems().add(pane);
     }
+
+    public void addRatedMoviesFromOtherUserToList(String movieName, int movieRated, int id) throws IOException, SQLException {
+        FXMLLoader load = new FXMLLoader(getClass().getResource("/mainMovieView/moviePane.fxml"));
+        load.load();
+
+        Pane pane = (Pane)load.getNamespace().get("movieRatedPane");
+        Label lbl = (Label)load.getNamespace().get("movieRatedName");
+        TextArea lblNotes = (TextArea)load.getNamespace().get("lblNotes");
+
+
+        SVGPath starTwo = (SVGPath) load.getNamespace().get("starTwo");
+        SVGPath starThree = (SVGPath) load.getNamespace().get("starThree");
+        SVGPath starFour = (SVGPath) load.getNamespace().get("starFour");
+        SVGPath starFive = (SVGPath) load.getNamespace().get("starFive");
+        Button deleteRatedMovie = (Button) load.getNamespace().get("btnDeleteRatedMovie");
+
+        deleteRatedMovie.setVisible(false);
+        lblNotes.setEditable(false);
+
+
+        ImageView moviePoster = (ImageView) load.getNamespace().get("imageVPoster");
+
+
+
+
+        switch (movieRated) {
+            case 1 ->{ starTwo.setVisible(false);
+                starThree.setVisible(false);
+                starFour.setVisible(false);
+                starFive.setVisible(false);
+            }
+
+            case 2 -> { starThree.setVisible(false);
+                starFour.setVisible(false);
+                starFive.setVisible(false);
+            }
+
+            case 3 ->  {  starFour.setVisible(false);
+                starFive.setVisible(false);}
+            case 4 ->  starFive.setVisible(false);
+            case 5 -> movieRated = 5;
+        }
+        lblNotes.setText(query.getMovieNotesForUser(connection,id,movieName));
+        Image poster = new Image(query.getPoster(connection,movieName));
+        moviePoster.setImage(poster);
+        lbl.setText(movieName);
+        Label lblRating = (Label)load.getNamespace().get("lblRatingStoring");
+        lblRating.setText(String.valueOf(movieRated));
+        ratedMovies.add(pane);
+        listVMyRatedMovies.getItems().add(pane);
+    }
     public void goBack(ActionEvent actionEvent) {
         guiWindowManager.setMyRatedMoviesOpen(false);
         Stage stage = (Stage) btnBack.getScene().getWindow();
@@ -161,5 +206,67 @@ public class MyRatedMoviesController {
             }
         }
         return null;
+    }
+
+    public void openRatedListOfSelectedUser(String selectedItemUser) throws IOException {
+        MyRatedMovies myRatedMovies = new MyRatedMovies();
+
+        myRatedMovies.openRatedListOfUser(selectedItemUser);
+    }
+    public void openUsernameList(String user){
+
+        if(user.equals(userInfo.getUsername())){
+            openOwnRatedList();
+        }
+        else
+        {
+            lbHelloUser.setText("This is the list of the user: " + user);
+            int id = 0;
+            try {
+                id = queryUser.getUserID(connection,user);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            HashMap<String, Integer> movieRatings = null;
+            try {
+                movieRatings = query.getMovieRatingsForUser(connection, id);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            int movieRated = 0;
+            for (String movieName : movieRatings.keySet()) {
+                movieRated = movieRatings.get(movieName);
+                try {
+                    addRatedMoviesFromOtherUserToList(movieName,id,movieRated);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+    }
+    public void openOwnRatedList(){
+        lbHelloUser.setText("Hello : " + userInfo.getUsername());
+
+        HashMap<String, Integer> movieRatings = null;
+        try {
+            movieRatings = query.getMovieRatingsForUser(connection, userInfo.getID());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        int movieRated = 0;
+        for (String movieName : movieRatings.keySet()) {
+            movieRated = movieRatings.get(movieName);
+            try {
+                addRatedMoviesToList(movieName,movieRated);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

@@ -41,9 +41,27 @@ public class MyRatedMovies {
         myRatedMoviesStage.setResizable(false);
         myRatedMoviesStage.setScene(scene);
         titleBarController.controllTitleBar(myRated,myRatedMoviesStage);
+        MyRatedMoviesController controller = loader.getController();
+        controller.openOwnRatedList();
         myRatedMoviesStage.show();
 
     }
 
 
+    public void openRatedListOfUser(String selectedItemUser) throws IOException {
+        myRatedMoviesStage.setTitle("PlotArmor - MainPage");
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/viewMyRatedMovies/myRatedMovieView.fxml"));
+        Parent myRated =  loader.load();
+        myRatedMoviesStage.getIcons().add(new Image("login/rustung.png"));
+        Scene scene = new Scene(myRated);
+        myRatedMoviesStage.initStyle(StageStyle.UNDECORATED);
+        myRatedMoviesStage.setResizable(false);
+        myRatedMoviesStage.setScene(scene);
+        titleBarController.controllTitleBar(myRated,myRatedMoviesStage);
+        MyRatedMoviesController controller = loader.getController();
+
+        controller.openUsernameList(selectedItemUser);
+        myRatedMoviesStage.show();
+    }
 }
