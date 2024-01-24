@@ -17,7 +17,7 @@
 .scroll-pane .scroll-bar {
     -fx-background-color: transparent;
 }
-#rBtnaddNote .box {
+#rBtnAddNote .box {
 -fx-background-color: transparent;
 -fx-border-color:white;
 -fx-border-radius:10px;

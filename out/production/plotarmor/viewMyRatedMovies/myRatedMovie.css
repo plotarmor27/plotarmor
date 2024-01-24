@@ -4,3 +4,24 @@
 .list-cell{
 -fx-background-color: transparent;
 }
+
+
+#lblNotes {
+    -fx-text-fill: white;
+    -fx-border-radius: 1%;
+    -fx-prompt-text-fill: white;
+    -fx-border-color:  #eb5f34;
+ }
+.text-area, .text-area .viewport, .text-area .content {
+    -fx-background-color:  transparent ;
+}
+
+#listVMyRatedMovies{
+   -fx-background-color:transparent;
+}
+#listVMyRatedMovies > .viewport {
+   -fx-background-color: transparent;
+}
+#listVMyRatedMovies .scroll-bar {
+    -fx-background-color: transparent;
+}

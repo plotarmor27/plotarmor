@@ -56,7 +56,7 @@ public class MovieInformationController {
         txtFieldNotes.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if(!newValue){
                 if(txtFieldNotes.getText().isEmpty()){
-                    query.updateNotesInDb(connection, userInfo.getID(), this.lblMovieName.getText(), "");
+                    return;
                 } else {
                     query.updateNotesInDb(connection, userInfo.getID(), this.lblMovieName.getText(), txtFieldNotes.getText());
                 }
