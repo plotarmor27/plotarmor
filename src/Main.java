@@ -102,8 +102,8 @@ public class Main extends Application {
     @FXML
     public void LoginOnAction(ActionEvent e) throws IOException, SQLException {
         // Retrieve user input
-        String email = "winchester1999@web.de";
-        String password = "admin12345";
+        String email = txtEmail.getText();
+        String password = txtFPassword.getText();
         boolean accountIsLocked = false;
         lblLoginFailed.visibleProperty().set(true);
         //Create a connection to the mysql database
