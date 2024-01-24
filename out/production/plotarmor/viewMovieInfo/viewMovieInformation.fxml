@@ -62,6 +62,6 @@
         </Label>
         <Label fx:id="lblSuccessFailedRating" layoutX="139.0" layoutY="427.0" prefHeight="17.0" prefWidth="378.0" text="Label" textFill="#26ff00" visible="false" />
       <CheckBox fx:id="rBtnaddNote" layoutX="411.0" layoutY="385.0" mnemonicParsing="false" onAction="#addNoteOnChecked" text="add Note" textFill="WHITE" />
-      <TextArea fx:id="txtFieldNotes" layoutX="101.0" layoutY="433.0" prefHeight="88.0" prefWidth="406.0" promptText="Add your Notes here" />
+      <TextArea fx:id="txtFieldNotes" layoutX="101.0" layoutY="430.0" prefHeight="88.0" prefWidth="406.0" promptText="Add your Notes here" />
     </children>
 </AnchorPane>

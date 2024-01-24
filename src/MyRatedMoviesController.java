@@ -1,11 +1,14 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
@@ -40,12 +43,14 @@ public class MyRatedMoviesController {
                 addRatedMoviesToList(movieName,movieRated);
             }
     }
-    public void addRatedMoviesToList(String movieName, int movieRated) throws IOException {
+    public void addRatedMoviesToList(String movieName, int movieRated) throws IOException, SQLException {
         FXMLLoader load = new FXMLLoader(getClass().getResource("/mainMovieView/moviePane.fxml"));
         load.load();
 
         Pane pane = (Pane)load.getNamespace().get("movieRatedPane");
         Label lbl = (Label)load.getNamespace().get("movieRatedName");
+        TextArea lblNotes = (TextArea)load.getNamespace().get("lblNotes");
+
 
         SVGPath starTwo = (SVGPath) load.getNamespace().get("starTwo");
         SVGPath starThree = (SVGPath) load.getNamespace().get("starThree");
@@ -53,6 +58,7 @@ public class MyRatedMoviesController {
         SVGPath starFive = (SVGPath) load.getNamespace().get("starFive");
         Button deleteRatedMovie = (Button) load.getNamespace().get("btnDeleteRatedMovie");
 
+        ImageView moviePoster = (ImageView) load.getNamespace().get("imageVPoster");
         deleteRatedMovie.setOnMouseClicked(e ->{
                     if(e.getClickCount() == 2){
                         lblSureDeleting.setVisible(false);
@@ -70,6 +76,23 @@ public class MyRatedMoviesController {
                         lblSureDeleting.setText("Are you sure, you want to delete: " +lbl.getText()+" ?");
                     }
 
+        });
+        lblNotes.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue){
+                if(lblNotes.getText().isEmpty()){
+                    query.updateNotesInDb(connection, userInfo.getID(), movieName, "");
+                } else {
+                    query.updateNotesInDb(connection, userInfo.getID(), movieName, lblNotes.getText());
+                }
+            }
+        });
+        //when pressed Enter, save the changed note and lose focus of lblNotes Textarea
+        lblNotes.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                event.consume();
+                // Den Fokus von der TextArea nehmen
+                lblNotes.getParent().requestFocus();
+            }
         });
 
         switch (movieRated) {
@@ -89,7 +112,9 @@ public class MyRatedMoviesController {
             case 4 ->  starFive.setVisible(false);
             case 5 -> movieRated = 5;
         }
-
+        lblNotes.setText(query.getMovieNotesForUser(connection,userInfo.getID(),movieName));
+        Image poster = new Image(query.getPoster(connection,movieName));
+        moviePoster.setImage(poster);
         lbl.setText(movieName);
         Label lblRating = (Label)load.getNamespace().get("lblRatingStoring");
         lblRating.setText(String.valueOf(movieRated));
