@@ -1,0 +1,29 @@
+#txtFieldNotes {
+    -fx-text-fill: white;
+    -fx-border-radius: 1%;
+    -fx-prompt-text-fill: white;
+    -fx-border-color:  #eb5f34;
+ }
+.text-area, .text-area .viewport, .text-area .content {
+    -fx-background-color:  black ;
+}
+
+.scroll-pane{
+   -fx-background-color:transparent;
+}
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
+.scroll-pane .scroll-bar {
+    -fx-background-color: transparent;
+}
+#rBtnaddNote .box {
+-fx-background-color: transparent;
+-fx-border-color:white;
+-fx-border-radius:10px;
+}
+.check-box:selected .mark {
+
+-fx-background-color: yellow;
+
+}

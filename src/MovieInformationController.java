@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -35,11 +36,35 @@ public class MovieInformationController {
     public Button btnClose;
     @FXML
     public Label lblMovieName,txtMovieSummary,lblaverageVoting,lblSuccessFailedRating;
-    public CheckBox rBtnaddNote;
+    public CheckBox rBtnAddNote;
+
     public TextArea txtFieldNotes;
     Connection connection = DatabaseConnection.connect();
     UserInformation userInfo = UserInformation.getInstance();
     DatabaseQuery query = new DatabaseQuery();
+
+    public void initialize() {
+        Platform.runLater(() -> {
+                    Stage stage = (Stage) btnClose.getScene().getWindow();
+                    stage.setHeight(433);
+                    txtFieldNotes.setVisible(false);
+                    loadMovieNotes();
+                });
+        rBtnAddNote.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            resizeWindow(newValue);
+        });
+        txtFieldNotes.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue){
+                if(txtFieldNotes.getText().isEmpty()){
+                    return;
+                } else {
+                    query.updateNotesInDb(connection, userInfo.getID(), this.lblMovieName.getText(), txtFieldNotes.getText());
+                }
+            }
+        });
+    }
+
+
 
     public void closeOnClick(ActionEvent actionEvent) {
         GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
@@ -177,4 +202,25 @@ public class MovieInformationController {
 
     public void addNoteOnChecked(ActionEvent actionEvent) {
     }
+
+    private void resizeWindow(boolean isChecked) {
+        Stage stage = (Stage) rBtnAddNote.getScene().getWindow();
+        if (isChecked) {
+            stage.setHeight(547);
+            txtFieldNotes.setVisible(true);
+        } else {
+            stage.setHeight(433);
+            txtFieldNotes.setVisible(false);
+        }
+    }
+
+    private void loadMovieNotes() {
+        try {
+            String notes = query.getMovieNotesForUser(connection, userInfo.getID(), lblMovieName.getText());
+            Platform.runLater(() -> txtFieldNotes.setText(notes));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
+

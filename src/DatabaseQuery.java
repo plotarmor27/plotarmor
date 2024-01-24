@@ -310,6 +310,23 @@ public class DatabaseQuery {
         return uniqueMovieRatings;
     }
 
+    public String getMovieNotesForUser(Connection connection, int userId, String movieName) throws SQLException {
+        String query = "SELECT notes FROM ratedMovies WHERE userid = ? AND movieName = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1, userId);
+        preparedStatement.setString(2, movieName);
+        String notes = "";
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            if(resultSet.next()) {
+                notes = resultSet.getString("notes");
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions appropriately in a real application
+        }
+        return notes;
+    }
+
     public boolean deleteUserRating(Connection connection,int userId,String movieName){
         String deleteQuery = "DELETE FROM plotarmor.ratedmovies WHERE userid = ? AND movieName = ?";
 
@@ -345,6 +362,26 @@ public class DatabaseQuery {
 
                 insertStatement.executeUpdate();
                 System.out.println("Bewertung erfolgreich geupdated.");
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions appropriately in a real application
+        }
+        return false;
+
+    }
+
+    public boolean updateNotesInDb(Connection connection, int userid, String movieName, String notes) {
+        try {
+            // update movie rating
+            String insertQuery = "UPDATE plotarmor.ratedMovies SET notes = ? WHERE userid = ? AND movieName = ?";
+
+            try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
+                insertStatement.setString(1, notes);
+                insertStatement.setInt(2, userid);
+                insertStatement.setString(3, movieName);
+                insertStatement.executeUpdate();
+                System.out.println("Notes erfolgreich geupdated.");
                 return true;
             }
         } catch (SQLException e) {
