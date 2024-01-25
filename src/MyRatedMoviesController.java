@@ -32,10 +32,6 @@ public class MyRatedMoviesController {
     GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
 
     public void initialize() throws IOException, SQLException {
-        Platform.runLater(()->{
-
-        });
-
     }
     public void addRatedMoviesToList(String movieName, int movieRated) throws IOException, SQLException {
         FXMLLoader load = new FXMLLoader(getClass().getResource("/mainMovieView/moviePane.fxml"));
@@ -44,7 +40,7 @@ public class MyRatedMoviesController {
         Pane pane = (Pane)load.getNamespace().get("movieRatedPane");
         Label lbl = (Label)load.getNamespace().get("movieRatedName");
         TextArea lblNotes = (TextArea)load.getNamespace().get("lblNotes");
-
+        System.out.println(lblNotes.getText());
 
         SVGPath starTwo = (SVGPath) load.getNamespace().get("starTwo");
         SVGPath starThree = (SVGPath) load.getNamespace().get("starThree");
@@ -73,7 +69,7 @@ public class MyRatedMoviesController {
         });
         lblNotes.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if(!newValue){
-                if(lblNotes.getText().isEmpty()){
+                if(lblNotes.equals(null)){
                     query.updateNotesInDb(connection, userInfo.getID(), movieName, "");
                 } else {
                     query.updateNotesInDb(connection, userInfo.getID(), movieName, lblNotes.getText());
@@ -223,7 +219,9 @@ public class MyRatedMoviesController {
             lbHelloUser.setText("This is the list of the user: " + user);
             int id = 0;
             try {
+
                 id = queryUser.getUserID(connection,user);
+
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -235,9 +233,11 @@ public class MyRatedMoviesController {
             }
             int movieRated = 0;
             for (String movieName : movieRatings.keySet()) {
+
                 movieRated = movieRatings.get(movieName);
                 try {
-                    addRatedMoviesFromOtherUserToList(movieName,id,movieRated);
+
+                    addRatedMoviesFromOtherUserToList(movieName,movieRated,id);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 } catch (SQLException e) {

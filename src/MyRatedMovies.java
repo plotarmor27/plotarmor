@@ -43,6 +43,7 @@ public class MyRatedMovies {
         titleBarController.controllTitleBar(myRated,myRatedMoviesStage);
         MyRatedMoviesController controller = loader.getController();
         controller.openOwnRatedList();
+
         myRatedMoviesStage.show();
 
     }
