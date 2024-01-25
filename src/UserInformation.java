@@ -1,6 +1,6 @@
 /**
  * The UserInformation class represents a singleton object that holds information about the current user.
- * It stores user-specific data such as username, email, password, user ID, and the number of movies rated.
+ * It stores user-specific data such as username, email, password, user ID,the number of movies  and mean score.
  * This class follows the Singleton design pattern to ensure only one instance exists during the application lifecycle.
  */
 public class UserInformation {

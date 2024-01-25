@@ -58,6 +58,7 @@ public class EmailVerificationController {
         EmailVerification email = new EmailVerification();
         email.openEmailVerificationResetPassword();
     }
+    //button handler for the button in the email verification view
     public void verifyAccountCode(ActionEvent actionEvent) throws IOException, SQLException {
         emailV = EmailVerification.getInstance();
 
@@ -71,6 +72,7 @@ public class EmailVerificationController {
         }
 
     }
+    //function for the verifying of the register process
     public void verifyAccountRegisterCode(String codeInput) throws IOException {
         emailV.getRegisterController().setCodeInput(codeInput);
         if(emailV.getRegisterController().insertUserToDB()){
@@ -99,6 +101,7 @@ public class EmailVerificationController {
 
         }
     }
+    //function for the verifying of the resetpassword process
     public void verifyResetPasswordCode(String codeInput) throws SQLException {
         emailV.getResetPasswordController().setCodeInput(codeInput);
         boolean successfullySendPassword = emailV.getResetPasswordController().sendPasswordTokenToUser();

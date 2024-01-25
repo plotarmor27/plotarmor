@@ -1,3 +1,7 @@
+/**
+ * Manages the status of various GUI windows in the application.
+ * Singleton class to ensure only one instance is created.
+ */
 public class GUIWindowManager {
     private static GUIWindowManager instance;
 

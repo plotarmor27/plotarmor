@@ -13,28 +13,14 @@ import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
-/**
- * The ResetPassword class represents a controller for resetting a user's password.
- * It provides methods to open a reset password view, handle close button clicks,
- * and initiate a password reset request.
- *
- * Features include:
- * - Opening a reset password view.
- * - Handling close button clicks to close the view.
- * - Initiating a password reset request (placeholder for future functionality).
- *
- * Usage:
- * - Create an instance of the ResetPassword class.
- * - Call the `openResetPasswordView` method to display the reset password view.
- * - Implement functionality for handling close button clicks and password reset requests.
- */
+//Class responsible for handling the reset password view.
 public class ResetPassword {
 
 
     Stage resetPasswordView = new Stage();
     TitleBarController titleBarController = new TitleBarController();
 
-
+    //Opens the reset password view.
     public void openResetPasswordView() throws IOException {
 
         resetPasswordView.setTitle("PlotArmor - Registration");

@@ -5,8 +5,6 @@ import java.sql.*;
 
 /**
  * Establishes a connection to the MySQL database.
- *
- * @return Connection object if successful, null otherwise.
  */
 public class DatabaseConnection {
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/plotArmor";

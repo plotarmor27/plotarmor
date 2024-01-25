@@ -12,8 +12,11 @@ import java.sql.SQLException;
 
 public class RegisterController {
     public Label lblAvailableNotAvailable, lblError, lblPasswordMinChars;
+    // Verification code variables
     String codeInput ="";
     String code = "12345";
+
+    // User input fields
     String email,username,password,repeatPassword = "";
     Connection connection = DatabaseConnection.connect();
     public TextField txtFUsername,txtFEmail;
@@ -23,6 +26,8 @@ public class RegisterController {
 
     public CheckBox radioB16YearsOld;
     public AnchorPane registerPane;
+
+    // Flags for checking user availability and password length
     boolean userIsInUse = false;
     boolean isPwLengthCorrect = false;
 
@@ -30,6 +35,7 @@ public class RegisterController {
     EmailVerificationController emailController;
 
     public void initialize() {
+        // Listener for the username field focus change
         txtFUsername.focusedProperty().addListener((ov, oldV, newV) -> {
             if (!newV) { // focus lost, check if username is in use by checking if the username has an entry in the database
                 if(connection == null){
@@ -41,6 +47,7 @@ public class RegisterController {
                     return;
                 }
                 try {
+                    // Check if the entered username is in use
                     if(dataQuery.userNameIsInUse(connection,txtFUsername.getText())){
                         lblAvailableNotAvailable.setVisible(true);
                         lblAvailableNotAvailable.setTextFill(Color.RED);
@@ -58,6 +65,8 @@ public class RegisterController {
                 }
             }
         });
+        // Listener for the password field focus change
+        // Check if the password length is within the valid range
         txtFPassword.focusedProperty().addListener((ov, oldV, newV) -> {
             if(!newV){
                 if(txtFPassword.getText().isEmpty()){
@@ -81,6 +90,7 @@ public class RegisterController {
     }
 
     public void backtoLoginOnClick(ActionEvent actionEvent) throws IOException {
+        //gets the current window, closes it and opens Login view
         GUIWindowManager windowManager = GUIWindowManager.getInstance();
         if(!windowManager.isEmailVerificationOpen()){
             Stage stage = (Stage) btnClose.getScene().getWindow();
@@ -91,6 +101,7 @@ public class RegisterController {
     }
     @FXML
     public void closeOnAction(ActionEvent e){
+        //gets the current window, closes it
         GUIWindowManager windowManager = GUIWindowManager.getInstance();
         if(!windowManager.isEmailVerificationOpen()){
             Stage stage = (Stage) btnClose.getScene().getWindow();
@@ -102,7 +113,10 @@ public class RegisterController {
     public void registerOnAction(ActionEvent e) throws IOException, SQLException {
         emailController = new EmailVerificationController();
         GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
+        // Check if email verification window is already open
         boolean emailVerificationIsActive = guiWindowManager.isEmailVerificationOpen();
+
+        // Get user inputs
         email = txtFEmail.getText();
         username = txtFUsername.getText();
         password = txtFPassword.getText();
@@ -111,10 +125,11 @@ public class RegisterController {
         lblError.setText("");
         lblError.setVisible(true);
 
+        // Check for a successful database connection
         if(connection == null){
             lblError.setText("Error connecting to the database");
         }
-
+        // Proceed if email verification is not active and there is a valid database connection
         if(!emailVerificationIsActive && connection != null){
             //check if email is already registered
             boolean emailIsAlreadyRegistered = dataQuery.emailIsInDb(email);
@@ -122,8 +137,10 @@ public class RegisterController {
                 lblError.setText("Email is already registered!");
             }
             else{
+                // Check if user credentials are valid and initiate email verification
                 if(credentialsAreValid(email,username,password,repeatPassword) && radioB16YearsOld.isSelected() && !userIsInUse && isPwLengthCorrect){
                     emailController.setRegisterController(RegisterController.this);
+                    // Open the email verification window
                     guiWindowManager.setEmailVerificationOpen(true);
                     emailController.openEmailVerification();
                 }
@@ -164,11 +181,15 @@ public class RegisterController {
     }
 
     public boolean insertUserToDB(){
+        // Check if the verification code is correct
         if(code.equals(codeInput)){
+            // Create a new user in the database with hashed password
             dataQuery.createNewUser(connection,email,username,PasswordHashing.hashPassword(password));
             System.out.println("Erfolgreich in die Datenbank eingetragen!");
             return true;
         } else {
+            //generate a new verification code
+
             System.out.println("Der eingegebene Code ist falsch! Ein neuer Code wird generiert.");
             return false;
         }

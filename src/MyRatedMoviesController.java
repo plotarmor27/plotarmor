@@ -20,7 +20,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 public class MyRatedMoviesController {
-
+    // FXML components
     public ListView<Pane> listVMyRatedMovies;
     public Button btnSortRating,btnBack;
     public Label lblSureDeleting,lbHelloUser;
@@ -33,6 +33,7 @@ public class MyRatedMoviesController {
 
     public void initialize() throws IOException, SQLException {
     }
+    //Add rated movies to the list for the current user.
     public void addRatedMoviesToList(String movieName, int movieRated) throws IOException, SQLException {
         FXMLLoader load = new FXMLLoader(getClass().getResource("/mainMovieView/moviePane.fxml"));
         load.load();
@@ -111,7 +112,7 @@ public class MyRatedMoviesController {
         ratedMovies.add(pane);
         listVMyRatedMovies.getItems().add(pane);
     }
-
+    //Add rated movies from another user to the list.
     public void addRatedMoviesFromOtherUserToList(String movieName, int movieRated, int id) throws IOException, SQLException {
         FXMLLoader load = new FXMLLoader(getClass().getResource("/mainMovieView/moviePane.fxml"));
         load.load();
@@ -162,6 +163,7 @@ public class MyRatedMoviesController {
         ratedMovies.add(pane);
         listVMyRatedMovies.getItems().add(pane);
     }
+    //Navigate back to the previous window.
     public void goBack(ActionEvent actionEvent) {
         guiWindowManager.setMyRatedMoviesOpen(false);
         Stage stage = (Stage) btnBack.getScene().getWindow();
@@ -171,6 +173,7 @@ public class MyRatedMoviesController {
         MyRatedMovies myRatedMovies = new MyRatedMovies();
         myRatedMovies.openMyRatedMoviesView();
     }
+    //sort ratings
     public void sortRatinOnClick(ActionEvent actionEvent) {
         // Create a comparator for RatedMoviePane based on the rating
         Comparator<Pane> ratingComparator = Comparator.comparingInt(this::getRatingFromPane).reversed();
@@ -183,6 +186,7 @@ public class MyRatedMoviesController {
 
     }
 
+    //helper functions to get the rating which was inserted in the pane object
     private int getRatingFromPane(Pane pane) {
         Label ratingLabel = findRatingLabel(pane);
         if (ratingLabel != null) {
@@ -203,7 +207,7 @@ public class MyRatedMoviesController {
         }
         return null;
     }
-
+    //opens the rated list of a selected user
     public void openRatedListOfSelectedUser(String selectedItemUser) throws IOException {
         MyRatedMovies myRatedMovies = new MyRatedMovies();
 

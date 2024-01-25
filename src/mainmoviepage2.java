@@ -12,22 +12,6 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
-/**
- * The MainMoviePage class represents the main page of the PlotArmor application,
- * where users can browse and interact with a list of movies. It includes features
- * such as searching for movies, viewing movie details, accessing user-specific pages,
- * and logging out.
- *
- * Features include:
- * - Displaying a list of movies in a ListView.
- * - Searching and filtering movies based on user input.
- * - Opening detailed information about a selected movie.
- * - Navigating to the user's rated movies and account settings.
- * - Logging out from the application.
- *
- * The class uses the DatabaseQuery class for interacting with the database, and it also
- * incorporates a TitleBarController for managing the custom title bar of the main window.
- */
 
 public class mainmoviepage2 {
     Stage mainMovieStage = new Stage();

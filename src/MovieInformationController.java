@@ -17,17 +17,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 /**
- * The MovieInformationController class is the controller for the MovieInformation.fxml file.
- * It handles user interactions and updates the UI components in the movie information window.
- *
- * Features include:
- * - Closing the movie information window upon button click.
- * - Handling mouse events for star ratings (filling stars with color on hover).
- * - Displaying movie details such as name, description, duration, release date, and genre.
- * - Handling star rating clicks and printing the selected number of stars.
- *
- * The class uses methods to set various UI elements based on movie details retrieved from the database.
- * Proper exception handling is implemented for potential SQLExceptions during database operations.
+ * Controller class for displaying detailed information about a movie.
+ * Handles user interactions for rating the movie and adding notes.
  */
 public class MovieInformationController {
     public ImageView imageMoviePoster,imageBackground;
@@ -43,6 +34,9 @@ public class MovieInformationController {
     UserInformation userInfo = UserInformation.getInstance();
     DatabaseQuery query = new DatabaseQuery();
 
+    /**
+     * Initializes the controller. Adjusts the window size and loads movie notes.
+     */
     public void initialize() {
         Platform.runLater(() -> {
                     Stage stage = (Stage) btnClose.getScene().getWindow();
@@ -66,6 +60,7 @@ public class MovieInformationController {
 
 
 
+     // Closes the movie information window.
     public void closeOnClick(ActionEvent actionEvent) {
         GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
         guiWindowManager.setMovieInformationControllerOpen(false);
@@ -170,6 +165,8 @@ public class MovieInformationController {
             this.lblaverageVoting.setText("Average Voting: " + averageVoting);
         }
     }
+
+ // Handles the event when stars are clicked for rating the movie
     public void starsClicked(MouseEvent mouseEvent) throws SQLException {
         SVGPath s = (SVGPath)mouseEvent.getSource();
         int movieRated = 0;
@@ -202,7 +199,7 @@ public class MovieInformationController {
 
     public void addNoteOnChecked(ActionEvent actionEvent) {
     }
-
+        // Resizes the window based on whether the "Add Note" checkbox is checked.
     private void resizeWindow(boolean isChecked) {
         Stage stage = (Stage) rBtnAddNote.getScene().getWindow();
         if (isChecked) {
@@ -213,7 +210,7 @@ public class MovieInformationController {
             txtFieldNotes.setVisible(false);
         }
     }
-
+        // Loads movie notes from the database and displays them in the text area.
     private void loadMovieNotes() {
         try {
             String notes = query.getMovieNotesForUser(connection, userInfo.getID(), lblMovieName.getText());

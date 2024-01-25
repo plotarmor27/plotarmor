@@ -38,24 +38,27 @@ public class MovieDataLoader {
     public void requestMovieDataWithHTTPRequest() throws URISyntaxException, IOException, InterruptedException {
 
         Connection connect  = DatabaseConnection.connect();
-
+        // Iterate through multiple pages of the API
         for(int page = 2; page < 501; page++){
+            // Construct the URI for the HTTP request
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .uri(new URI(API_URL + "?api_key=" + API_KEY + PRIMARY_RELEASE_YEAR_PARAM + "&page=" + page))
                     .GET()
                     .build();
 
+            // Create an HTTP client
             HttpClient client = HttpClient.newHttpClient();
-
+            // Send the HTTP request and get the response
             HttpResponse<String> getResponse = client.send(httpRequest, HttpResponse.BodyHandlers.ofString() );
-
+            // Parse the JSON response
             JSONObject jsonObject = new JSONObject(getResponse.body());
             JSONArray jsonArray = jsonObject.getJSONArray("results");
-
+            // Iterate through the JSON array and extract movie data
             for(int i = 0; i < jsonArray.length(); i++){
                 int id = jsonArray.getJSONObject(i).getInt("id");
+                // Call a method to retrieve detailed movie data using a second API call
                 requestMovieDataWithHTTPRequestSecondAPICall(id,connect);
-                System.out.println("Page: " + page);
+
             }
         }
 

@@ -12,18 +12,6 @@ import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import java.util.Random;
 import java.io.IOException;
-/**
- * The EmailVerification class manages the email verification process in the PlotArmor application.
- * It provides a window for users to enter the verification code received via email,
- * enabling the completion of the registration process.
- *
- * Features include:
- * - Displaying the email verification window for users.
- * - Allowing users to enter the verification code.
- * - Communicating with the Register class to complete the registration upon successful verification.
- *
- * The class follows the Singleton design pattern to ensure only one instance exists during the application lifecycle.
- */
 public class EmailVerification {
 
     // Use a static method to get the instance
@@ -53,6 +41,7 @@ public class EmailVerification {
         emailStage.setResizable(false);
         emailStage.setScene(scene);
 
+        // Set up event handler for window close event
         emailStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
@@ -63,6 +52,7 @@ public class EmailVerification {
         });
         titleBarController.controllTitleBar(emailView,emailStage);
         emailStage.show();
+        // Asynchronously generate a verification code and send it via email
         Task<String> emailTask = new Task<>() {
             @Override
             protected String call() {
@@ -103,7 +93,7 @@ public class EmailVerification {
         });
         titleBarController.controllTitleBar(emailView,emailStage);
         emailStage.show();
-
+            // Asynchronously generate a verification code and send it via email
         Task<String> emailTask = new Task<>() {
             @Override
             protected String call() {
@@ -135,6 +125,7 @@ public class EmailVerification {
         return this.resetPasswordController;
     }
 
+    //function to generate a random five digit code
     public String generateCode(){
         int number;
         Random random = new Random();

@@ -20,25 +20,7 @@ import java.sql.SQLException;
 
 import java.util.HashMap;
 import java.util.ResourceBundle;
-/**
- * The AccountSettings class represents a controller for managing user account settings.
- * It implements the Initializable interface to initialize the controller during FXML loading.
- * The class provides methods to open the account settings overview, change username, email,
- * and password, delete the account, and view user information.
- *
- * Features include:
- * - Opening the account settings overview.
- * - Changing username, email, and password.
- * - Deleting the user account.
- * - Viewing user information.
- * - Handling button hover events.
- *
- * Usage:
- * - Create an instance of the AccountSettings class.
- * - Call the respective methods to perform actions such as opening the account settings overview
- *   or changing the username.
- * - Implement functionality for handling user interactions (e.g., button clicks, hover events).
- */
+
 public class AccountSettings implements Initializable {
     UserInformation userInfo = UserInformation.getInstance();
     public Label lblMeanScore,lblLastLogin,lblregisterDate,

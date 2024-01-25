@@ -12,20 +12,7 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.sql.Connection;
 
-/**
- * The Register class handles user registration in the PlotArmor application.
- * It allows users to provide their email, username, and password for registration,
- * with additional verification steps such as age confirmation and email verification.
- *
- * Features include:
- * - Collecting user input for email, username, password, and repeated password.
- * - Validating user credentials, ensuring proper email format, non-empty fields, and matching passwords.
- * - Initiating an email verification process for the registered user.
- * - Displaying error messages for invalid inputs or database connection issues.
- * - Redirecting users back to the login view.
- *
- * The class interacts with the database to insert user information upon successful registration.
- */
+
 public class Register {
     private static Register instance;
     public static Register getInstance() {

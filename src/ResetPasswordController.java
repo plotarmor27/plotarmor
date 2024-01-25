@@ -10,31 +10,32 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.SQLException;
-
+//Controller class for the reset password view.
 public class ResetPasswordController {
     public TextField txtFEmail;
     public Button btnSendRequest;
     public Button btnClose;
     public Label lblResetPasswordERROR;
     GUIWindowManager guiWindowManager = GUIWindowManager.getInstance();
+    // Verification code and email variables
     String code = "";
     String email = "";
     Connection connection = DatabaseConnection.connect();
     DatabaseQueryUser query = new DatabaseQueryUser();
     String codeInput ="";
-
+    //Closes the reset password view.
     public void CloseOnClick(ActionEvent actionEvent) {
         Stage stage = (Stage) btnClose.getScene().getWindow();
         guiWindowManager.setResetPasswordOpen(false);
         stage.close();
     }
-
+    //Opens the reset password view.
     public void openResetPasswordView() throws IOException {
         ResetPassword resetP = new ResetPassword();
         resetP.openResetPasswordView();
 
     }
-
+    //Sends a password reset request based on the entered email.
     public void sendRequestOnClick(ActionEvent actionEvent) throws SQLException, IOException {
         email = txtFEmail.getText();
         //check if the entered email is in the db | if not catch this and send an error to the user on gui
@@ -45,8 +46,6 @@ public class ResetPasswordController {
         }
 
         else{
-
-
 
             boolean enteredEmailIsinDb = query.emailIsInDb(email);
 
@@ -78,6 +77,7 @@ public class ResetPasswordController {
 
 
     }
+    //Sends a new password to the user after successful verification.
     public boolean sendPasswordTokenToUser() throws SQLException {
         Connection connection = DatabaseConnection.connect();
         if(code.equals(codeInput)){
@@ -86,6 +86,7 @@ public class ResetPasswordController {
             String hashValue = generateHashValue(password);
             query.updateNewPassword(hashValue,email);
             sendingE.sendMailForPwReset(password);
+            //after sending new password unlock users account
             setUnlockedStatus(connection,email);
             lblResetPasswordERROR.setTextFill(Color.GREEN);
             lblResetPasswordERROR.setText("Sucessfully sent new Password");
@@ -99,6 +100,7 @@ public class ResetPasswordController {
     public void setUnlockedStatus(Connection connection, String email){
         query.setLockedStatusToZero(connection,email);
     }
+    //function to generate random password
     public String generateRandomPassword(){
         SecureRandom random = new SecureRandom();
         StringBuilder password = new StringBuilder();
