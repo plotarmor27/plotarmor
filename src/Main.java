@@ -117,7 +117,7 @@ public class Main extends Application {
         }
         else{
             if(connection == null){
-                lblLoginFailed.setText("Error connecting to the database!");
+                lblLoginFailed.setText("Error connecting\n to the database!");
             }
             else{
                 accountIsLocked = checkIfUserIsLocked(connection,email);
