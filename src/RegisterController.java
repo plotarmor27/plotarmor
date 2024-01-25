@@ -32,7 +32,11 @@ public class RegisterController {
     public void initialize() {
         txtFUsername.focusedProperty().addListener((ov, oldV, newV) -> {
             if (!newV) { // focus lost, check if username is in use by checking if the username has an entry in the database
-
+                if(connection == null){
+                    lblError.setVisible(true);
+                    lblError.setText("Error connecting to the database!");
+                    return;
+                }
                 if(txtFUsername.getText().isEmpty()){
                     return;
                 }
