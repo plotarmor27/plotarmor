@@ -7,9 +7,9 @@ import java.sql.*;
  * Establishes a connection to the MySQL database.
  */
 public class DatabaseConnection {
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/plotArmor";
+    private static final String JDBC_URL = "jdbc:mysql://autorack.proxy.rlwy.net:49790/plotarmor";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "root";
+    private static final String PASSWORD = "nCNEUrvtPOwqVusAoYfhoRjEzbJctvki";
 
     public static Connection connect() {
         try {

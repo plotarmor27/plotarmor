@@ -123,7 +123,7 @@
                <Cursor fx:constant="HAND" />
            </cursor>
        </Button>
-      <ListView fx:id="movieListView" editable="true" layoutX="212.0" layoutY="74.0" onMouseClicked="#listViewItemClicked" prefHeight="180.0" prefWidth="411.0" style="-fx-border-color: green; -fx-background-color: black; -fx-text-fiill: white;" />
+      <ListView fx:id="searchUserMovieList" editable="true" layoutX="212.0" layoutY="74.0" onMouseClicked="#listViewItemClicked" prefHeight="180.0" prefWidth="411.0" style="-fx-border-color: green; -fx-background-color: black; -fx-text-fiill: white;" />
       <ComboBox fx:id="cBoxSelection" layoutX="118.0" layoutY="46.0" onAction="#cBoxSelectionOnItemSwitch" prefHeight="25.0" prefWidth="92.0" style="-fx-border-color: #3452eb; -fx-background-color: #2A0033; -fx-text-fill: white; -fx-border-radius: 5;" />
 
    </children>
