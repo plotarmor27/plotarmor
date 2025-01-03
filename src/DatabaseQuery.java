@@ -253,7 +253,7 @@ public class DatabaseQuery {
 
     public boolean hasUserRatedMovie(Connection connection, int userid, String movieName) throws SQLException {
 
-        String query = "SELECT COUNT(*) FROM ratedMovies WHERE userid = ? AND movieName = ?";
+        String query = "SELECT COUNT(*) FROM plotarmor.ratedMovies WHERE userid = ? AND movieName = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, userid);
             preparedStatement.setString(2, movieName);
@@ -291,7 +291,7 @@ public class DatabaseQuery {
     }
 
     public HashMap<String, Integer> getMovieRatingsForUser(Connection connection, int userId) throws SQLException {
-        String query = "SELECT movieName, movieRated FROM ratedMovies WHERE userid = ? ORDER BY movieRated DESC";
+        String query = "SELECT movieName, movieRated FROM plotarmor.ratedMovies WHERE userid = ? ORDER BY movieRated DESC";
         HashMap<String, Integer> uniqueMovieRatings = new HashMap<>();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
 
@@ -311,7 +311,7 @@ public class DatabaseQuery {
     }
 
     public String getMovieNotesForUser(Connection connection, int userId, String movieName) throws SQLException {
-        String query = "SELECT notes FROM ratedMovies WHERE userid = ? AND movieName = ?";
+        String query = "SELECT notes FROM plotarmor.ratedMovies WHERE userid = ? AND movieName = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1, userId);
         preparedStatement.setString(2, movieName);
@@ -328,7 +328,7 @@ public class DatabaseQuery {
     }
 
     public boolean deleteUserRating(Connection connection,int userId,String movieName){
-        String deleteQuery = "DELETE FROM plotarmor.ratedmovies WHERE userid = ? AND movieName = ?";
+        String deleteQuery = "DELETE FROM plotarmor.ratedMovies WHERE userid = ? AND movieName = ?";
 
         try (
                 // Create a PreparedStatement with the query

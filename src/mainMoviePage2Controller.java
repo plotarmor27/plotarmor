@@ -23,6 +23,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Collections;
+
 /**
  * The mainMoviePage2Controller class is the JavaFX controller for the main movie page in the application.
  * It manages UI elements, user interactions, and database queries to create a dynamic movie browsing experience.
